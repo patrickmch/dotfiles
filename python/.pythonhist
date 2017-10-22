@@ -1,0 +1,100 @@
+response.context.keys()
+response.context['NOLS_WEB_HOST']
+response.context['action']
+response.context['request']
+get = response.context['request']
+get.REQUEST
+get.get_full_path
+get.get_full_path()
+get.path_info
+get.path
+get.resolver_match
+get.resolver_match.func
+get.resolver_match.func.func_name
+get.method
+get.scheme
+get.xreadlines
+get.xreadlines()
+g = get.xreadlines()
+get.META
+get.get_full_path
+get.FILES
+get.build_absolute_uri
+get.build_absolute_uri.im_self
+get.readlines
+get.sensitive_post_parameters
+get.user_agent
+c
+gift
+gift.addr_city
+response.request.values()
+response.request.keys()
+response.resolver_match
+response.resolver_match()
+response.resolver_match.url_name
+response.resolver_match.args
+response.resolver_match.namespace
+response.resolver_match.view_name
+response.wsgi_request
+response.wsgi_request.get_full_path
+response.wsgi_request.get_full_path()
+response.wsgi_request.META
+response.wsgi_request.COOKIES
+response.wsgi_request.REQUEST
+response.wsgi_request.path_info
+response.context.reverse
+response.context.reverse()
+print(response.context.reverse())
+print(response.context.keys()
+response.context.keys()
+response.context['order']
+response.context['order'].objects
+some = response.context['order']
+some.line_items
+some.line_items()
+some.line_items.values()
+response.items
+response.items()
+response.request
+ll
+response = self.client.post(response.request['PATH'].split('/')[4])
+response = self.client.post(response.request['PATH_INFO'].split('/')[4])
+response.status_code
+response = self.client.post(response.request['PATH_INFO'])
+response.status_code
+url = '%s/%s' reverse('pmt_authorize'), response.request['PATH_INFO'].split('/')[4]
+url = '%s/%s' % (reverse('pmt_authorize'), response.request['PATH_INFO'].split('/')[4])
+reverse('gift_credit_card')
+reverse('gift_credit_card')
+response
+self.client.post(reverse('gift_credit_card'))
+reverse('asdf')
+from django.core.urlresolvers import reverse
+url = '%s/%s' reverse('pmt_authorize'), response.request['PATH_INFO'].split('/')[4]
+url = '%s/%s' reverse('pmt_authorize'), response.request['PATH_INFO'].split('/')[4])
+url = '%s/%s' % reverse('pmt_authorize'), response.request['PATH_INFO'].split('/')[4])
+url = '%s/%s' % reverse('pmt_authorize'), response.request['PATH_INFO'].split('/')[4]
+reverse('pmt_authorize')
+reverse('pmt_authorize'), response.request['PATH_INFO'].split('/')[4])
+reverse('pmt_authorize', response.request['PATH_INFO'].split('/')[4])
+reverse('pmt_authorize', pmt_token=response.request['PATH_INFO'].split('/')[4])
+reverse('pmt_authorize', **args=response.request['PATH_INFO'].split('/')[4])
+reverse('pmt_authorize', **args = response.request['PATH_INFO'].split('/')[4])
+reverse(
+)
+from os import listdir
+for f in listdir('zsh' % dotfiles):
+from os import listdir
+dotfiles = '~/dotfiles/'
+for f in listdir('%szsh' % dotfiles):
+dotfiles
+dotfiles = '~/dotfiles/'
+print '%szsh' % dotfiles
+listdir('~/dotfiles/zsh')
+from os import listdir
+listdir('~/dotfiles/zsh')
+listdir('User/mchey/dotfiles/zsh')
+listdir('/Users/mchey/dotfiles/zsh')
+for f in listdir('%szsh' % dotfiles):
+    if f == '.DS_Store':
+        continue
