@@ -7,5 +7,5 @@ In order to use the Iterm profile stored in this directory, you will need to
 follow a few simple instructions.
 - Go to preferences -> general
 - Click 'Load preferences from a custom folder or URL'
-- Load the settings from this directory
+- Load the settings from the dotfiles/iterm directory
 - Make sure to click 'Save settings to Folder' so that future changes are made there

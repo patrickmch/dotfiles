@@ -7,9 +7,10 @@
 # ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 brew install zsh
+# set zsh as default shell
 sudo -s 'echo /usr/local/bin/zsh >> /etc/shells' && chsh -s /usr/local/bin/zsh
 
-# install fonts (copy them to Font directory)
+# install fonts (copy them to Fonts directory)
 cp -R ~/dotfiles/fonts/. ~/Library/Fonts
 
 pip install ipython
