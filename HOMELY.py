@@ -1,5 +1,7 @@
-from homely.files import mkdir, symlink
 from os import listdir, path
+
+from homely.files import mkdir, symlink
+from homely.install import installpkg
 
 dotfiles = '%s/dotfiles/' % path.expanduser('~')
 
