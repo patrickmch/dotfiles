@@ -9,3 +9,6 @@ follow a few simple instructions.
 - Click 'Load preferences from a custom folder or URL'
 - Load the settings from the dotfiles/iterm directory
 - Make sure to click 'Save settings to Folder' so that future changes are made there
+
+Zsh theme:
+Mostly, all credits for the configuration go to: https://github.com/tonylambiris/dotfiles

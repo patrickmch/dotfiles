@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH=/Users/mchey/.oh-my-zsh
+export ZSH=~/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -10,20 +10,15 @@ export ZSH=/Users/mchey/.oh-my-zsh
 # ZSH_THEME="af-magic"
 # ZSH_THEME="powerlevel9k/powerlevel9k"
 # ZSH_THEME="agnoster"
-if [ -f ~/.zshscript ]; then
-    source ~/.zshscript
+if [ -f ~/.zsh_theme_config ]; then
+    source ~/.zsh_theme_config
 else
-    echo "404: ~/.zsh/zshalias not found."
+    echo "404: ~/.zsh_theme_config not found."
 fi
 
 # zplug: https://github.com/zplug/zplug
 export ZPLUG_HOME=/usr/local/opt/zplug
 source $ZPLUG_HOME/init.zsh
-
-#POWERLEVEL9K configs:
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(virtualenv dir rbenv vcs)
-# POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status time dir_writable)
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -45,7 +40,7 @@ POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status time dir_writable)
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-ENABLE_CORRECTION="true"
+# ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 # COMPLETION_WAITING_DOTS="true"

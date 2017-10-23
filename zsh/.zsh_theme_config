@@ -1,7 +1,15 @@
-if [ $TERM_PROGRAM = platformio-ide-terminal ]; then
-    ZSH_THEME="af-magic"
-else
-  # =============================================================================
+#POWERLEVEL9K configs:
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(virtualenv dir rbenv vcs)
+# POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status time dir_writable)
+
+# uncomment this if iterm's shell is looking bad
+# if [ $TERM_PROGRAM = platformio-ide-terminal ]; then
+    # ZSH_THEME="af-magic"
+# else
+
+# credits to https://github.com/tonylambiris/dotfiles
+# =============================================================================
 #                                   Variables
 # =============================================================================
 export TERM="xterm-256color"
@@ -404,4 +412,4 @@ bindkey "^[[1;5D" backward-word
 [[ -f ~/.zshrc.alias ]] && source ~/.zshrc.alias
 
 # vim: ft=zsh
-fi
+# fi
