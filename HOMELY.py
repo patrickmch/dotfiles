@@ -8,6 +8,7 @@ mkdir('%spython' % dotfiles)
 symlink('.config')
 symlink('.ipython')
 symlink('.jupyter')
+symlink('.atom')
 
 # create symlinks in home directory from a source directory
 def symlinks_from_dir(directory):
