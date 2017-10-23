@@ -6,6 +6,8 @@ dotfiles = '%s/dotfiles/' % path.expanduser('~')
 mkdir('%szsh' % dotfiles)
 mkdir('%spython' % dotfiles)
 symlink('.config')
+symlink('.ipython')
+symlink('.jupyter')
 
 # create symlinks in home directory from a source directory
 def symlinks_from_dir(directory):
