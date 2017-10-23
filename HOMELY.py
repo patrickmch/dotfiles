@@ -5,7 +5,9 @@ dotfiles = '%s/dotfiles/' % path.expanduser('~')
 
 mkdir('%szsh' % dotfiles)
 mkdir('%spython' % dotfiles)
+symlink('.config')
 
+# create symlinks in home directory from a source directory
 def symlinks_from_dir(directory):
     for item in listdir(dotfiles + directory):
         if item == '.DS_Store':
