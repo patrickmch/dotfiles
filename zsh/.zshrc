@@ -8,13 +8,21 @@ export ZSH=~/.oh-my-zsh
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 # ZSH_THEME="af-magic"
-# ZSH_THEME="powerlevel9k/powerlevel9k"
 # ZSH_THEME="agnoster"
-if [ -f ~/.zsh_theme_config ]; then
-    source ~/.zsh_theme_config
+# uncomment this if atom's shell is looking bad
+if [ $TERM_PROGRAM = platformio-ide-terminal ]; then
+    ZSH_THEME="af-magic"
 else
-    echo "404: ~/.zsh_theme_config not found."
+    ZSH_THEME="powerlevel9k/powerlevel9k"
+    source ~/.powerlevel_config
 fi
+
+source ~/.zsh_theme_config
+# if [ -f ~/.zsh_theme_config ]; then
+#
+# else
+#     echo "404: ~/.zsh_theme_config not found."
+# fi
 
 # zplug: https://github.com/zplug/zplug
 export ZPLUG_HOME=/usr/local/opt/zplug
