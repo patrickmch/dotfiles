@@ -117,6 +117,7 @@ alias ipythonconfig="atom /Users/mchey/.ipython/profile_default/ipython_config.p
 alias ogc='open -a Google\ Chrome https://localhost:8888/portal/account/'
 alias atom='open -a atom'
 alias wow='workon website'
+alias woc='workon cms'
 alias djrsl='cd ~/code/website/nols_website; python manage.py runsslserver 0.0.0.0:8888 --nothreading --settings=mchey_local_settings'
 # python manage.py  runsslserver 0.0.0.0:8888 --nothreading --settings=mchey_local_settings
 # other configs
