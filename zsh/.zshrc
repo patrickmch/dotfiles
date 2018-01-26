@@ -7,15 +7,16 @@ export ZSH=~/.oh-my-zsh
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-# ZSH_THEME="af-magic"
 # ZSH_THEME="agnoster"
+# ZSH_THEME="af-magic"
+
 # uncomment this if atom's shell is looking bad
-if [ $TERM_PROGRAM = platformio-ide-terminal ]; then
-    ZSH_THEME="af-magic"
-else
-    ZSH_THEME="powerlevel9k/powerlevel9k"
-    source ~/.powerlevel_config
-fi
+ if [ $TERM_PROGRAM = platformio-ide-terminal ]; then
+     ZSH_THEME="af-magic"
+ else
+     ZSH_THEME="powerlevel9k/powerlevel9k"
+     source ~/.powerlevel_config
+ fi
 
 source ~/.zsh_theme_config
 # if [ -f ~/.zsh_theme_config ]; then
@@ -60,8 +61,6 @@ source $ZPLUG_HOME/init.zsh
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# HIST_STAMPS="mm/dd/yyyy"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
@@ -95,7 +94,7 @@ source $ZSH/oh-my-zsh.sh
 export SSH_KEY_PATH="~/.ssh/rsa_id"
 
 # bpython configuration to work with django:
-export PYTHONSTARTUP="~/.pythonrc"
+export PYTHONSTARTUP="/Users/mchey/.pythonrc"
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
@@ -121,6 +120,34 @@ alias woc='workon cms'
 alias djrsl='cd ~/code/website/nols_website; python manage.py runsslserver 0.0.0.0:8888 --nothreading --settings=mchey_local_settings'
 # python manage.py  runsslserver 0.0.0.0:8888 --nothreading --settings=mchey_local_settings
 # other configs
+# for some reason these two plugins conflict so they are installed manually rather than with zplug
 source ~/.oh-my-zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ./zsh-vimode-visual/zsh-vimode-visual.zsh
 . `brew --prefix`/etc/profile.d/z.sh
 source ~/.bash_profile
+# Vim config
+bindkey -v
+export KEYTIMEOUT=1
+
+# change cursor shape between different vim modes
+function zle-keymap-select zle-line-init
+{
+    # change cursor shape in iTerm2
+    case $KEYMAP in
+        vicmd)      print -n -- "\E]50;CursorShape=0\C-G";;  # block cursor
+        viins|main) print -n -- "\E]50;CursorShape=1\C-G";;  # line cursor
+    esac
+
+    zle reset-prompt
+    zle -R
+}
+
+
+function zle-line-finish
+{
+    print -n -- "\E]50;CursorShape=0\C-G"  # block cursor
+}
+
+zle -N zle-line-init
+zle -N zle-line-finish
+zle -N zle-keymap-select

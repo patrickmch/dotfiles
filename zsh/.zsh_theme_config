@@ -7,11 +7,10 @@ if [[ ! -d ~/.zplug ]]; then
   git clone https://github.com/zplug/zplug ~/.zplug
   source ~/.zplug/init.zsh && zplug update --self
 fi
-
 source ~/.zplug/init.zsh
 
 #zplug "plugins/bundler", from:oh-my-zsh, if:"which bundle"
-#zplug "plugins/colored-man-pages", from:oh-my-zsh
+zplug "plugins/colored-man-pages", from:oh-my-zsh
 #zplug "plugins/extract", from:oh-my-zsh
 #zplug "plugins/fancy-ctrl-z", from:oh-my-zsh
 #zplug "plugins/git", from:oh-my-zsh, if:"which git"
@@ -21,37 +20,23 @@ source ~/.zplug/init.zsh
 #zplug "plugins/nanoc", from:oh-my-zsh, if:"which nanoc"
 #zplug "plugins/nmap", from:oh-my-zsh, if:"which nmap"
 #zplug "plugins/tmux", from:oh-my-zsh, if:"which tmux"
-#zplug "plugins/vi-mode", from:oh-my-zsh
+zplug "plugins/vi-mode", from:oh-my-zsh
 
 #zplug "b4b4r07/enhancd", use:init.sh
-zplug "b4b4r07/enhancd", use:enhancd.sh
-#zplug "b4b4r07/zsh-vimode-visual", defer:3
-if [ "$ZSH_THEME" = "powerlevel9k/powerlevel9k" ]; then
-  zplug "bhilburn/powerlevel9k", use:powerlevel9k.zsh-theme, at:next
-fi
+# zplug "b4b4r07/enhancd", use:enhancd.sh
 #zplug "knu/zsh-manydots-magic", use:manydots-magic, defer:2
 zplug "seebi/dircolors-solarized", ignore:"*", as:plugin
 zplug "zsh-users/zsh-autosuggestions", at:develop
 zplug "zsh-users/zsh-completions", defer:2
 zplug "zsh-users/zsh-history-substring-search"
-zplug "zsh-users/zsh-syntax-highlighting", defer:2
+# zplug "b4b4r07/zsh-vimode-visual", defer:3
 
-#if ! zplug check; then
-#  zplug install
-#fi
-#
-#zplug load
 
 # Supports oh-my-zsh plugins and the like
-zplug "plugins/archlinux", from:oh-my-zsh
-zplug "plugins/dnf", from:oh-my-zsh
 zplug "plugins/git", from:oh-my-zsh
-zplug "plugins/go", from:oh-my-zsh
-zplug "plugins/golang", from:oh-my-zsh
 zplug "plugins/nmap", from:oh-my-zsh
 zplug "plugins/sudo", from:oh-my-zsh
 zplug "plugins/tmux", from:oh-my-zsh
-
 # Install plugins if there are plugins that have not been installed
 if ! zplug check --verbose; then
   printf "Install? [y/N]: "
@@ -60,6 +45,9 @@ if ! zplug check --verbose; then
   fi
 fi
 
+if [ "$ZSH_THEME" = "powerlevel9k/powerlevel9k" ]; then
+  zplug "bhilburn/powerlevel9k", use:powerlevel9k.zsh-theme, at:next
+fi
 # Then, source plugins and add commands to $PATH
 zplug load
 
@@ -148,22 +136,78 @@ po() { popd > /dev/null 2>&1; dirs -v }
 #grep() { $(whence -p grep) --colour=auto $@ }
 #egrep() { $(whence -p egrep) --colour=auto $@ }
 
+# Updates editor information when the keymap changes.
+function zle-keymap-select() {
+  zle reset-prompt
+  zle -R
+}
+
+zle -N zle-keymap-select
+
+# function vi_mode_prompt_info() {
+#   echo "${${KEYMAP/vicmd/[% NORMAL]%}/(main|viins)/[% INSERT]%}"
+# }
+#
+# # define right prompt, regardless of whether the theme defined it
+# RPS1='$(vi_mode_prompt_info)'
+# RPS2=$RPS1
+
+
 # =============================================================================
 #                                Key Bindings
 # =============================================================================
+# Vim Bindings zsh-vimode-visual:
+bindkey -M vicmd 'V'  vi-vlines-mode
+bindkey -M vicmd 'v'  vi-visual-mode
+bindkey -M vivis ' '  vi-visual-forward-char
+bindkey -M vivis ','  vi-visual-rev-repeat-find
+bindkey -M vivis '<'  vi-visual-bol
+bindkey -M vivis ';'  vi-visual-repeat-find
+bindkey -M vivis 'B'  vi-visual-backward-blank-word
+bindkey -M vivis 'C'  vi-visual-substitute-lines
+bindkey -M vivis 'D'  vi-visual-kill-and-vicmd
+bindkey -M vivis 'E'  vi-visual-forward-blank-word-end
+bindkey -M vivis 'F'  vi-visual-find-prev-char
+bindkey -M vivis 'G'  vi-visual-goto-line
+bindkey -M vivis 'I'  vi-visual-insert-bol
+bindkey -M vivis 'J'  vi-visual-join
+bindkey -M vivis 'O'  vi-visual-exchange-points
+bindkey -M vivis 'R'  vi-visual-substitute-lines
+bindkey -M vivis 'S ' vi-visual-surround-space
+bindkey -M vivis "S'" vi-visual-surround-squote
+bindkey -M vivis 'S"' vi-visual-surround-dquote
+bindkey -M vivis 'S(' vi-visual-surround-parenthesis
+bindkey -M vivis 'S)' vi-visual-surround-parenthesis
+bindkey -M vivis 'T'  vi-visual-find-prev-char-skip
+bindkey -M vivis 'U'  vi-visual-uppercase-region
+bindkey -M vivis 'V'  vi-visual-exit-to-vlines
+bindkey -M vivis 'W'  vi-visual-forward-blank-word
+bindkey -M vivis 'Y'  vi-visual-yank
+bindkey -M vivis '^M' vi-visual-yank
+bindkey -M vivis '^[' vi-visual-exit
+bindkey -M vivis 'b'  vi-visual-backward-word
+bindkey -M vivis 'c'  vi-visual-change
+bindkey -M vivis 'd'  vi-visual-kill-and-vicmd
+bindkey -M vivis 'e'  vi-visual-forward-word-end
+bindkey -M vivis 'f'  vi-visual-find-next-char
+bindkey -M vivis 'gg' vi-visual-goto-first-line
+bindkey -M vivis 'h'  vi-visual-backward-char
+bindkey -M vivis 'j'  vi-visual-down-line
+bindkey -M vivis 'jj' vi-visual-exit
+bindkey -M vivis 'k'  vi-visual-up-line
+bindkey -M vivis 'l'  vi-visual-forward-char
+bindkey -M vivis 'o'  vi-visual-exchange-points
+bindkey -M vivis 'p'  vi-visual-put
+bindkey -M vivis 'r'  vi-visual-replace-region
+bindkey -M vivis 't'  vi-visual-find-next-char-skip
+bindkey -M vivis 'u'  vi-visual-lowercase-region
+bindkey -M vivis '>'  vi-visual-eol
+bindkey -M vivis 'w'  vi-visual-forward-word
+bindkey -M vivis 'y'  vi-visual-yank
 
-# Common CTRL bindings.
-bindkey "^a" beginning-of-line
-bindkey "^e" end-of-line
-bindkey "^f" forward-word
-bindkey "^b" backward-word
-bindkey "^k" kill-line
-bindkey "^d" delete-char
-bindkey "^y" accept-and-hold
-bindkey "^w" backward-kill-word
-bindkey "^u" backward-kill-line
-bindkey "^R" history-incremental-pattern-search-backward
-bindkey "^F" history-incremental-pattern-search-forward
+# Vim Command Mode bindings:
+bindkey '<' beginning-of-line
+bindkey '>' end-of-line
 
 # History
 if zplug check "zsh-users/zsh-history-substring-search"; then
@@ -177,9 +221,6 @@ bindkey "$terminfo[kcud1]" history-substring-search-down
 bindkey "^[[1;5A" history-substring-search-up
 bindkey "^[[1;5B" history-substring-search-down
 fi
-
-# Do not require a space when attempting to tab-complete.
-bindkey "^i" expand-or-complete-prefix
 
 # =============================================================================
 #                                 Completions
@@ -201,22 +242,6 @@ zstyle ":completion:*:default" list-colors ${(s.:.)LS_COLORS}
 # on-the-fly shell programming painful. The only difference to the original
 # function definition is that we do not use the `expand-word" widget.
 # See https://github.com/robbyrussell/oh-my-zsh/issues/6123 for discussion.
-globalias() {
- zle _expand_alias
- #zle expand-word
- zle self-insert
-}
-zle -N globalias
-
-# Utility that prints out lines that are common among $# files.
-intersect() {
-local sort="sort -S 1G"
-case $# in
-  (0) true;;
-  (2) $sort -u "$1"; $sort -u "$2";;
-  (*) $sort -u "$1"; shift; intersection "$@";;
-esac | $sort | uniq -d
-}
 
 # Changes an iTerm profile by sending a proprietary escape code that iTerm
 # intercepts. This function additionally updates ITERM_PROFILE environment

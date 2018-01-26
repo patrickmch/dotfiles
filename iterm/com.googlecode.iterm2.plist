@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>AllowClipboardAccess</key>
+	<true/>
 	<key>AlternateMouseScroll</key>
 	<true/>
 	<key>AppleAntiAliasingThreshold</key>
@@ -41978,12 +41980,21 @@
 	</dict>
 	<key>Default Bookmark Guid</key>
 	<string>2D343359-5359-4FB5-8326-F21EC620A90D</string>
+	<key>DisableFullscreenTransparency</key>
+	<false/>
 	<key>GlobalKeyMap</key>
 	<dict>
 		<key>0x19-0x60000</key>
 		<dict>
 			<key>Action</key>
 			<integer>39</integer>
+			<key>Text</key>
+			<string></string>
+		</dict>
+		<key>0x66-0x140000</key>
+		<dict>
+			<key>Action</key>
+			<integer>23</integer>
 			<key>Text</key>
 			<string></string>
 		</dict>
@@ -42088,7 +42099,7 @@
 	<key>LoadPrefsFromCustomFolder</key>
 	<true/>
 	<key>NSNavLastRootDirectory</key>
-	<string>~/dotfiles/iterm</string>
+	<string>~/Desktop</string>
 	<key>NSNavPanelExpandedSizeForOpenMode</key>
 	<string>{712, 448}</string>
 	<key>NSQuotedKeystrokeBinding</key>
@@ -42133,7 +42144,7 @@
 		<string>@v</string>
 	</dict>
 	<key>NSWindow Frame NSFontPanel</key>
-	<string>685 61 445 77 0 0 1440 877 </string>
+	<string>1839 -40 445 77 1440 -73 1024 746 </string>
 	<key>NSWindow Frame Preferences</key>
 	<string>488 407 606 456 0 0 1440 877 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
@@ -42141,9 +42152,9 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>-1651 -13 606 469 -1920 -139 1920 1080 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>381 307 937 512 0 0 1440 900 </string>
+	<string>361 397 918 394 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>109 302 890 575 0 0 1440 877 </string>
+	<string>1440 -73 1024 768 1440 -73 1024 746 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>24 325 890 552 0 0 1440 877 </string>
 	<key>New Bookmarks</key>
@@ -42158,7 +42169,7 @@
 			<key>AWDS Tab Directory</key>
 			<string></string>
 			<key>AWDS Tab Option</key>
-			<string>Recycle</string>
+			<string>No</string>
 			<key>AWDS Window Directory</key>
 			<string></string>
 			<key>AWDS Window Option</key>
@@ -42320,8 +42331,6 @@
 				<key>Red Component</key>
 				<real>0.0</real>
 			</dict>
-			<key>Background Image Location</key>
-			<string></string>
 			<key>Badge Color</key>
 			<dict>
 				<key>Alpha Component</key>
@@ -42335,8 +42344,10 @@
 				<key>Red Component</key>
 				<real>1</real>
 			</dict>
+			<key>Blend</key>
+			<real>0.18585486778846161</real>
 			<key>Blinking Cursor</key>
-			<false/>
+			<true/>
 			<key>Blur</key>
 			<true/>
 			<key>Blur Radius</key>
@@ -42389,6 +42400,8 @@
 				<key>Red Component</key>
 				<real>1</real>
 			</dict>
+			<key>Cursor Type</key>
+			<integer>2</integer>
 			<key>Custom Command</key>
 			<string>No</string>
 			<key>Custom Directory</key>
@@ -42400,7 +42413,7 @@
 			<key>Disable Window Resizing</key>
 			<true/>
 			<key>Flashing Bell</key>
-			<false/>
+			<true/>
 			<key>Foreground Color</key>
 			<dict>
 				<key>Blue Component</key>
@@ -42889,9 +42902,9 @@
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>KnackNerdFontC-Regular 18</string>
+			<string>KnackNerdFontC-Regular 14</string>
 			<key>Only The Default BG Color Uses Transparency</key>
-			<true/>
+			<false/>
 			<key>Option Key Sends</key>
 			<integer>0</integer>
 			<key>Prompt Before Closing 2</key>
@@ -42927,7 +42940,7 @@
 			<key>Shortcut</key>
 			<string></string>
 			<key>Silence Bell</key>
-			<false/>
+			<true/>
 			<key>Space</key>
 			<integer>0</integer>
 			<key>Sync Title</key>
@@ -42937,7 +42950,7 @@
 			<key>Terminal Type</key>
 			<string>xterm-256color</string>
 			<key>Transparency</key>
-			<real>0.063316941624365491</real>
+			<real>0.088711532360406117</real>
 			<key>Triggers</key>
 			<array>
 				<dict>
@@ -43787,14 +43800,22 @@
 	<true/>
 	<key>NoSyncDoNotWarnBeforeMultilinePaste_selection</key>
 	<integer>0</integer>
+	<key>NoSyncHaveUsedCopyMode</key>
+	<true/>
 	<key>NoSyncInstallationId</key>
 	<string>2948A166-62E0-46CA-9C77-0FC5190914BF</string>
 	<key>NoSyncLastTipTime</key>
-	<real>534797900.35520703</real>
+	<real>537122502.04022896</real>
+	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
+	<true/>
+	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
+	<integer>0</integer>
 	<key>NoSyncPermissionToShowTip</key>
 	<true/>
 	<key>NoSyncTimeOfFirstLaunchOfVersionWithTip</key>
 	<real>526839285.13399798</real>
+	<key>NoSyncTipsDisabled</key>
+	<true/>
 	<key>NoSyncTipsToNotShow</key>
 	<array>
 		<string>000</string>
@@ -43837,6 +43858,27 @@
 		<string>0036</string>
 		<string>0037</string>
 		<string>0038</string>
+		<string>0039</string>
+		<string>0040</string>
+		<string>0041</string>
+		<string>0042</string>
+		<string>0043</string>
+		<string>0044</string>
+		<string>0045</string>
+		<string>0046</string>
+		<string>0047</string>
+		<string>0048</string>
+		<string>0049</string>
+		<string>0050</string>
+		<string>0051</string>
+		<string>0052</string>
+		<string>0053</string>
+		<string>0054</string>
+		<string>0055</string>
+		<string>0056</string>
+		<string>0057</string>
+		<string>0058</string>
+		<string>0058</string>
 	</array>
 	<key>OpenArrangementAtStartup</key>
 	<false/>
@@ -43894,13 +43936,23 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-12-11T07:00:37Z</date>
+	<date>2018-01-25T02:43:17Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
+	<key>ShowPaneTitles</key>
+	<false/>
+	<key>SplitPaneDimmingAmount</key>
+	<real>0.37059044471153846</real>
 	<key>SwitchPaneModifier</key>
 	<integer>9</integer>
 	<key>TabStyle</key>
+	<integer>1</integer>
+	<key>TabViewType</key>
 	<integer>0</integer>
+	<key>UseBorder</key>
+	<false/>
+	<key>UseLionStyleFullscreen</key>
+	<false/>
 	<key>WordCharacters</key>
 	<string>/-+\~_.</string>
 	<key>findIgnoreCase_iTerm</key>
