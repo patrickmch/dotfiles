@@ -118,12 +118,15 @@ alias atom='open -a atom'
 alias wow='workon website'
 alias woc='workon cms'
 alias djrsl='cd ~/code/website/nols_website; python manage.py runsslserver 0.0.0.0:8888 --nothreading --settings=mchey_local_settings'
-# python manage.py  runsslserver 0.0.0.0:8888 --nothreading --settings=mchey_local_settings
+# restart the server after two seconds if it dies (ctrl-c ctrl-c to quit it)
+alias djrsa='cd ~/code/website/nols_website; while true; do python manage.py runsslserver 0.0.0.0:8888 --nothreading; sleep 2; done'
+alias djrsal='cd ~/code/website/nols_website; while true; do python manage.py runsslserver 0.0.0.0:8888 --nothreading --settings=mchey_local_settings; sleep 2; done'
 # other configs
+. `brew --prefix`/etc/profile.d/z.sh
 # for some reason these two plugins conflict so they are installed manually rather than with zplug
 source ~/.oh-my-zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source ./zsh-vimode-visual/zsh-vimode-visual.zsh
-. `brew --prefix`/etc/profile.d/z.sh
+source ~/dotfiles/zsh/zsh-vimode-visual/zsh-vimode-visual.zsh
+
 source ~/.bash_profile
 # Vim config
 bindkey -v
@@ -151,3 +154,4 @@ function zle-line-finish
 zle -N zle-line-init
 zle -N zle-line-finish
 zle -N zle-keymap-select
+unset zle_bracketed_paste
