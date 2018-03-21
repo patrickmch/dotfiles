@@ -1,0 +1,14 @@
+bind 1:ctrl focus 'Google Chrome'
+bind 2:ctrl focus 'Atom'
+bind 3:ctrl focus 'iTerm2'
+bind 4:ctrl focus 'Finder'
+bind 5:ctrl focus 'Messages'
+
+# I currently have shift-alt-ctrl-cmd bound to the semicolon key via karabiner
+bind l:shift;alt;ctrl;cmd throw right resize
+bind h:shift;alt;ctrl;cmd throw left resize
+
+bind a:shift;alt;ctrl;cmd resize +10% +0
+bind d:shift;alt;ctrl;cmd resize -10% +0
+bind w:shift;alt;ctrl;cmd resize +0   -10%
+bind s:shift;alt;ctrl;cmd resize +0   +10%

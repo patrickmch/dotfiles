@@ -1,6 +1,5 @@
 {
     "global": {
-        "_COMMENTS_FROM_PATRICK": "see https://pqrs.org/osx/karabiner/document.html#configuration-file-path",
         "check_for_updates_on_startup": true,
         "show_in_menu_bar": true,
         "show_profile_name_in_menu_bar": false
@@ -16,14 +15,14 @@
                 },
                 "rules": [
                     {
-                        "description": "Change command + h/j/k/l to Arrows",
+                        "description": "Change Control + h/j/k/l to Arrows",
                         "manipulators": [
                             {
                                 "from": {
                                     "key_code": "h",
                                     "modifiers": {
                                         "mandatory": [
-                                            "command"
+                                            "control"
                                         ],
                                         "optional": [
                                             "caps_lock"
@@ -42,7 +41,7 @@
                                     "key_code": "j",
                                     "modifiers": {
                                         "mandatory": [
-                                            "command"
+                                            "control"
                                         ],
                                         "optional": [
                                             "caps_lock"
@@ -61,7 +60,7 @@
                                     "key_code": "k",
                                     "modifiers": {
                                         "mandatory": [
-                                            "command"
+                                            "control"
                                         ],
                                         "optional": [
                                             "caps_lock"
@@ -80,7 +79,7 @@
                                     "key_code": "l",
                                     "modifiers": {
                                         "mandatory": [
-                                            "command"
+                                            "control"
                                         ],
                                         "optional": [
                                             "caps_lock"
@@ -97,31 +96,25 @@
                         ]
                     },
                     {
-                        "description": "Mu Mode Semicolon(;)+J/K/L/I/U/M/O/. to Arrow Left/Down/Right/Up/PageUp/PageDown/Home/End",
                         "manipulators": [
                             {
+                                "description": "Change right_control to command+control+option+shift.",
                                 "from": {
                                     "key_code": "semicolon",
                                     "modifiers": {
                                         "optional": [
-                                            "caps_lock"
+                                            "any"
                                         ]
                                     }
                                 },
                                 "to": [
                                     {
-                                        "set_variable": {
-                                            "name": "mu_mode",
-                                            "value": 1
-                                        }
-                                    }
-                                ],
-                                "to_after_key_up": [
-                                    {
-                                        "set_variable": {
-                                            "name": "mu_mode",
-                                            "value": 0
-                                        }
+                                        "key_code": "left_shift",
+                                        "modifiers": [
+                                            "left_command",
+                                            "left_control",
+                                            "left_option"
+                                        ]
                                     }
                                 ],
                                 "to_if_alone": [
@@ -129,311 +122,26 @@
                                         "key_code": "semicolon"
                                     }
                                 ],
+
                                 "type": "basic"
-                            },
+                            }
+                        ]
+                    },
+                    {
+                        "manipulators": [
                             {
-                                "conditions": [
-                                    {
-                                        "name": "mu_mode",
-                                        "type": "variable_if",
-                                        "value": 1
-                                    }
-                                ],
+                                "description": "escape key binding",
                                 "from": {
-                                    "key_code": "j",
+                                    "key_code": "right_control",
                                     "modifiers": {
                                         "optional": [
-                                            "caps_lock",
-                                            "left_shift",
-                                            "right_shift",
-                                            "left_command",
-                                            "right_command",
-                                            "left_option",
-                                            "right_option"
+                                            "any"
                                         ]
                                     }
                                 },
                                 "to": [
                                     {
-                                        "key_code": "down_arrow"
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "name": "mu_mode",
-                                        "type": "variable_if",
-                                        "value": 1
-                                    }
-                                ],
-                                "from": {
-                                    "key_code": "k",
-                                    "modifiers": {
-                                        "optional": [
-                                            "caps_lock",
-                                            "left_shift",
-                                            "right_shift",
-                                            "left_command",
-                                            "right_command",
-                                            "left_option",
-                                            "right_option"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "up_arrow"
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "name": "mu_mode",
-                                        "type": "variable_if",
-                                        "value": 1
-                                    }
-                                ],
-                                "from": {
-                                    "key_code": "h",
-                                    "modifiers": {
-                                        "optional": [
-                                            "caps_lock",
-                                            "left_shift",
-                                            "right_shift",
-                                            "left_command",
-                                            "right_command",
-                                            "left_option",
-                                            "right_option"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "left_arrow"
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "name": "mu_mode",
-                                        "type": "variable_if",
-                                        "value": 1
-                                    }
-                                ],
-                                "from": {
-                                    "key_code": "l",
-                                    "modifiers": {
-                                        "optional": [
-                                            "caps_lock",
-                                            "left_shift",
-                                            "right_shift",
-                                            "left_command",
-                                            "right_command",
-                                            "left_option",
-                                            "right_option"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "right_arrow"
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "name": "mu_mode",
-                                        "type": "variable_if",
-                                        "value": 1
-                                    }
-                                ],
-                                "from": {
-                                    "key_code": "u",
-                                    "modifiers": {
-                                        "optional": [
-                                            "caps_lock"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "page_up"
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "name": "mu_mode",
-                                        "type": "variable_if",
-                                        "value": 1
-                                    }
-                                ],
-                                "from": {
-                                    "key_code": "d",
-                                    "modifiers": {
-                                        "optional": [
-                                            "caps_lock"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "page_down"
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "name": "mu_mode",
-                                        "type": "variable_if",
-                                        "value": 1
-                                    }
-                                ],
-                                "from": {
-                                    "key_code": "o",
-                                    "modifiers": {
-                                        "optional": [
-                                            "caps_lock"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "home"
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "name": "mu_mode",
-                                        "type": "variable_if",
-                                        "value": 1
-                                    }
-                                ],
-                                "from": {
-                                    "key_code": "period",
-                                    "modifiers": {
-                                        "optional": [
-                                            "caps_lock"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "end"
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "_COMMENTS_FROM_PATRICK": [
-                                  {
-                                    "helpful_prompt_if_you_want_to_write_a_script": [
-                                      {"shell_command": "osascript -e 'tell app \"iTerm2\"' -e 'create window with default profile' -e activate -e end"}
-                                    ],
-                                  }
-                                ],
-                                "conditions": [
-                                    {
-                                        "name": "mu_mode",
-                                        "type": "variable_if",
-                                        "value": 1
-                                    }
-                                ],
-                                "from": {
-                                    "key_code": "t",
-                                    "modifiers": {
-                                        "optional": [
-                                            "caps_lock"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "shell_command": "osascript -e 'tell app \"iTerm2\"' -e activate -e end"
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "name": "mu_mode",
-                                        "type": "variable_if",
-                                        "value": 1
-                                    }
-                                ],
-                                "from": {
-                                    "key_code": "g",
-                                    "modifiers": {
-                                        "optional": [
-                                            "caps_lock"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "shell_command": "osascript -e 'tell app \"Google Chrome\"' -e activate -e end"
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "name": "mu_mode",
-                                        "type": "variable_if",
-                                        "value": 1
-                                    }
-                                ],
-                                "from": {
-                                    "key_code": "a",
-                                    "modifiers": {
-                                        "optional": [
-                                            "caps_lock"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "shell_command": "osascript -e 'tell app \"Atom\"' -e activate -e end"
-                                    }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "name": "mu_mode",
-                                        "type": "variable_if",
-                                        "value": 1
-                                    }
-                                ],
-                                "from": {
-                                    "key_code": "f",
-                                    "modifiers": {
-                                        "optional": [
-                                            "caps_lock"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "shell_command": "osascript -e 'tell app \"Finder\"' -e activate -e end"
+                                        "key_code": "escape"
                                     }
                                 ],
                                 "type": "basic"
@@ -443,6 +151,19 @@
                 ]
             },
             "devices": [
+                {
+                    "disable_built_in_keyboard_if_exists": false,
+                    "fn_function_keys": [],
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "is_pointing_device": false,
+                        "product_id": 610,
+                        "vendor_id": 1452
+                    },
+                    "ignore": false,
+                    "manipulate_caps_lock_led": true,
+                    "simple_modifications": []
+                },
                 {
                     "disable_built_in_keyboard_if_exists": false,
                     "fn_function_keys": [],
@@ -563,7 +284,15 @@
                         "key_code": "caps_lock"
                     },
                     "to": {
-                        "key_code": "escape"
+                        "key_code": "left_control"
+                    }
+                },
+                {
+                    "from": {
+                        "key_code": "left_control"
+                    },
+                    "to": {
+                        "key_code": "right_control"
                     }
                 }
             ],

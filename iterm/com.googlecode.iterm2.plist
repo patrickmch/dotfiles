@@ -41979,7 +41979,7 @@
 		</dict>
 	</dict>
 	<key>Default Bookmark Guid</key>
-	<string>BEE52C92-03A1-4344-897C-543552429E59</string>
+	<string>2D343359-5359-4FB5-8326-F21EC620A90D</string>
 	<key>DisableFullscreenTransparency</key>
 	<false/>
 	<key>GlobalKeyMap</key>
@@ -42001,18 +42001,25 @@
 		<key>0x68-0x180000</key>
 		<dict>
 			<key>Action</key>
+			<integer>2</integer>
+			<key>Text</key>
+			<string></string>
+		</dict>
+		<key>0x68-0x80000</key>
+		<dict>
+			<key>Action</key>
 			<integer>18</integer>
 			<key>Text</key>
 			<string></string>
 		</dict>
-		<key>0x6a-0x180000</key>
+		<key>0x6a-0x80000</key>
 		<dict>
 			<key>Action</key>
 			<integer>21</integer>
 			<key>Text</key>
 			<string></string>
 		</dict>
-		<key>0x6b-0x180000</key>
+		<key>0x6b-0x80000</key>
 		<dict>
 			<key>Action</key>
 			<integer>20</integer>
@@ -42020,6 +42027,13 @@
 			<string></string>
 		</dict>
 		<key>0x6c-0x180000</key>
+		<dict>
+			<key>Action</key>
+			<integer>0</integer>
+			<key>Text</key>
+			<string></string>
+		</dict>
+		<key>0x6c-0x80000</key>
 		<dict>
 			<key>Action</key>
 			<integer>19</integer>
@@ -42174,11 +42188,11 @@ Copy Mode</string>
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>-1651 -13 606 469 -1920 -139 1920 1080 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>-1718 350 958 451 -1920 -180 1920 1058 </string>
+	<string>3662 327 918 512 3360 -180 1920 1058 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>3360 -180 1920 1080 3360 -180 1920 1058 </string>
+	<string>0 0 1440 900 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>-1920 392 674 486 -1920 -180 1920 1058 </string>
+	<string>0 426 650 452 0 0 1440 878 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -45614,7 +45628,7 @@ Copy Mode</string>
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2018-02-26T23:46:22Z</date>
+	<date>2018-03-21T14:50:09Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>ShowPaneTitles</key>
