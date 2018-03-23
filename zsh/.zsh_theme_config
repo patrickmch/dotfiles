@@ -204,10 +204,6 @@ po() { popd > /dev/null 2>&1; dirs -v }
 # bindkey -M vivis 'w'  vi-visual-forward-word
 # bindkey -M vivis 'y'  vi-visual-yank
 
-# Vim Command Mode bindings:
-bindkey '<' beginning-of-line
-bindkey '>' end-of-line
-
 # History
 if zplug check "zsh-users/zsh-history-substring-search"; then
 zmodload zsh/terminfo
