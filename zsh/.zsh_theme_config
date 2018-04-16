@@ -205,7 +205,6 @@ po() { popd > /dev/null 2>&1; dirs -v }
 # bindkey -M vivis 'y'  vi-visual-yank
 
 # History
-if zplug check "zsh-users/zsh-history-substring-search"; then
 zmodload zsh/terminfo
 bindkey "$terminfo[kcuu1]" history-substring-search-up
 bindkey "$terminfo[kcud1]" history-substring-search-down
@@ -215,7 +214,6 @@ bindkey -M vicmd "k" history-substring-search-up
 bindkey -M vicmd "j" history-substring-search-down
 bindkey "^[[1;5A" history-substring-search-up
 bindkey "^[[1;5B" history-substring-search-down
-fi
 
 # =============================================================================
 #                                 Completions

@@ -40,5 +40,5 @@ bind 3:shift;alt;ctrl;cmd focus 'iTerm2'
 bind 4:shift;alt;ctrl;cmd focus 'Finder'
 bind 5:shift;alt;ctrl;cmd focus 'Messages'
 
-bind .:${modal}:toggle throw right resize
-bind ,:${modal}:toggle throw left resize
+bind l:shift;alt;ctrl;cmd throw right resize
+bind h:shift;alt;ctrl;cmd throw left resize

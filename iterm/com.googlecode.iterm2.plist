@@ -41991,10 +41991,45 @@
 			<key>Text</key>
 			<string></string>
 		</dict>
+		<key>0x48-0x1e0000</key>
+		<dict>
+			<key>Action</key>
+			<integer>18</integer>
+			<key>Text</key>
+			<string></string>
+		</dict>
+		<key>0x4a-0x1e0000</key>
+		<dict>
+			<key>Action</key>
+			<integer>21</integer>
+			<key>Text</key>
+			<string></string>
+		</dict>
+		<key>0x4b-0x1e0000</key>
+		<dict>
+			<key>Action</key>
+			<integer>20</integer>
+			<key>Text</key>
+			<string></string>
+		</dict>
+		<key>0x4c-0x1e0000</key>
+		<dict>
+			<key>Action</key>
+			<integer>19</integer>
+			<key>Text</key>
+			<string></string>
+		</dict>
 		<key>0x66-0x140000</key>
 		<dict>
 			<key>Action</key>
 			<integer>23</integer>
+			<key>Text</key>
+			<string></string>
+		</dict>
+		<key>0x68-0x140000</key>
+		<dict>
+			<key>Action</key>
+			<integer>53</integer>
 			<key>Text</key>
 			<string></string>
 		</dict>
@@ -42005,24 +42040,24 @@
 			<key>Text</key>
 			<string></string>
 		</dict>
-		<key>0x68-0x80000</key>
+		<key>0x6a-0x140000</key>
 		<dict>
 			<key>Action</key>
-			<integer>18</integer>
+			<integer>56</integer>
 			<key>Text</key>
 			<string></string>
 		</dict>
-		<key>0x6a-0x80000</key>
+		<key>0x6b-0x140000</key>
 		<dict>
 			<key>Action</key>
-			<integer>21</integer>
+			<integer>55</integer>
 			<key>Text</key>
 			<string></string>
 		</dict>
-		<key>0x6b-0x80000</key>
+		<key>0x6c-0x140000</key>
 		<dict>
 			<key>Action</key>
-			<integer>20</integer>
+			<integer>54</integer>
 			<key>Text</key>
 			<string></string>
 		</dict>
@@ -42030,13 +42065,6 @@
 		<dict>
 			<key>Action</key>
 			<integer>0</integer>
-			<key>Text</key>
-			<string></string>
-		</dict>
-		<key>0x6c-0x80000</key>
-		<dict>
-			<key>Action</key>
-			<integer>19</integer>
 			<key>Text</key>
 			<string></string>
 		</dict>
@@ -42188,9 +42216,9 @@ Copy Mode</string>
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>-1651 -13 606 469 -1920 -139 1920 1080 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>3662 327 918 512 3360 -180 1920 1058 </string>
+	<string>173 427 958 451 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 0 1440 900 0 0 1440 878 </string>
+	<string>0 0 1440 878 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>0 426 650 452 0 0 1440 878 </string>
 	<key>New Bookmarks</key>
@@ -45628,7 +45656,7 @@ Copy Mode</string>
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2018-03-21T14:50:09Z</date>
+	<date>2018-04-04T22:20:45Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>ShowPaneTitles</key>
