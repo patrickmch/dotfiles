@@ -114,9 +114,10 @@ alias thinkstats="cd ~/Documents/ThinkStats2/code; open -a atom ~/Documents/Thin
 alias ipy="python -c 'import IPython; IPython.terminal.ipapp.launch_new_instance()'"
 alias ipythonconfig="atom /Users/mchey/.ipython/profile_default/ipython_config.py"
 alias ogc='open -a Google\ Chrome https://localhost:8888/portal/account/'
-alias atom='open -a atom'
+# alias atom='open -a atom'
 alias wow='workon website'
 alias woc='workon cms'
+alias vim='nvim'
 alias djrsl='cd ~/code/website/nols_website; python manage.py runsslserver 0.0.0.0:8888 --nothreading --settings=mchey_local_settings'
 # restart the server after two seconds if it dies (ctrl-c ctrl-c to quit it)
 alias djrsa='cd ~/code/website/nols_website; while true; do python manage.py runsslserver 0.0.0.0:8888 --nothreading; sleep 2; done'
@@ -125,32 +126,8 @@ alias djrsal='cd ~/code/website/nols_website; while true; do python manage.py ru
 . `brew --prefix`/etc/profile.d/z.sh
 # for some reason these two plugins conflict so they are installed manually rather than with zplug
 source ~/.oh-my-zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source ~/dotfiles/zsh/zsh-vimode-visual/zsh-vimode-visual.zsh
+#source ~/dotfiles/zsh/zsh-vimode-visual/zsh-vimode-visual.zsh
 
 source ~/.bash_profile
-# Vim config
-bindkey -v
-export KEYTIMEOUT=1
-
-# change cursor shape between different vim modes
-function zle-keymap-select zle-line-init
-{
-    # change cursor shape in iTerm2
-    case $KEYMAP in
-        vicmd)      print -n -- "\E]50;CursorShape=0\C-G";;  # block cursor
-        viins|main) print -n -- "\E]50;CursorShape=1\C-G";;  # line cursor
-    esac
-
-    zle reset-prompt
-    zle -R
-}
 
 
-function zle-line-finish
-{
-    print -n -- "\E]50;CursorShape=0\C-G"  # block cursor
-}
-
-zle -N zle-line-init
-zle -N zle-line-finish
-unset zle_bracketed_paste
