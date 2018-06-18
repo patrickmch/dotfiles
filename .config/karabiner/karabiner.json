@@ -243,7 +243,7 @@
                     {
                         "manipulators": [
                             {
-                                "description": "Change right_control to command+control+option+shift.",
+                                "description": "Change semicolon to command+control+option+shift.",
                                 "from": {
                                     "key_code": "semicolon",
                                     "modifiers": {
@@ -265,6 +265,33 @@
                                 "to_if_alone": [
                                     {
                                         "key_code": "semicolon"
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "semicolon+space to escape",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "spacebar",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "left_shift",
+                                            "left_command",
+                                            "left_control",
+                                            "left_option"
+                                        ],
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "escape"
                                     }
                                 ],
                                 "type": "basic"
@@ -314,13 +341,12 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "open_bracket",
                                     "modifiers": {
                                         "mandatory": [
-                                          "left_control"
+                                            "left_control"
                                         ],
                                         "optional": [
                                             "caps_lock"
@@ -337,7 +363,6 @@
                                 ],
                                 "type": "basic"
                             },
-
                             {
                                 "conditions": [
                                     {
@@ -351,7 +376,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "escape",
@@ -362,45 +386,8 @@
                                     }
                                 },
                                 "to": [
-                                        {
-                                          "key_code": "escape"
-                                        },
-                                        {
-                                          "set_variable": {
-                                              "name": "vimium",
-                                              "value": 0
-                                          }
-                                        }
-
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
                                     {
-                                        "name": "vimium",
-                                        "type": "variable_if",
-                                        "value": 1
-                                    },
-                                    {
-                                        "bundle_identifiers": [
-                                            "^com\\.apple\\.finder$"
-                                        ],
-                                        "type": "frontmost_application_if"
-                                    }
-
-                                ],
-                                "from": {
-                                    "key_code": "i",
-                                    "modifiers": {
-                                        "optional": [
-                                            "caps_lock"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                      "key_code": "return_or_enter"
+                                        "key_code": "escape"
                                     },
                                     {
                                         "set_variable": {
@@ -424,7 +411,41 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
+                                ],
+                                "from": {
+                                    "key_code": "i",
+                                    "modifiers": {
+                                        "optional": [
+                                            "caps_lock"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "return_or_enter"
+                                    },
+                                    {
+                                        "set_variable": {
+                                            "name": "vimium",
+                                            "value": 0
+                                        }
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "name": "vimium",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    },
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.apple\\.finder$"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
                                 ],
                                 "from": {
                                     "key_code": "return_or_enter",
@@ -436,11 +457,11 @@
                                 },
                                 "to": [
                                     {
-                                      "key_code": "o",
-                                      "modifiers": [
-                                        "left_command",
-                                        "left_option"
-                                      ]
+                                        "key_code": "o",
+                                        "modifiers": [
+                                            "left_command",
+                                            "left_option"
+                                        ]
                                     },
                                     {
                                         "set_variable": {
@@ -469,7 +490,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "g",
@@ -502,7 +522,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "h",
@@ -590,7 +609,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "l",
@@ -620,7 +638,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "g",
@@ -656,7 +673,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "a",
@@ -670,8 +686,8 @@
                                     {
                                         "key_code": "a",
                                         "modifiers": [
-                                          "left_shift",
-                                          "left_command"
+                                            "left_shift",
+                                            "left_command"
                                         ]
                                     },
                                     {
@@ -696,7 +712,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "d",
@@ -710,8 +725,8 @@
                                     {
                                         "key_code": "d",
                                         "modifiers": [
-                                          "left_shift",
-                                          "left_command"
+                                            "left_shift",
+                                            "left_command"
                                         ]
                                     },
                                     {
@@ -736,7 +751,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "g",
@@ -769,7 +783,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "b",
@@ -800,7 +813,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "f",
@@ -831,7 +843,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "u",
@@ -926,7 +937,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "d",
@@ -1021,7 +1031,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "slash",
@@ -1063,7 +1072,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "n",
@@ -1101,7 +1109,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "n",
@@ -1143,7 +1150,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "j",
@@ -1185,7 +1191,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "k",
@@ -1226,7 +1231,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "t",
@@ -1274,7 +1278,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "t",
@@ -1318,7 +1321,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "0",
@@ -1362,7 +1364,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "4",
@@ -1414,7 +1415,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "x",
@@ -1452,7 +1452,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "x",
@@ -1494,7 +1493,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "t",
@@ -1532,7 +1530,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "r",
@@ -1570,7 +1567,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "u",
@@ -1608,7 +1604,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "r",
@@ -1650,7 +1645,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "left_shift"
@@ -1675,7 +1669,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "right_shift"
@@ -1700,7 +1693,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "any": "key_code",
@@ -1733,7 +1725,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "left_shift"
@@ -1758,7 +1749,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "right_shift"
@@ -1783,7 +1773,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "left_control"
@@ -1808,7 +1797,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "key_code": "right_control"
@@ -1833,7 +1821,6 @@
                                         ],
                                         "type": "frontmost_application_if"
                                     }
-
                                 ],
                                 "from": {
                                     "any": "key_code",
@@ -1976,22 +1963,6 @@
                     },
                     "to": {
                         "key_code": "left_control"
-                    }
-                },
-                {
-                    "from": {
-                        "key_code": "fn"
-                    },
-                    "to": {
-                        "key_code": "escape"
-                    }
-                },
-                {
-                    "from": {
-                        "key_code": "left_control"
-                    },
-                    "to": {
-                        "key_code": "escape"
                     }
                 }
             ],
@@ -2140,6 +2111,122 @@
                 "caps_lock_delay_milliseconds": 0,
                 "country_code": 0,
                 "keyboard_type": "ansi"
+            }
+        },
+        {
+            "complex_modifications": {
+                "parameters": {
+                    "basic.simultaneous_threshold_milliseconds": 50,
+                    "basic.to_delayed_action_delay_milliseconds": 500,
+                    "basic.to_if_alone_timeout_milliseconds": 1000,
+                    "basic.to_if_held_down_threshold_milliseconds": 500
+                },
+                "rules": []
+            },
+            "devices": [],
+            "fn_function_keys": [
+                {
+                    "from": {
+                        "key_code": "f1"
+                    },
+                    "to": {
+                        "consumer_key_code": "display_brightness_decrement"
+                    }
+                },
+                {
+                    "from": {
+                        "key_code": "f2"
+                    },
+                    "to": {
+                        "consumer_key_code": "display_brightness_increment"
+                    }
+                },
+                {
+                    "from": {
+                        "key_code": "f3"
+                    },
+                    "to": {
+                        "key_code": "mission_control"
+                    }
+                },
+                {
+                    "from": {
+                        "key_code": "f4"
+                    },
+                    "to": {
+                        "key_code": "launchpad"
+                    }
+                },
+                {
+                    "from": {
+                        "key_code": "f5"
+                    },
+                    "to": {
+                        "key_code": "illumination_decrement"
+                    }
+                },
+                {
+                    "from": {
+                        "key_code": "f6"
+                    },
+                    "to": {
+                        "key_code": "illumination_increment"
+                    }
+                },
+                {
+                    "from": {
+                        "key_code": "f7"
+                    },
+                    "to": {
+                        "consumer_key_code": "rewind"
+                    }
+                },
+                {
+                    "from": {
+                        "key_code": "f8"
+                    },
+                    "to": {
+                        "consumer_key_code": "play_or_pause"
+                    }
+                },
+                {
+                    "from": {
+                        "key_code": "f9"
+                    },
+                    "to": {
+                        "consumer_key_code": "fastforward"
+                    }
+                },
+                {
+                    "from": {
+                        "key_code": "f10"
+                    },
+                    "to": {
+                        "consumer_key_code": "mute"
+                    }
+                },
+                {
+                    "from": {
+                        "key_code": "f11"
+                    },
+                    "to": {
+                        "consumer_key_code": "volume_decrement"
+                    }
+                },
+                {
+                    "from": {
+                        "key_code": "f12"
+                    },
+                    "to": {
+                        "consumer_key_code": "volume_increment"
+                    }
+                }
+            ],
+            "name": "New profile",
+            "selected": false,
+            "simple_modifications": [],
+            "virtual_hid_keyboard": {
+                "country_code": 0
             }
         }
     ]
