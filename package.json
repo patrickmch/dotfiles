@@ -1,0 +1,21 @@
+{
+  "name": "Requirements",
+  "version": "1.0.0",
+  "description": "This repo contains my configuration files (dotfiles) for the command line and editors. My hope is to use Homely (https://github.com/phodge/homely/) to manage installation and create scripts for easily installing these.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/patrickmch/dotfiles.git"
+  },
+  "author": "Patrick McHeyser",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/patrickmch/dotfiles/issues"
+  },
+  "homepage": "https://github.com/patrickmch/dotfiles#readme",
+  "devDependencies": {
+    "babel-eslint": "^8.2.6",
+    "eslint-plugin-backbone": "^2.1.1"
+  },
+  "dependencies": {}
+}

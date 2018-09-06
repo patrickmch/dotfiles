@@ -299,7 +299,7 @@
                         ]
                     },
                     {
-                        "description": "control a to caps_lock",
+                        "description": "semicolon+a to caps_lock",
                         "manipulators": [
                             {
                                 "from": {
