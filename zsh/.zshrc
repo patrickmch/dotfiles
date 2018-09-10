@@ -125,4 +125,6 @@ alias djrsal='cd ~/code/website/nols_website; while true; do python manage.py ru
 # other configs
 . `brew --prefix`/etc/profile.d/z.sh
 
+# add direnv (https://github.com/direnv/direnv) hook
+eval "$(direnv hook zsh)"
 source ~/.bash_profile

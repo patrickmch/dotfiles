@@ -1,0 +1,12 @@
+# see https://github.com/direnv/direnv/issues/267
+layout_virtualenv() {
+  local venv_path="$1"
+  source ${venv_path}/bin/activate
+}
+
+layout_virtualenvwrapper() {
+  local venv_path="${WORKON_HOME}/$1"
+  layout_virtualenv $venv_path
+}
+# then you'll want to do `echo "layout virtualenvwrapper my_venv" > ~/code/my_project_dir/.envrc`
+# on each of the project directories you want to use this with

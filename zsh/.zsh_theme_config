@@ -9,28 +9,12 @@ if [[ ! -d ~/.zplug ]]; then
 fi
 source ~/.zplug/init.zsh
 
-#zplug "plugins/bundler", from:oh-my-zsh, if:"which bundle"
 zplug "plugins/colored-man-pages", from:oh-my-zsh
-#zplug "plugins/extract", from:oh-my-zsh
-#zplug "plugins/fancy-ctrl-z", from:oh-my-zsh
-#zplug "plugins/git", from:oh-my-zsh, if:"which git"
-#zplug "plugins/globalias", from:oh-my-zsh
-#zplug "plugins/gpg-agent", from:oh-my-zsh, if:"which gpg-agent"
-#zplug "plugins/httpie", from:oh-my-zsh, if:"which httpie"
-#zplug "plugins/nanoc", from:oh-my-zsh, if:"which nanoc"
-#zplug "plugins/nmap", from:oh-my-zsh, if:"which nmap"
-#zplug "plugins/tmux", from:oh-my-zsh, if:"which tmux"
-#zplug "plugins/vi-mode", from:oh-my-zsh
-
-#zplug "b4b4r07/enhancd", use:init.sh
-# zplug "b4b4r07/enhancd", use:enhancd.sh
-#zplug "knu/zsh-manydots-magic", use:manydots-magic, defer:2
 zplug "seebi/dircolors-solarized", ignore:"*", as:plugin
 zplug "zsh-users/zsh-autosuggestions", at:develop
 zplug "zsh-users/zsh-completions", defer:2
 zplug "zsh-users/zsh-history-substring-search"
 zplug "Tarrasch/zsh-autoenv"
-#zplug "b4b4r07/zsh-vimode-visual", defer:3
 
 
 # Supports oh-my-zsh plugins and the like
