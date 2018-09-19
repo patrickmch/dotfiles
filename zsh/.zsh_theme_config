@@ -14,7 +14,7 @@ zplug "seebi/dircolors-solarized", ignore:"*", as:plugin
 zplug "zsh-users/zsh-autosuggestions", at:develop
 zplug "zsh-users/zsh-completions", defer:2
 zplug "zsh-users/zsh-history-substring-search"
-zplug "Tarrasch/zsh-autoenv"
+# zplug "Tarrasch/zsh-autoenv"
 
 
 # Supports oh-my-zsh plugins and the like

@@ -102,7 +102,6 @@ export PYTHONSTARTUP="/Users/mchey/.pythonrc"
 # For a full list of active aliases, run `alias`.
 #
 
-
 # Aliases
 alias py="python"
 alias pyhton="python"
@@ -118,7 +117,7 @@ alias ogc='open -a Google\ Chrome https://localhost:8888/portal/account/'
 alias atom='open -a atom'
 alias wow='workon website'
 alias woc='workon cms'
-alias djrsl='cd ~/code/website/nols_website; python manage.py runsslserver 0.0.0.0:8888 --nothreading --settings=mchey_local_settings'
+alias djrsl='echo hi; cd ~/code/website/nols_website; python manage.py runsslserver 0.0.0.0:8888 --nothreading --settings=mchey_local_settings'
 # restart the server after two seconds if it dies (ctrl-c ctrl-c to quit it)
 alias djrsa='cd ~/code/website/nols_website; while true; do python manage.py runsslserver 0.0.0.0:8888 --nothreading; sleep 2; done'
 alias djrsal='cd ~/code/website/nols_website; while true; do python manage.py runsslserver 0.0.0.0:8888 --nothreading --settings=mchey_local_settings; sleep 2; done'
