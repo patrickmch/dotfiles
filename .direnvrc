@@ -35,3 +35,6 @@ source_postactivate(){
   source $postactivate_path
 }
 # then call this from your project's .envrc like so: source_postactivate <project_dir>
+
+# for some reason direnv unsets this... reset it here
+export DYLD_LIBRARY_PATH=${ORACLE_HOME}
