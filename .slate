@@ -40,7 +40,7 @@ bind 3:shift;alt;ctrl;cmd focus 'iTerm2'
 bind 4:shift;alt;ctrl;cmd focus 'Finder'
 bind 5:shift;alt;ctrl;cmd focus 'Messages'
 bind 6:shift;alt;ctrl;cmd focus 'Chat'
-bind 7:shift;alt;ctrl;cmd focus 'Kiwi for Gmail Lite'
+bind 7:shift;alt;ctrl;cmd focus 'Kiwi for Gmail'
 bind 8:shift;alt;ctrl;cmd focus 'Google Play Music Desktop Player'
 bind 9:shift;alt;ctrl;cmd focus 'BusyCal'
 
