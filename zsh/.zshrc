@@ -101,30 +101,16 @@ export PYTHONSTARTUP="/Users/mchey/.pythonrc"
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 #
-export PATH="/usr/local/opt/node@8/bin:$PATH"
-
 # Aliases
-alias py="python"
 alias pyhton="python"
 alias li="ls -lah"
-alias zshconfig="open -a atom ~/.zshrc"
-alias ohmyzsh="open -a atom ~/.oh-my-zsh"
-alias quickref="open -a TextEdit ~/Documents/shell_quickref.rtf"
-alias thinkstats="cd ~/Documents/ThinkStats2/code; open -a atom ~/Documents/ThinkStats2/code; workon thinkstats"
-# see https://stackoverflow.com/questions/20327621/calling-ipython-from-a-virtualenv:
-alias ipy="python -c 'import IPython; IPython.terminal.ipapp.launch_new_instance()'"
-alias ipythonconfig="atom /Users/mchey/.ipython/profile_default/ipython_config.py"
-alias ogc='open -a Google\ Chrome https://localhost:8888/portal/account/'
 alias atom='open -a atom'
-alias wow='workon website'
-alias woc='workon cms'
-alias djrsl='echo hi; cd ~/code/website/nols_website; python manage.py runsslserver 0.0.0.0:8888 --nothreading --settings=mchey_local_settings'
-# restart the server after two seconds if it dies (ctrl-c ctrl-c to quit it)
-alias djrsa='cd ~/code/website/nols_website; while true; do python manage.py runsslserver 0.0.0.0:8888 --nothreading; sleep 2; done'
-alias djrsal='cd ~/code/website/nols_website; while true; do python manage.py runsslserver 0.0.0.0:8888 --nothreading --settings=mchey_local_settings; sleep 2; done'
+# alias djrsl='echo hi; cd ~/code/website/nols_website; python manage.py runsslserver 0.0.0.0:8888 --nothreading --settings=mchey_local_settings'
+alias reset_website='$NOLSCODE/scripts/restart_website.sh'
 # other configs
 . `brew --prefix`/etc/profile.d/z.sh
 
 # add direnv (https://github.com/direnv/direnv) hook
 eval "$(direnv hook zsh)"
 source ~/.bash_profile
+source ${NOLSTOOLS}/nols_env

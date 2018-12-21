@@ -8,7 +8,7 @@ layout_virtualenvwrapper() {
   local venv_path="${WORKON_HOME}/$1"
   layout_virtualenv $venv_path
 }
-# then you'll want to do `echo "layout virtualenvwrapper my_venv" > ~/code/my_project_dir/.envrc`
+# then you'll want to do `echo "layout virtualenvwrapper website" > ~/code/website/.envrc`
 # on each of the project directories you want to use this with
 
 # adapted from https://github.com/direnv/direnv/issues/73#issuecomment-174295790
