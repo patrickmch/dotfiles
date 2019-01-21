@@ -42212,15 +42212,15 @@ Copy Mode</string>
 	<key>NSWindow Frame Preferences</key>
 	<string>488 407 606 456 0 0 1440 877 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
-	<string>4010 319 620 392 3360 -180 1920 1058 </string>
+	<string>410 382 620 392 0 0 1440 900 </string>
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>-1651 -13 606 469 -1920 -139 1920 1080 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>173 414 937 464 0 0 1440 878 </string>
+	<string>173 402 958 470 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 -2 1418 866 0 0 1440 878 </string>
+	<string>0 0 1440 900 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>0 426 650 452 0 0 1440 878 </string>
+	<string>0 425 650 452 0 0 1440 877 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -42984,7 +42984,7 @@ Copy Mode</string>
 			<key>Screen</key>
 			<integer>-1</integer>
 			<key>Scrollback Lines</key>
-			<integer>100000</integer>
+			<integer>0</integer>
 			<key>Selected Text Color</key>
 			<dict>
 				<key>Blue Component</key>
@@ -45520,6 +45520,8 @@ Copy Mode</string>
 	<true/>
 	<key>NoSyncDoNotWarnBeforeMultilinePaste_selection</key>
 	<integer>0</integer>
+	<key>NoSyncHaveRequestedFullDiskAccess</key>
+	<true/>
 	<key>NoSyncHaveUsedCopyMode</key>
 	<true/>
 	<key>NoSyncInstallationId</key>
@@ -45656,7 +45658,7 @@ Copy Mode</string>
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2018-11-17T23:07:24Z</date>
+	<date>2019-01-17T21:14:01Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
@@ -45689,7 +45691,7 @@ Copy Mode</string>
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>3.2.5</string>
+	<string>3.2.6</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>0</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>

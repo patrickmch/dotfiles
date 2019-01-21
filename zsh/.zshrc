@@ -106,7 +106,8 @@ alias pyhton="python"
 alias li="ls -lah"
 alias atom='open -a atom'
 # alias djrsl='echo hi; cd ~/code/website/nols_website; python manage.py runsslserver 0.0.0.0:8888 --nothreading --settings=mchey_local_settings'
-alias reset_website='$NOLSCODE/scripts/restart_website.sh'
+alias startweb='source $NOLSCODE/scripts/start_website.sh'
+alias resetdb='source $NOLSCODE/scripts/restart_vm.sh'
 # other configs
 . `brew --prefix`/etc/profile.d/z.sh
 
