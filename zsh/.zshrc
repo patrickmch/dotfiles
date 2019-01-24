@@ -10,8 +10,7 @@ export ZSH=~/.oh-my-zsh
 # ZSH_THEME="agnoster"
 # ZSH_THEME="af-magic"
 
-# uncomment this if atom's shell is looking bad
- if [ $TERM_PROGRAM = platformio-ide-terminal ]; then
+ if [ "${TERM_PROGRAM}" != "iTerm.app" ]; then
      ZSH_THEME="af-magic"
  else
      ZSH_THEME="powerlevel9k/powerlevel9k"
@@ -104,10 +103,10 @@ export PYTHONSTARTUP="/Users/mchey/.pythonrc"
 # Aliases
 alias pyhton="python"
 alias li="ls -lah"
-alias atom='open -a atom'
 # alias djrsl='echo hi; cd ~/code/website/nols_website; python manage.py runsslserver 0.0.0.0:8888 --nothreading --settings=mchey_local_settings'
 alias startweb='source $NOLSCODE/scripts/start_website.sh'
 alias resetdb='source $NOLSCODE/scripts/restart_vm.sh'
+alias vim='nvim'
 # other configs
 . `brew --prefix`/etc/profile.d/z.sh
 
@@ -115,3 +114,5 @@ alias resetdb='source $NOLSCODE/scripts/restart_vm.sh'
 eval "$(direnv hook zsh)"
 source ~/.bash_profile
 source ${NOLSTOOLS}/nols_env
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

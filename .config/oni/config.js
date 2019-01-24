@@ -13,4 +13,7 @@ exports.configuration = {
 		"ui.fontSmoothing": "auto",
 		// https://github.com/onivim/oni/issues/2396#issuecomment-426767185
 		// "debug.neovimPath": "/usr/local/bin/nvim",
+        "experimental.vcs.sidebar": true,
+        "experimental.vcs.blame.enabled": false,
 };
+
