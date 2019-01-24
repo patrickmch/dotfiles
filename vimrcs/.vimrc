@@ -118,6 +118,11 @@ set clipboard=unnamedplus
 map <C-n> :NERDTreeToggle<CR>
 map <C-t> :set nosplitright<CR>:TagbarToggle<CR>:set splitright<CR>
 
+" vim fugitive
+map <leader>gg :G<CR>
+map <leader>gc :Gcommit<CR>
+map <leader>gda :Gdiff<CR>
+
 " themeing
 let g:palenight_terminal_italics=1
 set background=dark
@@ -125,7 +130,7 @@ colorscheme palenight
 
 " true colors- makes colors nicer
 if (has("nvim"))
-  "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
+  "For Neovim 0.1.3 and 0.1.4 < https://g
   let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 endif
 
