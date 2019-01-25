@@ -1,11 +1,3 @@
-" turn off folding by default
-au BufRead * normal zR
-" Enable the list of buffers
-let g:airline#extensions#tabline#enabled = 1
-
-" Show just the filename
-let g:airline#extensions#tabline#fnamemod = ':t'
-
 " lots taken from
 " https://medium.com/@hanspinckaers/setting-up-vim-as-an-ide-for-python-773722142d1d
 call plug#begin('~/dotfiles/vimrcs/plugged')
@@ -15,8 +7,11 @@ Plug 'drewtempelmeyer/palenight.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'majutsushi/tagbar'  " show tags in a bar (functions etc) for easy browsing
 Plug 'vim-airline/vim-airline'  " make statusline awesome
-Plug 'vim-airline/vim-airline-themes'  " themes for statusline 
-Plug 'yuttie/comfortable-motion.vim'
+Plug 'vim-airline/vim-airline-themes'  " themes for statusline
+" Plug 'yuttie/comfortable-motion.vim'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'machakann/vim-highlightedyank'
+Plug 'jiangmiao/auto-pairs'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'  "to highlight files in nerdtree
 Plug 'unblevable/quick-scope'
 Plug 'tpope/vim-surround'
@@ -34,7 +29,7 @@ Plug 'ncm2/ncm2-bufword'  " buffer keyword completion
 Plug 'ncm2/ncm2-path'  " filepath completion
 call plug#end()
 
-" path to your python 
+" path to your python
 let g:python3_host_prog = '/usr/local/bin/python3'
 let g:python_host_prog = '/usr/local/opt/python@2/bin/python2'
 
@@ -82,6 +77,8 @@ set splitbelow
 set hlsearch  " highlight search and search while typing
 set incsearch
 set cpoptions+=x  " stay at seach item when <esc>
+" remove highlight after esc
+nnoremap <esc> :noh<CR><esc>
 
 set noerrorbells  " remove bells (i think this is default in neovim)
 set visualbell
@@ -107,15 +104,34 @@ nnoremap cc "_cc
 nnoremap q: :q<CR>
 nnoremap w: :w<CR>
 
+inoremap <c-d> <Del>
+nnoremap J 5j
+nnoremap K 5k
+vnoremap J 5j
+vnoremap K 5k
+nnoremap C cc
+nnoremap cc ciw
+nnoremap dd D
+nnoremap D dd
+nnoremap dj :d2<cr>
+nnoremap dk :-d2<cr>
+nnoremap cj 2cc
+nnoremap ck -2cc
+vnoremap <s-h> ^
+nnoremap <s-h> ^
+vnoremap <s-l> $
+nnoremap <s-l> $
+
 " map paste, yank and delete to named register so the content
 " will not be overwritten (I know I should just remember...)
 nnoremap x "_x
 vnoremap x "_x
 
 set clipboard=unnamedplus
+set autoindent
 
 " toggle nerdtree on ctrl+n
-map <C-n> :NERDTreeToggle<CR>
+map <C-\> :NERDTreeToggle<CR>
 map <C-t> :set nosplitright<CR>:TagbarToggle<CR>:set splitright<CR>
 
 " vim fugitive
@@ -127,6 +143,8 @@ map <leader>gda :Gdiff<CR>
 let g:palenight_terminal_italics=1
 set background=dark
 colorscheme palenight
+
+let g:highlightedyank_highlight_duration = 150
 
 " true colors- makes colors nicer
 if (has("nvim"))
@@ -151,7 +169,7 @@ inoremap <silent> <expr> <CR> (pumvisible() && empty(v:completed_item)) ?  "\<c-
 let g:airline_powerline_fonts = 1
 let g:airline_section_y = ""
 let g:airline#extensions#tabline#enabled = 1
- 
+
 " Airline settings
 " do not show error/warning section
 let g:airline_section_error = ""
@@ -278,12 +296,15 @@ nnoremap <C-x> <Esc>
 " vimgutter options
 let g:gitgutter_override_sign_column_highlight = 0
 let g:gitgutter_map_keys = 0
- 
+
 " ctrl p options
 let g:ctrlp_custom_ignore = '\v\.(npy|jpg|pyc|so|dll)$'
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlPMRU'
+nnoremap <leader>p :CtrlPBuffer<cr>
+" not working
+""let g:ctrlp_prompt_mappings = {'ToggleType(1)': ['<c-f>','<left>'], 'ToggleType(-1)':  ['<c-b>', '<right>'], }
 
 " auto load configs
 augroup myvimrchooks
@@ -291,9 +312,25 @@ augroup myvimrchooks
     autocmd bufwritepost .vimrc source ~/.vimrc
 augroup END
 
+" reload when file has changed on disk
+set autoread
+au CursorHold * checktime
 
 " Return to last edit position when opening files
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 " toggle spell check
 map <leader>ss :setlocal spell!<cr>
+"auto close {
+function! s:CloseBracket()
+    let line = getline('.')
+    if line =~# '^\s*\(struct\|class\|enum\) '
+        return "{\<Enter>};\<Esc>O"
+    elseif searchpair('(', '', ')', 'bmn', '', line('.'))
+        " Probably inside a function call. Close it off.
+        return "{\<Enter>});\<Esc>O"
+    else
+        return "{\<Enter>}\<Esc>O"
+    endif
+endfunction
+inoremap <expr> {<Enter> <SID>CloseBracket()
