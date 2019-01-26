@@ -3,12 +3,15 @@
 call plug#begin('~/dotfiles/vimrcs/plugged')
 Plug 'scrooloose/nerdtree'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'drewtempelmeyer/palenight.vim'
+" Plug 'drewtempelmeyer/palenight.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'majutsushi/tagbar'  " show tags in a bar (functions etc) for easy browsing
-Plug 'vim-airline/vim-airline'  " make statusline awesome
-Plug 'vim-airline/vim-airline-themes'  " themes for statusline
+" Plug 'vim-airline/vim-airline'  " make statusline awesome
+" Plug 'vim-airline/vim-airline-themes'  " themes for statusline
 " Plug 'yuttie/comfortable-motion.vim'
+Plug 'NLKNguyen/papercolor-theme'
+Plug 'itchyny/lightline.vim'
+Plug 'junegunn/seoul256.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'machakann/vim-highlightedyank'
 Plug 'jiangmiao/auto-pairs'
@@ -101,8 +104,6 @@ nnoremap tl :tablast<CR>
 " map S to replace current word with pasteboard
 nnoremap S diw"0P
 nnoremap cc "_cc
-nnoremap q: :q<CR>
-nnoremap w: :w<CR>
 
 inoremap <c-d> <Del>
 nnoremap J 5j
@@ -121,7 +122,11 @@ vnoremap <s-h> ^
 nnoremap <s-h> ^
 vnoremap <s-l> $
 nnoremap <s-l> $
-
+nnoremap yj :execute "normal! Vjy"<cr>
+nnoremap yk :execute "normal! Vkyj"<cr>
+" insert semicolon at end of line:
+" https://vi.stackexchange.com/questions/3721/why-do-i-get-a-missing-quote-error-when-using-the-following-in-a-mapping-using-e
+nnoremap <expr> <leader>; getline('.') =~ ';$' ? '' : "mqA;\<esc>`q"
 " map paste, yank and delete to named register so the content
 " will not be overwritten (I know I should just remember...)
 nnoremap x "_x
@@ -140,9 +145,13 @@ map <leader>gc :Gcommit<CR>
 map <leader>gda :Gdiff<CR>
 
 " themeing
-let g:palenight_terminal_italics=1
+" let g:palenight_terminal_italics=1
+" set background=dark
+" colorscheme palenight
+" colo seoul256
 set background=dark
-colorscheme palenight
+colorscheme PaperColor
+
 
 let g:highlightedyank_highlight_duration = 150
 
@@ -166,18 +175,20 @@ inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <silent> <expr> <CR> (pumvisible() && empty(v:completed_item)) ?  "\<c-y>\<cr>" : "\<CR>"
 
-let g:airline_powerline_fonts = 1
-let g:airline_section_y = ""
-let g:airline#extensions#tabline#enabled = 1
+" let g:airline_powerline_fonts = 1
+" let g:airline_section_y = ""
+" let g:airline#extensions#tabline#enabled = 1
 
 " Airline settings
 " do not show error/warning section
-let g:airline_section_error = ""
-let g:airline_section_warning = ""
-
-if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-endif
+" let g:airline_section_error = ""
+" let g:airline_section_warning = ""
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ }
+" if !exists('g:airline_symbols')
+"     let g:airline_symbols = {}
+" endif
 
 " theicfire .vimrc tips
 " With a map leader it's possible to do extra key combinations
