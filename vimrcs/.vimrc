@@ -1,14 +1,15 @@
 " lots taken from
 " https://medium.com/@hanspinckaers/setting-up-vim-as-an-ide-for-python-773722142d1d
+source ~/dotfiles/vimrcs/keymaps.vim
 call plug#begin('~/dotfiles/vimrcs/plugged')
 Plug 'scrooloose/nerdtree'
 Plug 'ctrlpvim/ctrlp.vim'
 " Plug 'drewtempelmeyer/palenight.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'majutsushi/tagbar'  " show tags in a bar (functions etc) for easy browsing
-" Plug 'vim-airline/vim-airline'  " make statusline awesome
-" Plug 'vim-airline/vim-airline-themes'  " themes for statusline
-" Plug 'yuttie/comfortable-motion.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'yegappan/mru'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'itchyny/lightline.vim'
 Plug 'junegunn/seoul256.vim'
@@ -32,117 +33,23 @@ Plug 'ncm2/ncm2-bufword'  " buffer keyword completion
 Plug 'ncm2/ncm2-path'  " filepath completion
 call plug#end()
 
+set rtp+=~/.fzf
+map <A-k> :Ag<cr>
+map <A-j> :FZF<cr>
+map <A-h> :MRU<cr>
+
 " path to your python
 let g:python3_host_prog = '/usr/local/bin/python3'
 let g:python_host_prog = '/usr/local/opt/python@2/bin/python2'
-
-filetype indent on
-
-set fileformat=unix
-set shortmess+=c
-
-set mouse=a  " change cursor per mode
-set number  " always show current line number
-set nu " absolute line number
-set smartcase  " better case-sensitivity when searching
-set wrapscan  " begin search from top of file when nothing is found anymore
-
-set expandtab
-set tabstop=4
-set shiftwidth=4
-set fillchars+=vert:\  " remove chars from seperators
-set softtabstop=4
-
-set history=1000  " remember more commands and search history
-
-set noswapfile  " swap files give annoying warning
-
-set breakindent  " preserve horizontal whitespace when wrapping
-set showbreak=..
-set lbr  " wrap words
-" set nowrap  " i turn on wrap manually when needed
-
-set scrolloff=3 " keep three lines between the cursor and the edge of the screen
-
-set undodir=~/dotfiles/vimrcs/undodir
-set undofile  " save undos
-set undolevels=10000  " maximum number of changes that can be undone
-set undoreload=100000  " maximum number lines to save for undo on a buffer reload
-
-" set noshowmode  " keep command line clean
-" set noshowcmd
-
-set laststatus=2  " always slow statusline
-
-set splitright  " i prefer splitting right and below
-set splitbelow
-
-set hlsearch  " highlight search and search while typing
-set incsearch
-set cpoptions+=x  " stay at seach item when <esc>
-" remove highlight after esc
-nnoremap <esc> :noh<CR><esc>
-
-set noerrorbells  " remove bells (i think this is default in neovim)
-set visualbell
-set t_vb=
-set viminfo='20,<1000  " allow copying of more than 50 lines to other applications
-
-" easy split movement
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
-
-" tabs:
-nnoremap tn :tabnew<Space>
-nnoremap tk :tabnext<CR>
-nnoremap tj :tabprev<CR>
-nnoremap th :tabfirst<CR>
-nnoremap tl :tablast<CR>
-
-" map S to replace current word with pasteboard
-nnoremap S diw"0P
-nnoremap cc "_cc
-
-inoremap <c-d> <Del>
-nnoremap J 5j
-nnoremap K 5k
-vnoremap J 5j
-vnoremap K 5k
-nnoremap C cc
-nnoremap cc ciw
-nnoremap dd D
-nnoremap D dd
-nnoremap dj :d2<cr>
-nnoremap dk :-d2<cr>
-nnoremap cj 2cc
-nnoremap ck -2cc
-vnoremap <s-h> ^
-nnoremap <s-h> ^
-vnoremap <s-l> $
-nnoremap <s-l> $
-nnoremap yj :execute "normal! Vjy"<cr>
-nnoremap yk :execute "normal! Vkyj"<cr>
-" insert semicolon at end of line:
-" https://vi.stackexchange.com/questions/3721/why-do-i-get-a-missing-quote-error-when-using-the-following-in-a-mapping-using-e
-nnoremap <expr> <leader>; getline('.') =~ ';$' ? '' : "mqA;\<esc>`q"
-" map paste, yank and delete to named register so the content
-" will not be overwritten (I know I should just remember...)
-nnoremap x "_x
-vnoremap x "_x
-
-set clipboard=unnamedplus
-set autoindent
 
 " toggle nerdtree on ctrl+n
 map <C-\> :NERDTreeToggle<CR>
 map <C-t> :set nosplitright<CR>:TagbarToggle<CR>:set splitright<CR>
 
 " vim fugitive
-map <leader>gg :G<CR>
-map <leader>gc :Gcommit<CR>
-map <leader>gda :Gdiff<CR>
+nnoremap <leader>gg :G<cr>
+nnoremap <leader>gc :Gcommit<cr>
+nnoremap <leader>gda :Gdiff<cr>
 
 " themeing
 " let g:palenight_terminal_italics=1
@@ -151,7 +58,6 @@ map <leader>gda :Gdiff<CR>
 " colo seoul256
 set background=dark
 colorscheme PaperColor
-
 
 let g:highlightedyank_highlight_duration = 150
 
@@ -175,20 +81,9 @@ inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <silent> <expr> <CR> (pumvisible() && empty(v:completed_item)) ?  "\<c-y>\<cr>" : "\<CR>"
 
-" let g:airline_powerline_fonts = 1
-" let g:airline_section_y = ""
-" let g:airline#extensions#tabline#enabled = 1
-
-" Airline settings
-" do not show error/warning section
-" let g:airline_section_error = ""
-" let g:airline_section_warning = ""
 let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ }
-" if !exists('g:airline_symbols')
-"     let g:airline_symbols = {}
-" endif
 
 " theicfire .vimrc tips
 " With a map leader it's possible to do extra key combinations
@@ -308,22 +203,6 @@ nnoremap <C-x> <Esc>
 let g:gitgutter_override_sign_column_highlight = 0
 let g:gitgutter_map_keys = 0
 
-" ctrl p options
-let g:ctrlp_custom_ignore = '\v\.(npy|jpg|pyc|so|dll)$'
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlPMRU'
-nnoremap <leader>p :CtrlPBuffer<cr>
-" not working
-""let g:ctrlp_prompt_mappings = {'ToggleType(1)': ['<c-f>','<left>'], 'ToggleType(-1)':  ['<c-b>', '<right>'], }
-
-" auto load configs
-augroup myvimrchooks
-    au!
-    autocmd bufwritepost .vimrc source ~/.vimrc
-augroup END
-
-" reload when file has changed on disk
 set autoread
 au CursorHold * checktime
 

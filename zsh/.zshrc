@@ -115,4 +115,5 @@ eval "$(direnv hook zsh)"
 source ~/.bash_profile
 source ${NOLSTOOLS}/nols_env
 
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
