@@ -89,6 +89,9 @@ source ~/.oh-my-zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
+# vim stuff
+export VIMCONFIG="~/dotfiles/vimrcs"
+export "VIMRC=${VIMCONFIG}/.vimrc"
 
 # ssh
 export SSH_KEY_PATH="~/.ssh/rsa_id"
