@@ -48,14 +48,13 @@ nnoremap <esc> :noh<CR><esc>
 
 set noerrorbells  " remove bells (i think this is default in neovim)
 set visualbell
-set t_vb=
 set viminfo='20,<1000  " allow copying of more than 50 lines to other applications
 
 " easy split movement
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
+nnoremap <Left> <C-w>h
+nnoremap <Down> <C-w>j
+nnoremap <Up> <C-w>k
+nnoremap <Right> <C-w>l
 
 " tabs:
 nnoremap tn :tabnew<Space>

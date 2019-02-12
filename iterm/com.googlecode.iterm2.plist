@@ -42216,9 +42216,9 @@ Copy Mode</string>
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>-1651 -13 606 469 -1920 -139 1920 1080 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>173 420 918 452 0 0 1440 877 </string>
+	<string>173 334 1016 512 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 0 1440 900 0 0 1440 877 </string>
+	<string>1440 -180 1920 1080 1440 -180 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>0 425 650 452 0 0 1440 877 </string>
 	<key>New Bookmarks</key>
@@ -43798,7 +43798,7 @@ Copy Mode</string>
 			<key>Only The Default BG Color Uses Transparency</key>
 			<false/>
 			<key>Option Key Sends</key>
-			<integer>0</integer>
+			<integer>2</integer>
 			<key>Prompt Before Closing 2</key>
 			<false/>
 			<key>Right Option Key Sends</key>
@@ -43808,7 +43808,7 @@ Copy Mode</string>
 			<key>Screen</key>
 			<integer>-1</integer>
 			<key>Scrollback Lines</key>
-			<integer>100000</integer>
+			<integer>0</integer>
 			<key>Selected Text Color</key>
 			<dict>
 				<key>Blue Component</key>
@@ -45658,7 +45658,7 @@ Copy Mode</string>
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2019-01-24T18:07:14Z</date>
+	<date>2019-01-27T16:35:01Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
