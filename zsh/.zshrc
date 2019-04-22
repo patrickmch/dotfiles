@@ -110,6 +110,7 @@ alias li="ls -lah"
 alias startweb='source $NOLSCODE/scripts/start_website.sh'
 alias resetdb='source $NOLSCODE/scripts/restart_vm.sh'
 alias vim='nvim'
+alias shell='django-admin shell -i bpython'
 # other configs
 . `brew --prefix`/etc/profile.d/z.sh
 
@@ -120,3 +121,26 @@ source ${NOLSTOOLS}/nols_env
 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+#   - CTRL-O to open with `open` command,
+#   - CTRL-E or Enter key to open with the $EDITOR
+fo() {
+  local out file key
+  IFS=$'\n' out=($(fzf-tmux --query="$1" --exit-0 --expect=ctrl-o,ctrl-e))
+  key=$(head -1 <<< "$out")
+  file=$(head -2 <<< "$out" | tail -1)
+  if [ -n "$file" ]; then
+    [ "$key" = ctrl-o ] && open "$file" || ${EDITOR:-nvim} "$file"
+  fi
+}
+# fuzzy grep open via ag with line number
+vg() {
+  local file
+  local line
+
+  read -r file line <<<"$(ag --nobreak --noheading $@ | fzf -0 -1 | awk -F: '{print $1, $2}')"
+
+  if [[ -n $file ]]
+  then
+     vim $file +$line
+  fi
+}

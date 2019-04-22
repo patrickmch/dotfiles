@@ -10,7 +10,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'drewtempelmeyer/palenight.vim'
 Plug 'lvht/mru'
-Plug 'plytophogy/vim-virtualenv' " python virtualenv support
+" Plug 'plytophogy/vim-virtualenv' " python virtualenv support
 Plug 'tpope/vim-commentary'  "comment-out by gc
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'mhinz/vim-startify'

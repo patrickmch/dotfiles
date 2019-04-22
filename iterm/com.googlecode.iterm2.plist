@@ -42218,9 +42218,9 @@ Copy Mode</string>
 	<key>NSWindow Frame SharedPreferences</key>
 	<string>173 334 1016 512 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>1440 -180 1920 1080 1440 -180 1920 1057 </string>
+	<string>-1920 -139 1920 1080 -1920 -139 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>0 425 650 452 0 0 1440 877 </string>
+	<string>3360 425 665 452 3360 -180 1920 1057 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -45658,7 +45658,7 @@ Copy Mode</string>
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2019-01-27T16:35:01Z</date>
+	<date>2019-04-01T22:05:06Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
@@ -45693,7 +45693,7 @@ Copy Mode</string>
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>3.2.7</string>
+	<string>3.2.8</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>0</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
