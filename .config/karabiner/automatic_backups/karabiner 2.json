@@ -28,10 +28,10 @@
                             {
                                 "description": "Change semicolon to command+control+option+shift.",
                                 "from": {
-                                    "key_code": "semicolon",
+                                    "key_code": "s",
                                     "modifiers": {
-                                        "optional": [
-                                            "any"
+                                        "mandatory": [
+                                            "left_control"
                                         ]
                                     }
                                 },
