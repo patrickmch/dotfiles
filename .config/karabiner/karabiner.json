@@ -41,7 +41,7 @@
                         ]
                     },
                     {
-                      "description": "Change right_command to command+control+option+shift.",
+                      "description": "Change semicolon to command+control+option+shift.",
                       "manipulators": [
                           {
                               "from": {
@@ -72,7 +72,100 @@
                       ]
                     },
                     {
-                      "description": "command+l to semicolon for faster posting",
+                      "description": "Change right_command+h/j/k/l to post as command+control+option+shift+h/j/k/l.",
+                      "manipulators": [
+                          {
+                              "from": {
+                                  "key_code": "h",
+                                  "modifiers": {
+                                      "mandatory": [
+                                          "right_command"
+                                      ]
+                                  }
+                              },
+                              "to": [
+                                  {
+                                      "key_code": "h",
+                                      "modifiers": [
+                                          "right_shift",
+                                          "right_command",
+                                          "right_control",
+                                          "right_option"
+                                      ]
+                                  }
+                              ],
+                              "type": "basic"
+                          },
+                          {
+                              "from": {
+                                  "key_code": "j",
+                                  "modifiers": {
+                                      "mandatory": [
+                                          "right_command"
+                                      ]
+                                  }
+                              },
+                              "to": [
+                                  {
+                                      "key_code": "j",
+                                      "modifiers": [
+                                          "right_shift",
+                                          "right_command",
+                                          "right_control",
+                                          "right_option"
+                                      ]
+                                  }
+                              ],
+                              "type": "basic"
+                          },
+                          {
+                              "from": {
+                                  "key_code": "k",
+                                  "modifiers": {
+                                      "mandatory": [
+                                          "right_command"
+                                      ]
+                                  }
+                              },
+                              "to": [
+                                  {
+                                      "key_code": "k",
+                                      "modifiers": [
+                                          "right_shift",
+                                          "right_command",
+                                          "right_control",
+                                          "right_option"
+                                      ]
+                                  }
+                              ],
+                              "type": "basic"
+                          },
+                          {
+                              "from": {
+                                  "key_code": "l",
+                                  "modifiers": {
+                                      "mandatory": [
+                                          "right_command"
+                                      ]
+                                  }
+                              },
+                              "to": [
+                                  {
+                                      "key_code": "l",
+                                      "modifiers": [
+                                          "right_shift",
+                                          "right_command",
+                                          "right_control",
+                                          "right_option"
+                                      ]
+                                  }
+                              ],
+                              "type": "basic"
+                          }
+                      ]
+                    },
+                    {
+                      "description": "command+l to colon for faster posting (basically solves problem with slow ex mode in vim)",
                       "manipulators": [
                           {
                               "from": {
