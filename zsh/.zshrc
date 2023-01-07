@@ -4,6 +4,13 @@
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
 
+# For brew, at least
+export PATH=/usr/local/bin:$PATH
+
+# NVM Stuff
+export NVM_DIR="$HOME/.nvm"
+. "$(brew --prefix nvm)/nvm.sh"
+
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
@@ -97,7 +104,7 @@ export "VIMRC=${VIMCONFIG}/.vimrc"
 export SSH_KEY_PATH="~/.ssh/rsa_id"
 
 # bpython configuration to work with django:
-export PYTHONSTARTUP="/Users/mchey/.pythonrc"
+# export PYTHONSTARTUP="/Users/mchey/.pythonrc"
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
@@ -107,12 +114,12 @@ export PYTHONSTARTUP="/Users/mchey/.pythonrc"
 alias pyhton="python"
 alias li="ls -lah"
 # alias djrsl='echo hi; cd ~/code/website/nols_website; python manage.py runsslserver 0.0.0.0:8888 --nothreading --settings=mchey_local_settings'
-alias startweb='source $NOLSCODE/scripts/start_website.sh'
-alias resetdb='source $NOLSCODE/scripts/restart_vm.sh'
+# alias startweb='source $NOLSCODE/scripts/start_website.sh'
+# alias resetdb='source $NOLSCODE/scripts/restart_vm.sh'
 alias vim='nvim'
-alias shell='django-admin shell -i bpython'
+# alias shell='django-admin shell -i bpython'
 # other configs
-. `brew --prefix`/etc/profile.d/z.sh
+# . `brew --prefix`/etc/profile.d/z.sh
 
 # add direnv (https://github.com/direnv/direnv) hook
 eval "$(direnv hook zsh)"
@@ -144,3 +151,17 @@ vg() {
      vim $file +$line
   fi
 }
+
+
+# React Native Vars
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/tools/bin
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+
+# Pyenv stuff
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
+eval "$(pyenv virtualenv-init -)"
