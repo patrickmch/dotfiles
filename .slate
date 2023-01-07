@@ -1,16 +1,15 @@
 # setup: echo "source ~/dotfiles/.slate" > ~/.slate
 # I currently have shift-alt-ctrl-cmd bound to the semicolon key via karabiner
 bind f:shift;alt;ctrl;cmd focus 'Finder'
-bind 1:shift;alt;ctrl;cmd focus 'Google Chrome'
-bind 2:shift;alt;ctrl;cmd focus 'Atom'
-bind 3:shift;alt;ctrl;cmd focus 'iTerm2'
-bind 4:shift;alt;ctrl;cmd focus 'VirtualBox'
-bind 5:shift;alt;ctrl;cmd focus 'Messages'
-bind 6:shift;alt;ctrl;cmd focus 'Oracle SQL Developer'
-bind 7:shift;alt;ctrl;cmd focus 'Firefox'
-# bind 8:shift;alt;ctrl;cmd focus 'Google Play Music Desktop Player'
-bind 8:shift;alt;ctrl;cmd focus 'Spotify'
-bind 9:shift;alt;ctrl;cmd focus 'TextEdit'
+bind q:shift;alt;ctrl;cmd focus 'Google Chrome'
+bind w:shift;alt;ctrl;cmd focus 'Atom'
+bind e:shift;alt;ctrl;cmd focus 'iTerm2'
+bind r:shift;alt;ctrl;cmd focus 'qemu-system-x86_64'
+bind t:shift;alt;ctrl;cmd focus 'Messages'
+bind v:shift;alt;ctrl;cmd focus 'VirtualBox'
+bind z:shift;alt;ctrl;cmd focus 'Oracle SQL Developer'
+bind c:shift;alt;ctrl;cmd focus 'Google Play Music Desktop Player'
+bind x:shift;alt;ctrl;cmd focus 'TextEdit'
 
 bind m:shift;alt;ctrl;cmd throw right resize
 bind n:shift;alt;ctrl;cmd throw left resize
