@@ -34,10 +34,6 @@ fi
 #     echo "404: ~/.zsh_theme_config not found."
 # fi
 
-# zplug: https://github.com/zplug/zplug
-export ZPLUG_HOME=/usr/local/opt/zplug
-source $ZPLUG_HOME/init.zsh
-
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
@@ -81,7 +77,6 @@ source $ZPLUG_HOME/init.zsh
 plugins=(git brew npm)
 
 source $ZSH/oh-my-zsh.sh
-source ~/.oh-my-zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # User configuration
 
@@ -124,8 +119,7 @@ alias vim='nvim'
 # . `brew --prefix`/etc/profile.d/z.sh
 
 # add direnv (https://github.com/direnv/direnv) hook
-# eval "$(direnv hook zsh)"
-source ~/.bash_profile
+eval "$(direnv hook zsh)"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 #   - CTRL-O to open with `open` command,
