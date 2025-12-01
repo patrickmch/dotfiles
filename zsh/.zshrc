@@ -1,12 +1,16 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+# Fix for Homebrew git/curl compatibility issue on macOS
+export DYLD_LIBRARY_PATH="/opt/homebrew/opt/curl/lib:$DYLD_LIBRARY_PATH"
+
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
 
 # For brew, at least
 export PATH=/usr/local/bin:$PATH
-
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
 # NVM Stuff
 export NVM_DIR="$HOME/.nvm"
 . "$(brew --prefix nvm)/nvm.sh"
@@ -17,14 +21,7 @@ export NVM_DIR="$HOME/.nvm"
 # ZSH_THEME="agnoster"
 # ZSH_THEME="af-magic"
 
- if [ "${TERM_PROGRAM}" != "iTerm.app" ]; then
-     ZSH_THEME="af-magic"
- else
-     ZSH_THEME="powerlevel9k/powerlevel9k"
-     source ~/.powerlevel_config
- fi
-
-source ~/.zsh_theme_config
+ZSH_THEME="af-magic"
 # if [ -f ~/.zsh_theme_config ]; then
 #
 # else
@@ -164,4 +161,6 @@ export PATH=$PATH:$ANDROID_HOME/platform-tools
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
 fi
-eval "$(pyenv virtualenv-init -)"
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv virtualenv-init -)"
+fi
