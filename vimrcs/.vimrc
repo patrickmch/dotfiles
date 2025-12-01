@@ -74,19 +74,6 @@ if (has("nvim"))
   let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 endif
 
-" ncm2 settings
-autocmd BufEnter * call ncm2#enable_for_buffer()
-set completeopt=menuone,noselect,noinsert
-" make it FAST
-let ncm2#popup_delay = 5
-let ncm2#complete_length = [[1,1]]
-let g:ncm2#matcher = 'substrfuzzy'
-
-set pumheight=5
-inoremap <expr> <Down> pumvisible() ? "\<C-n>" : "\<Down>"
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <Up> pumvisible() ? "\<C-p>" : "\<Up>"
-inoremap <expr> <Left> pumvisible() ? "\<C-e>" : "\<Esc>"
 
 "auto indent for brackets
 nmap <leader>w :w!<cr>
@@ -103,12 +90,11 @@ let g:lightline = {
       \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
       \   'right': [ [ 'lineinfo' ],
       \              [ 'percent' ],
-      \              [ 'fileencoding', 'filetype', 'venv' ] ]
+      \              [ 'fileencoding', 'filetype' ] ]
       \ },
       \ 'component_function': {
       \   'gitbranch': 'fugitive#head',
-      \   'filename': 'LightlineFilename', 
-      \   'venv': 'virtualenv#statusline',
+      \   'filename': 'LightlineFilename',
       \ },
       \ }
 
@@ -121,32 +107,12 @@ function! LightlineFilename()
   return expand('%')
 endfunction
 
-function! LightlineBufferline()
-  call bufferline#refresh_status()
-  return [ g:bufferline_status_info.before, g:bufferline_status_info.current, g:bufferline_status_info.after]
-endfunction
 
 " easy breakpoint python
 au FileType python map <silent> <leader>b oimport bpdb; bpdb.set_trace()<esc>
 
-" ale options
-let g:ale_python_flake8_options = '--ignore=E129,E501,E302,E265,E241,E305,E402,W503'
-let g:ale_python_pylint_options = '-j 0 --max-line-length=120'
-let g:ale_list_window_size = 4
-let g:ale_sign_column_always = 0
-let g:ale_open_list = 1
-let g:ale_keep_list_window_open = '1'
-
 " Options are in .pylintrc!
 highlight VertSplit ctermbg=253
-
-let g:ale_sign_error = '‼'
-let g:ale_sign_warning = '∙'
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_enter = '0'
-let g:ale_lint_on_save = '1'
-nmap <silent> <C-M> <Plug>(ale_previous_wrap)
-nmap <silent> <C-m> <Plug>(ale_next_wrap)
 
 " mapping to make movements operate on 1 screen line in wrap mode
 function! ScreenMovement(movement)
@@ -175,23 +141,6 @@ hi def link pythonFunction Function
 autocmd BufEnter * syn match Self "\(\W\|^\)\@<=self\(\.\)\@="
 highlight self ctermfg=239
 
-" jedi options
-let g:jedi#auto_initialization = 1
-let g:jedi#completions_enabled = 0
-let g:jedi#auto_vim_configuration = 0
-let g:jedi#smart_auto_mappings = 0
-let g:jedi#popup_on_dot = 0
-let g:jedi#completions_command = ""
-let g:jedi#show_call_signatures = "1"
-let g:jedi#show_call_signatures_delay = 0
-let g:jedi#use_tabs_not_buffers = 0
-let g:jedi#show_call_signatures_modes = 'i'  " ni = also in normal mode
-let g:jedi#enable_speed_debugging=0
-let g:jedi#documentation_command = "<c-M>"
-" Impsort option
-hi pythonImportedObject ctermfg=127
-hi pythonImportedFuncDef ctermfg=127
-hi pythonImportedClassDef ctermfg=127
 
 " Remove all trailing whitespace by pressing C-S
 nnoremap <C-S> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
