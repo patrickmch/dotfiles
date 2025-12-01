@@ -2,15 +2,8 @@
 # I currently have shift-alt-ctrl-cmd bound to the semicolon key via karabiner
 bind f:shift;alt;ctrl;cmd focus 'Finder'
 bind q:shift;alt;ctrl;cmd focus 'Google Chrome'
-bind w:shift;alt;ctrl;cmd focus 'Atom'
+bind w:shift;alt;ctrl;cmd focus 'Code'
 bind e:shift;alt;ctrl;cmd focus 'iTerm2'
-bind r:shift;alt;ctrl;cmd focus 'qemu-system-x86_64'
-bind t:shift;alt;ctrl;cmd focus 'Messages'
-bind v:shift;alt;ctrl;cmd focus 'VirtualBox'
-bind z:shift;alt;ctrl;cmd focus 'Oracle SQL Developer'
-bind c:shift;alt;ctrl;cmd focus 'Google Play Music Desktop Player'
-bind x:shift;alt;ctrl;cmd focus 'TextEdit'
-
 bind m:shift;alt;ctrl;cmd throw right resize
 bind n:shift;alt;ctrl;cmd throw left resize
 # fullscreen

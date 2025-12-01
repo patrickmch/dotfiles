@@ -1,23 +1,12 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-
-# Fix for Homebrew git/curl compatibility issue on macOS
-export DYLD_LIBRARY_PATH="/opt/homebrew/opt/curl/lib:$DYLD_LIBRARY_PATH"
 
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
 
 # For brew, at least
 export PATH=/usr/local/bin:$PATH
-export NVM_DIR="$HOME/.nvm"
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+
 # NVM Stuff
 export NVM_DIR="$HOME/.nvm"
 . "$(brew --prefix nvm)/nvm.sh"
@@ -28,7 +17,14 @@ export NVM_DIR="$HOME/.nvm"
 # ZSH_THEME="agnoster"
 # ZSH_THEME="af-magic"
 
-ZSH_THEME="powerlevel10k/powerlevel10k"
+ # if [ "${TERM_PROGRAM}" != "iTerm.app" ]; then
+ZSH_THEME="af-magic"
+ # else
+     # ZSH_THEME="powerlevel9k/powerlevel9k"
+     # source ~/.powerlevel_config
+ # fi
+
+# source ~/.zsh_theme_config
 # if [ -f ~/.zsh_theme_config ]; then
 #
 # else
@@ -127,6 +123,8 @@ alias vim='nvim'
 # add direnv (https://github.com/direnv/direnv) hook
 # eval "$(direnv hook zsh)"
 source ~/.bash_profile
+source ${NOLSTOOLS}/nols_env
+
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 #   - CTRL-O to open with `open` command,
@@ -162,12 +160,7 @@ export PATH=$PATH:$ANDROID_HOME/tools/bin
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 
 # Pyenv stuff
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
-fi
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv virtualenv-init -)"
-fi
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# if command -v pyenv 1>/dev/null 2>&1; then
+#  eval "$(pyenv init -)"
+# fi
+# eval "$(pyenv virtualenv-init -)"

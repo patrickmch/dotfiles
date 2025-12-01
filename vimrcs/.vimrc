@@ -10,7 +10,6 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'drewtempelmeyer/palenight.vim'
 Plug 'lvht/mru'
-" Plug 'plytophogy/vim-virtualenv' " python virtualenv support
 Plug 'tpope/vim-commentary'  "comment-out by gc
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'mhinz/vim-startify'
@@ -23,27 +22,12 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-surround'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'  "to highlight files in nerdtree
 Plug 'unblevable/quick-scope' "highlights different chars on each line
-Plug 'tweekmonster/impsort.vim'  " color and sort imports
 Plug 'Vimjas/vim-python-pep8-indent'  "better indenting for python
-Plug 'davidhalter/jedi-vim'   " jedi for python
-Plug 'w0rp/ale'  " python linters
 Plug 'airblade/vim-gitgutter'  " show git changes to files in gutter
-Plug 'roxma/nvim-yarp'  " dependency of ncm2
-Plug 'ncm2/ncm2'  " awesome autocomplete plugin
-Plug 'HansPinckaers/ncm2-jedi'  " fast python completion (use ncm2 if you want type info or snippet support)
-Plug 'ncm2/ncm2-bufword'  " buffer keyword completion
-Plug 'ncm2/ncm2-path'  " filepath completion
+Plug 'bkad/CamelCaseMotion'
 call plug#end()
+nnoremap <space> :call VSCodeNotify('whichkey.show')<CR>
 
-" theicfire .vimrc tips
-" With a map leader it's possible to do extra key combinations
-" like <leader>w saves the current file
-let mapleader = " " " Leader is the space key
-let g:mapleader = " "
-let maplocalleader = "`"
-let g:maplocalleader = "`"
-
-nnoremap <SPACE> <Nop>
 " fzf bindings
 set rtp+=~/.fzf
 nnoremap <c-k> :Rg<cr>
@@ -55,6 +39,13 @@ nnoremap <F8> :TagbarToggle<CR>
 
 nnoremap <A-s> :mksession! ~/dotfiles/vimrcs/sessions/recent<cr>
 nnoremap <leader>s :so ~/dotfiles/vimrcs/sessions/recent<cr>
+
+" word segment mappings
+" call camelcasemotion#CreateMotionMappings('<leader>') <----- MAKE SURE TO NOT CALL THIS FUNCTION
+nmap <silent> W <Plug>CamelCaseMotion_w
+vmap <silent> W <Plug>CamelCaseMotion_w
+nmap <silent> B <Plug>CamelCaseMotion_b
+vmap <silent> B <Plug>CamelCaseMotion_b
 
 " path to your python
 let g:python3_host_prog = '/usr/local/bin/python3'
@@ -134,19 +125,6 @@ function! LightlineBufferline()
   call bufferline#refresh_status()
   return [ g:bufferline_status_info.before, g:bufferline_status_info.current, g:bufferline_status_info.after]
 endfunction
-" theicfire .vimrc tips
-" With a map leader it's possible to do extra key combinations
-" like <leader>w saves the current file
-let mapleader = " " " Leader is the space key
-let g:mapleader = " "
-let maplocalleader = "`"
-let g:maplocalleader = "`"
-nnoremap <SPACE> <Nop>
-
-"auto indent for brackets
-nmap <leader>w :w!<cr>
-nmap <leader>q :lcl<cr>:q<cr>
-nnoremap <leader>h :nohlsearch<Bar>:echo<CR>
 
 " easy breakpoint python
 au FileType python map <silent> <leader>b oimport bpdb; bpdb.set_trace()<esc>
