@@ -22,13 +22,12 @@ export NVM_DIR="$HOME/.nvm"
 export NVM_DIR="$HOME/.nvm"
 . "$(brew --prefix nvm)/nvm.sh"
 
-# Set name of the theme to load. Optionally, if you set this to "random"
-# it'll load a random theme each time that oh-my-zsh is loaded.
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-# ZSH_THEME="agnoster"
-# ZSH_THEME="af-magic"
-
-ZSH_THEME="powerlevel10k/powerlevel10k"
+# Set theme based on machine: MacBook Pro 2014 -> powerlevel10k, otherwise -> af-magic
+if [[ $(sysctl -n hw.model) == "MacBookPro11,3" ]]; then
+  ZSH_THEME="powerlevel10k/powerlevel10k"
+else
+  ZSH_THEME="af-magic"
+fi
 # if [ -f ~/.zsh_theme_config ]; then
 #
 # else
