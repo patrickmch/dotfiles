@@ -53,6 +53,7 @@ let g:python_host_prog = '/usr/local/opt/python@2/bin/python2'
 
 " toggle nerdtree on ctrl+n
 map <C-\> :NERDTreeToggle<CR>
+let NERDTreeShowHidden=1
 map <C-t> :set nosplitright<CR>:TagbarToggle<CR>:set splitright<CR>
 
 " vim fugitive
