@@ -78,6 +78,11 @@ plugins=(git brew npm zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
+# Custom prompt for MacBook Pro
+if [[ $(sysctl -n hw.model) == "MacBookPro11,3" ]]; then
+  PROMPT='MBP %~'$'\n''%# '
+fi
+
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
