@@ -139,6 +139,9 @@ create_symlinks() {
 
     # ESLint
     create_symlink "$DOTFILES_DIR/.elintrc.json" "$HOME/.eslintrc.json"
+
+    # SSH
+    create_symlink "$DOTFILES_DIR/ssh/config" "$HOME/.ssh/config"
 }
 
 # ============================================
