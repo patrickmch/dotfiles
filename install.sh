@@ -140,6 +140,8 @@ create_symlinks() {
     # ESLint
     create_symlink "$DOTFILES_DIR/.elintrc.json" "$HOME/.eslintrc.json"
 
+    # Tmux
+    create_symlink "$DOTFILES_DIR/.tmux.conf" "$HOME/.tmux.conf"
     # SSH
     create_symlink "$DOTFILES_DIR/ssh/config" "$HOME/.ssh/config"
 }
