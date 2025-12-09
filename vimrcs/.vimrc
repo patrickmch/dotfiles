@@ -2,7 +2,8 @@
 " https://medium.com/@hanspinckaers/setting-up-vim-as-an-ide-for-python-773722142d1d
 source ~/dotfiles/vimrcs/keymaps.vim
 call plug#begin('~/dotfiles/vimrcs/plugged')
-Plug 'scrooloose/nerdtree'
+Plug 'nvim-tree/nvim-web-devicons' " optional, for file icons
+Plug 'nvim-tree/nvim-tree.lua'
 Plug 'airblade/vim-rooter' " vim changes to vc root dir
 Plug 'tpope/vim-eunuch' " quick file actions: mkdir, rename, etc
 Plug 'tpope/vim-fugitive'
@@ -20,13 +21,15 @@ Plug 'szw/vim-maximizer' " toggle fullscreen
 Plug 'machakann/vim-highlightedyank'
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-surround'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'  "to highlight files in nerdtree
+" Plug 'tiagofumo/vim-nerdtree-syntax-highlight'  " removed - using nvim-tree now
 Plug 'unblevable/quick-scope' "highlights different chars on each line
 Plug 'Vimjas/vim-python-pep8-indent'  "better indenting for python
 Plug 'airblade/vim-gitgutter'  " show git changes to files in gutter
 Plug 'bkad/CamelCaseMotion'
 call plug#end()
-nnoremap <space> :call VSCodeNotify('whichkey.show')<CR>
+if exists('g:vscode')
+    nnoremap <space> :call VSCodeNotify('whichkey.show')<CR>
+endif
 
 " fzf bindings
 set rtp+=~/.fzf
@@ -51,9 +54,38 @@ vmap <silent> B <Plug>CamelCaseMotion_b
 let g:python3_host_prog = '/usr/local/bin/python3'
 let g:python_host_prog = '/usr/local/opt/python@2/bin/python2'
 
-" toggle nerdtree on ctrl+n
-map <C-\> :NERDTreeToggle<CR>
-let NERDTreeShowHidden=1
+" toggle nvim-tree on ctrl+\
+map <C-\> :NvimTreeToggle<CR>
+
+" nvim-tree setup with file system watching
+lua << EOF
+-- disable netrw for nvim-tree
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
+-- enable 24-bit colour
+vim.opt.termguicolors = true
+
+require("nvim-tree").setup({
+  view = {
+    width = 30,
+  },
+  renderer = {
+    group_empty = true,
+  },
+  filters = {
+    dotfiles = false,
+  },
+  git = {
+    enable = true,
+  },
+  filesystem_watchers = {
+    enable = true,
+    debounce_delay = 50,
+    ignore_dirs = {},
+  },
+})
+EOF
 map <C-t> :set nosplitright<CR>:TagbarToggle<CR>:set splitright<CR>
 
 " vim fugitive
