@@ -1,5 +1,12 @@
 " lots taken from
 " https://medium.com/@hanspinckaers/setting-up-vim-as-an-ide-for-python-773722142d1d
+
+" disable netrw before plugins load (required for nvim-tree)
+lua << EOF
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+EOF
+
 source ~/dotfiles/vimrcs/keymaps.vim
 call plug#begin('~/dotfiles/vimrcs/plugged')
 Plug 'nvim-tree/nvim-web-devicons' " optional, for file icons
@@ -59,11 +66,6 @@ map <C-\> :NvimTreeToggle<CR>
 
 " nvim-tree setup with file system watching
 lua << EOF
--- disable netrw for nvim-tree
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-
--- enable 24-bit colour
 vim.opt.termguicolors = true
 
 require("nvim-tree").setup({
