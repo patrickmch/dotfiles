@@ -6,7 +6,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Fix for Homebrew git/curl compatibility issue on macOS
 export DYLD_LIBRARY_PATH="/opt/homebrew/opt/curl/lib:$DYLD_LIBRARY_PATH"
@@ -151,6 +151,9 @@ vg() {
   fi
 }
 
+# Mosh to home server - this helps with latency a bit
+alias mosh-home="mosh --server=/usr/local/bin/mosh-server tmac@100.90.239.16"
+alias mosh-home-local="mosh --server=/usr/local/bin/mosh-server tmac@192.168.0.3"
 
 # React Native Vars
 export ANDROID_HOME=$HOME/Library/Android/sdk
@@ -169,3 +172,25 @@ fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+export PATH="/opt/homebrew/bin:$PATH"
+
+. "$HOME/.local/bin/env"
+
+# ittybitty - Claude Code multi-agent orchestrator
+export PATH="$HOME/ittybitty:$PATH"
+
+# bun completions
+[ -s "/Users/mchey/.bun/_bun" ] && source "/Users/mchey/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+alias claude-mem='/Users/mchey/.bun/bin/bun "/Users/mchey/.claude/plugins/cache/thedotmack/claude-mem/10.5.5/scripts/worker-service.cjs"'
+# Gemini CLI / Vertex AI defaults
+export GOOGLE_CLOUD_PROJECT="mcp-489517"
+export GOOGLE_CLOUD_LOCATION="us-central1"
+export GOOGLE_GENAI_USE_VERTEXAI=true
+
+# Dev launcher — project picker on iTerm startup
+[[ "$TERM_PROGRAM" == "iTerm.app" && -z "$TMUX" && -z "$CLAUDECODE" ]] && dev-launcher

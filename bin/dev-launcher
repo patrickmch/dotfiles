@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+# dev-launcher — project picker → zellij → happy
+# Triggered from .zshrc on iTerm startup
+
+# ── Environment guards ──────────────────────────
+# Only run in iTerm, skip in tmux, skip if already in a claude session
+[[ "$TERM_PROGRAM" != "iTerm.app" ]] && exit 0
+[[ -n "$TMUX" ]] && exit 0
+[[ -n "$CLAUDECODE" ]] && exit 0
+
+# ── Dependency checks ───────────────────────────
+if ! command -v fzf &>/dev/null; then
+  echo "dev-launcher: fzf not found. Install with: brew install fzf"
+  exit 0
+fi
+
+# ── Scan for projects with CLAUDE.md ─────────────
+projects=()
+
+# Scan ~/code/ one level deep
+for dir in "$HOME"/code/*/; do
+  [[ -f "${dir}CLAUDE.md" ]] && projects+=("$dir")
+done
+
+# Scan ~/ one level deep (excluding ~/code and known non-project dirs)
+skip_dirs=("code" "ittybitty")
+for dir in "$HOME"/*/; do
+  dirname="${dir%/}"
+  dirname="${dirname##*/}"
+  skip=false
+  for s in "${skip_dirs[@]}"; do
+    [[ "$dirname" == "$s" ]] && skip=true && break
+  done
+  $skip && continue
+  [[ -f "${dir}CLAUDE.md" ]] && projects+=("$dir")
+done
+
+# Sort by modification time (most recent first)
+sorted=()
+if [[ ${#projects[@]} -gt 0 ]]; then
+  while IFS= read -r dir; do
+    sorted+=("$dir")
+  done < <(ls -1dt "${projects[@]}" 2>/dev/null)
+fi
+
+# Build display list: relative paths from ~
+display=("~")
+paths=("$HOME")
+for dir in "${sorted[@]}"; do
+  rel="${dir#$HOME/}"
+  rel="${rel%/}"
+  display+=("$rel")
+  paths+=("${dir%/}")
+done
+
+# ── Fuzzy picker ─────────────────────────────────
+selected_display=$(printf '%s\n' "${display[@]}" | fzf --height=40% --reverse --prompt="project> ")
+
+# Esc/Ctrl-C: fall through to normal shell
+if [[ -z "$selected_display" ]]; then
+  exit 0
+fi
+
+# Map display back to absolute path
+if [[ "$selected_display" == "~" ]]; then
+  selected="$HOME"
+else
+  selected="$HOME/$selected_display"
+fi
+
+# ── Launch ───────────────────────────────────────
+cd "$selected" || exit 1
+
+if [[ -n "$ZELLIJ" ]]; then
+  # Already in zellij (new pane/tab) — just run happy
+  happy --yolo
+else
+  # Not in zellij — start zellij with auto-run layout
+  if ! command -v zellij &>/dev/null; then
+    echo "dev-launcher: zellij not found. Install with: brew install zellij"
+    echo "Running happy directly..."
+    happy --yolo
+    exit 0
+  fi
+
+  layout_file=$(mktemp /tmp/dev-layout-XXXXXX.kdl)
+  cat > "$layout_file" <<'KDL'
+layout {
+    pane command="zsh" {
+        args "-c" "happy --yolo; exec zsh"
+    }
+}
+KDL
+  exec zellij -l "$layout_file"
+fi
