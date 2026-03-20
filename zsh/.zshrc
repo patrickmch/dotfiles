@@ -151,9 +151,8 @@ vg() {
   fi
 }
 
-# Mosh to home server - this helps with latency a bit
-alias mosh-home="mosh --server=/usr/local/bin/mosh-server tmac@100.90.239.16"
-alias mosh-home-local="mosh --server=/usr/local/bin/mosh-server tmac@192.168.0.3"
+# Mosh to turtle (always-on Mac Mini via Tailscale)
+alias mosh-turtle='mosh --server=/usr/local/bin/mosh-server turtle'
 
 # React Native Vars
 export ANDROID_HOME=$HOME/Library/Android/sdk
@@ -192,5 +191,5 @@ export GOOGLE_CLOUD_PROJECT="mcp-489517"
 export GOOGLE_CLOUD_LOCATION="us-central1"
 export GOOGLE_GENAI_USE_VERTEXAI=true
 
-# Dev launcher — project picker on iTerm startup
-[[ "$TERM_PROGRAM" == "iTerm.app" && -z "$TMUX" && -z "$CLAUDECODE" ]] && dev-launcher
+# Auto-mosh to turtle on iTerm startup
+[[ "$TERM_PROGRAM" == "iTerm.app" && -z "$TMUX" && -z "$CLAUDECODE" ]] && mosh-turtle

@@ -1,4 +1,9 @@
 # Read more about SSH config files: https://linux.die.net/man/5/ssh_config
+
+Host turtle
+    HostName 100.124.70.31
+    User tmac
+    IdentityFile ~/.ssh/id_rsa
 Host noblementors
     HostName patrickm383.sg-host.com
     User u2475-codhmpgnk76o
@@ -8,7 +13,7 @@ Host noblementors
 
 Host mac-home-local
     HostName 192.168.0.3
-    User mchey
+    User tmac
     IdentityFile ~/.ssh/id_rsa
     LocalForward 3000 localhost:3000
     LocalForward 3001 localhost:3001
@@ -33,8 +38,8 @@ Host mac-home-local
 
 
 Host mac-home
-    HostName 100.90.239.16
-    User mchey
+    HostName 100.124.70.31
+    User tmac
     IdentityFile ~/.ssh/id_rsa
        # Web dev servers
     LocalForward 3000 localhost:3000

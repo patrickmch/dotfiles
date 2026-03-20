@@ -79,6 +79,10 @@ install_brew_packages() {
     brew install nvm || true
     brew install direnv || true
     brew install --HEAD universal-ctags/universal-ctags/universal-ctags || true
+    brew install fzf || true
+    brew install zellij || true
+    brew install happy-coder || true
+    brew install mosh || true
 
     # Casks (GUI apps)
     brew install --cask karabiner-elements || true
@@ -144,6 +148,25 @@ create_symlinks() {
     create_symlink "$DOTFILES_DIR/.tmux.conf" "$HOME/.tmux.conf"
     # SSH
     create_symlink "$DOTFILES_DIR/ssh/config" "$HOME/.ssh/config"
+
+    # Claude Code
+    mkdir -p "$HOME/.claude/hooks" "$HOME/.claude/rules"
+    create_symlink "$DOTFILES_DIR/.claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
+    create_symlink "$DOTFILES_DIR/.claude/statusline-command.sh" "$HOME/.claude/statusline-command.sh"
+    for hook in gh-approval-gate.sh poll-agents.sh save-progress.sh fix-gh-dashes.sh; do
+        create_symlink "$DOTFILES_DIR/.claude/hooks/$hook" "$HOME/.claude/hooks/$hook"
+    done
+    for rule in autonomy.md project-routing.md; do
+        create_symlink "$DOTFILES_DIR/.claude/rules/$rule" "$HOME/.claude/rules/$rule"
+    done
+
+    # Zellij
+    mkdir -p "$HOME/.config/zellij"
+    create_symlink "$DOTFILES_DIR/.config/zellij/config.kdl" "$HOME/.config/zellij/config.kdl"
+
+    # Dev launcher
+    mkdir -p "$HOME/bin"
+    create_symlink "$DOTFILES_DIR/bin/dev-launcher" "$HOME/bin/dev-launcher"
 }
 
 # ============================================

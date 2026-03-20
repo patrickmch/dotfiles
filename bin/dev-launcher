@@ -1,95 +1,272 @@
 #!/usr/bin/env bash
-# dev-launcher — project picker → zellij → happy
+# dev-launcher — session + project picker → zellij → happy
 # Triggered from .zshrc on iTerm startup
+# Also callable with --sessions or --projects for fzf reload
+
+CLAUDE_PROJECTS="$HOME/.claude/projects"
+MAX_SESSIONS=5
+MODE_FILE="/tmp/dev-launcher-mode"
+
+# ── Functions (must be defined before self-dispatch) ──
+
+relative_time() {
+  local now mtime diff
+  now=$(date +%s)
+  mtime="$1"
+  diff=$(( now - mtime ))
+
+  if (( diff < 60 )); then
+    echo "just now"
+  elif (( diff < 3600 )); then
+    echo "$(( diff / 60 ))m ago"
+  elif (( diff < 86400 )); then
+    echo "$(( diff / 3600 ))h ago"
+  elif (( diff < 172800 )); then
+    echo "yesterday"
+  else
+    echo "$(( diff / 86400 ))d ago"
+  fi
+}
+
+shorten_path() {
+  local path="$1"
+  # Normalize ~/code/ to ~/projects/ (deprecated symlink)
+  path="${path/$HOME\/code\//$HOME/projects/}"
+  # Shorten $HOME to ~
+  path="${path/$HOME/\~}"
+  echo "$path"
+}
+
+get_active_sessions() {
+  # Returns list of .jsonl paths currently open by a process (= active sessions)
+  lsof "$CLAUDE_PROJECTS"/*/*.jsonl 2>/dev/null | awk 'NR>1 {print $NF}' | sort -u
+}
+
+list_sessions() {
+  local count=0
+
+  # Build set of active session files to exclude
+  local active_files
+  active_files=$(get_active_sessions)
+
+  # List all .jsonl files sorted by mtime (newest first)
+  while IFS= read -r jsonl_file; do
+    [[ $count -ge $MAX_SESSIONS ]] && break
+
+    # Skip claude-mem observer sessions
+    [[ "$jsonl_file" == *"claude-mem-observer"* ]] && continue
+
+    # Skip companion directories (not .jsonl files)
+    [[ ! "$jsonl_file" == *.jsonl ]] && continue
+
+    # Skip active sessions (currently open by a process)
+    if echo "$active_files" | grep -qF "$jsonl_file"; then
+      continue
+    fi
+
+    # Extract slug (required — skip if missing)
+    local slug
+    slug=$(grep -o -m1 '"slug":"[^"]*"' "$jsonl_file" 2>/dev/null | head -1)
+    [[ -z "$slug" ]] && continue
+    slug="${slug#\"slug\":\"}"
+    slug="${slug%\"}"
+
+    # Extract agentName (from /rename, optional)
+    local agent_name
+    agent_name=$(grep -o -m1 '"agentName":"[^"]*"' "$jsonl_file" 2>/dev/null | head -1)
+    agent_name="${agent_name#\"agentName\":\"}"
+    agent_name="${agent_name%\"}"
+
+    # Display name: agentName if set, else slug
+    local display_name="${agent_name:-$slug}"
+
+    # Extract cwd
+    local cwd
+    cwd=$(grep -o -m1 '"cwd":"[^"]*"' "$jsonl_file" 2>/dev/null | head -1)
+    cwd="${cwd#\"cwd\":\"}"
+    cwd="${cwd%\"}"
+    [[ -z "$cwd" ]] && continue
+
+    # Skip if directory no longer exists
+    [[ ! -d "$cwd" ]] && continue
+
+    # Normalize cwd
+    cwd="${cwd/$HOME\/code\//$HOME/projects/}"
+
+    local short_dir
+    short_dir=$(shorten_path "$cwd")
+
+    # Session ID from filename
+    local session_id
+    session_id=$(basename "$jsonl_file" .jsonl)
+
+    # Relative timestamp
+    local mtime rel_time
+    mtime=$(stat -f "%m" "$jsonl_file" 2>/dev/null)
+    rel_time=$(relative_time "$mtime")
+
+    # Output: uuid\tcwd\tdisplay (fzf --with-nth 3.. hides uuid and cwd)
+    printf '%s\t%s\t%-28s %-30s (%s)\n' \
+      "$session_id" "$cwd" "$display_name" "$short_dir" "$rel_time"
+
+    count=$(( count + 1 ))
+  done < <(ls -1t "$CLAUDE_PROJECTS"/*/*.jsonl 2>/dev/null)
+}
+
+list_projects() {
+  local seen=()
+
+  # Collect project dirs with CLAUDE.md
+  local projects=()
+
+  # Scan ~/projects/ one level deep
+  for dir in "$HOME"/projects/*/; do
+    [[ -f "${dir}CLAUDE.md" ]] && projects+=("$dir")
+  done
+
+  # Scan ~/ one level deep (excluding projects, code, ittybitty)
+  local skip_dirs=("projects" "code" "ittybitty")
+  for dir in "$HOME"/*/; do
+    local dirname="${dir%/}"
+    dirname="${dirname##*/}"
+    local skip=false
+    for s in "${skip_dirs[@]}"; do
+      [[ "$dirname" == "$s" ]] && skip=true && break
+    done
+    $skip && continue
+    [[ -f "${dir}CLAUDE.md" ]] && projects+=("$dir")
+  done
+
+  # Sort by modification time, deduplicate resolved paths
+  local sorted=()
+  if [[ ${#projects[@]} -gt 0 ]]; then
+    while IFS= read -r dir; do
+      # Resolve symlinks for dedup
+      local resolved
+      resolved=$(cd "$dir" 2>/dev/null && pwd -P)
+      local already=false
+      for s in "${seen[@]}"; do
+        [[ "$s" == "$resolved" ]] && already=true && break
+      done
+      $already && continue
+      seen+=("$resolved")
+      sorted+=("$dir")
+    done < <(ls -1dt "${projects[@]}" 2>/dev/null)
+  fi
+
+  # Add ~ as first option
+  printf 'PROJECT\t%s\t~\n' "$HOME"
+
+  # Output: PROJECT\tabsolute-path\tdisplay
+  for dir in "${sorted[@]}"; do
+    local abs="${dir%/}"
+    local rel
+    rel=$(shorten_path "$abs")
+    printf 'PROJECT\t%s\t%s\n' "$abs" "$rel"
+  done
+}
+
+launch_happy() {
+  local cmd="$1"
+  local target_dir="$2"
+
+  cd "$target_dir" || exit 1
+
+  if [[ -n "$ZELLIJ" ]]; then
+    # Already in zellij — just run
+    eval "$cmd"
+  else
+    if ! command -v zellij &>/dev/null; then
+      echo "dev-launcher: zellij not found. Running happy directly..."
+      eval "$cmd"
+      exit 0
+    fi
+
+    local layout_file
+    layout_file=$(mktemp /tmp/dev-layout-XXXXXX)
+    cat > "$layout_file" <<LAYOUT
+layout {
+    pane command="zsh" {
+        args "-c" "$cmd; exec zsh"
+    }
+}
+LAYOUT
+    exec zellij -l "$layout_file"
+  fi
+}
+
+# ── Self-dispatch for fzf reload ─────────────────
+if [[ "$1" == "--sessions" ]]; then
+  list_sessions
+  exit 0
+fi
+
+if [[ "$1" == "--projects" ]]; then
+  list_projects
+  exit 0
+fi
+
+if [[ "$1" == "--toggle" ]]; then
+  # Read current mode, output the opposite list, flip the mode file
+  current=$(cat "$MODE_FILE" 2>/dev/null || echo "sessions")
+  if [[ "$current" == "sessions" ]]; then
+    echo "projects" > "$MODE_FILE"
+    list_projects
+  else
+    echo "sessions" > "$MODE_FILE"
+    list_sessions
+  fi
+  exit 0
+fi
 
 # ── Environment guards ──────────────────────────
-# Only run in iTerm, skip in tmux, skip if already in a claude session
 [[ "$TERM_PROGRAM" != "iTerm.app" ]] && exit 0
 [[ -n "$TMUX" ]] && exit 0
 [[ -n "$CLAUDECODE" ]] && exit 0
 
-# ── Dependency checks ───────────────────────────
 if ! command -v fzf &>/dev/null; then
   echo "dev-launcher: fzf not found. Install with: brew install fzf"
   exit 0
 fi
 
-# ── Scan for projects with CLAUDE.md ─────────────
-projects=()
+# ── Main: Interactive picker ──────────────────────
 
-# Scan ~/code/ one level deep
-for dir in "$HOME"/code/*/; do
-  [[ -f "${dir}CLAUDE.md" ]] && projects+=("$dir")
-done
+# Check if we have sessions
+session_output=$(list_sessions)
 
-# Scan ~/ one level deep (excluding ~/code and known non-project dirs)
-skip_dirs=("code" "ittybitty")
-for dir in "$HOME"/*/; do
-  dirname="${dir%/}"
-  dirname="${dirname##*/}"
-  skip=false
-  for s in "${skip_dirs[@]}"; do
-    [[ "$dirname" == "$s" ]] && skip=true && break
-  done
-  $skip && continue
-  [[ -f "${dir}CLAUDE.md" ]] && projects+=("$dir")
-done
-
-# Sort by modification time (most recent first)
-sorted=()
-if [[ ${#projects[@]} -gt 0 ]]; then
-  while IFS= read -r dir; do
-    sorted+=("$dir")
-  done < <(ls -1dt "${projects[@]}" 2>/dev/null)
+if [[ -n "$session_output" ]]; then
+  initial_list="$session_output"
+  initial_prompt="resume>  [tab: new project]  "
+  echo "sessions" > "$MODE_FILE"
+else
+  initial_list=$(list_projects)
+  initial_prompt="project>  [tab: resume]  "
+  echo "projects" > "$MODE_FILE"
 fi
 
-# Build display list: relative paths from ~
-display=("~")
-paths=("$HOME")
-for dir in "${sorted[@]}"; do
-  rel="${dir#$HOME/}"
-  rel="${rel%/}"
-  display+=("$rel")
-  paths+=("${dir%/}")
-done
-
-# ── Fuzzy picker ─────────────────────────────────
-selected_display=$(printf '%s\n' "${display[@]}" | fzf --height=40% --reverse --prompt="project> ")
+selected=$(echo "$initial_list" | fzf \
+  --height=40% \
+  --reverse \
+  --delimiter=$'\t' \
+  --with-nth=3.. \
+  --prompt="$initial_prompt" \
+  --bind "tab:reload(dev-launcher --toggle)+transform-prompt(if [[ \$(cat $MODE_FILE 2>/dev/null) == sessions ]]; then echo 'resume>  [tab: new project]  '; else echo 'project>  [tab: resume]  '; fi)" \
+  --bind "shift-tab:reload(dev-launcher --toggle)+transform-prompt(if [[ \$(cat $MODE_FILE 2>/dev/null) == sessions ]]; then echo 'resume>  [tab: new project]  '; else echo 'project>  [tab: resume]  '; fi)")
 
 # Esc/Ctrl-C: fall through to normal shell
-if [[ -z "$selected_display" ]]; then
-  exit 0
-fi
+[[ -z "$selected" ]] && exit 0
 
-# Map display back to absolute path
-if [[ "$selected_display" == "~" ]]; then
-  selected="$HOME"
+# Clean up
+rm -f "$MODE_FILE"
+
+# Parse selection
+local_type=$(echo "$selected" | cut -f1)
+local_path=$(echo "$selected" | cut -f2)
+
+if [[ "$local_type" == "PROJECT" ]]; then
+  # New project session
+  launch_happy "happy --yolo" "$local_path"
 else
-  selected="$HOME/$selected_display"
-fi
-
-# ── Launch ───────────────────────────────────────
-cd "$selected" || exit 1
-
-if [[ -n "$ZELLIJ" ]]; then
-  # Already in zellij (new pane/tab) — just run happy
-  happy --yolo
-else
-  # Not in zellij — start zellij with auto-run layout
-  if ! command -v zellij &>/dev/null; then
-    echo "dev-launcher: zellij not found. Install with: brew install zellij"
-    echo "Running happy directly..."
-    happy --yolo
-    exit 0
-  fi
-
-  layout_file=$(mktemp /tmp/dev-layout-XXXXXX)
-  cat > "$layout_file" <<'KDL'
-layout {
-    pane command="zsh" {
-        args "-c" "happy --yolo; exec zsh"
-    }
-}
-KDL
-  exec zellij -l "$layout_file"
+  # Resume session — local_type is the session UUID
+  launch_happy "happy --resume $local_type" "$local_path"
 fi
