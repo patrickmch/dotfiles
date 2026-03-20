@@ -2,8 +2,8 @@
 
 ## Environment
 
-- Primary dev on **air** (macbook-air-7, mchey, 100.96.223.99). Command center.
-- Always-on agent host on **turtle** (turtle-1, tmac, 100.124.70.31). Runs OpenClaw, cron jobs, QA.
+- Primary dev on **turtle** (turtle-1, tmac, 100.124.70.31). All projects, Claude sessions, agents, cron, OpenClaw.
+- Thin client on **air** (macbook-air-7, mchey, 100.96.223.99). iTerm + browser only. Auto-moshes to turtle.
 - Uses **Happy Coder** (`happy` CLI) as wrapper around `claude`. Shell context may differ from direct `claude` invocation.
 - NEVER commit hardcoded secrets. ALWAYS use .env or secrets files.
 - ALWAYS run browser automation on turtle (OCP supports multiple browser profiles for parallel sessions).
@@ -21,23 +21,23 @@ When I mention a keyword, load that project's CLAUDE.md BEFORE acting.
 
 | Keywords | Project | Path | Machine |
 |----------|---------|------|---------|
-| crowdsolve, circle, community, cohort, founders | CrowdSolve | ~/projects/crowdsolve/ | air |
-| mtro, phillip, andre, property, tenant | MTRO | ~/projects/mtropro/ | air (dev), turtle (QA) |
-| midway, furnished finder, leads, rentals | Midway | ~/projects/midway/ | air |
-| wellness, librarian, WEC, christine, health videos | Wellness Librarian | ~/projects/wellness-librarian/ | air |
-| summit, training, athletes, climbing plan | Summit | ~/projects/summit/ + ~/projects/summit-ai/ | air |
-| workspace, workspace-hub, email autopilot | Workspace Hub | ~/projects/workspace-hub/ | air + turtle |
-| linkedin, outreach, prospecting | LinkedIn Outreach | ~/projects/linkedin-outreach-helper/ | air (stale) |
+| crowdsolve, circle, community, cohort, founders | CrowdSolve | ~/projects/crowdsolve/ | turtle |
+| mtro, phillip, andre, property, tenant | MTRO | ~/projects/mtropro/ | turtle |
+| midway, furnished finder, leads, rentals | Midway | ~/projects/midway/ | turtle |
+| wellness, librarian, WEC, christine, health videos | Wellness Librarian | ~/projects/wellness-librarian/ | turtle |
+| summit, training, athletes, climbing plan | Summit | ~/projects/summit/ + ~/projects/summit-ai/ | turtle |
+| workspace, workspace-hub, email autopilot | Workspace Hub | ~/projects/workspace-hub/ | turtle |
+| linkedin, outreach, prospecting | LinkedIn Outreach | ~/projects/linkedin-outreach-helper/ | turtle (stale) |
 | openclaw, terry, agent, cron | OpenClaw | turtle: ~/.openclaw/ | turtle |
-| invoice, stripe, billing, timesheet | Invoicing | ~/projects/scripts/invoice.py | air |
-| email, gmail | Email | Google Workspace MCP | air |
-| calendar, meetings, schedule | Calendar | Google Workspace MCP | air |
-| website, portfolio, mcheyser | mcheyser.com | ~/projects/mcheyser-site/ | air |
-| wec-landing, wec site | WEC Landing | ~/projects/wec-landing/ | air |
-| jackson, mentoring, miller | Jackson Mentoring | ~/projects/jackson-mentoring/ | air |
-| todos, tasks, what do I need to do | Todos | ~/projects/todos/ | air |
-| ai presentations, workshops, ai events | AI Presentations | ~/projects/ai-presentations/ | air |
-| ai consulting, ai services, ai clients | AI Consulting | ~/projects/ai-consulting/ | air |
+| invoice, stripe, billing, timesheet | Invoicing | ~/projects/scripts/invoice.py | turtle |
+| email, gmail | Email | Google Workspace MCP | turtle |
+| calendar, meetings, schedule | Calendar | Google Workspace MCP | turtle |
+| website, portfolio, mcheyser | mcheyser.com | ~/projects/mcheyser-site/ | turtle |
+| wec-landing, wec site | WEC Landing | ~/projects/wec-landing/ | turtle |
+| jackson, mentoring, miller | Jackson Mentoring | ~/projects/jackson-mentoring/ | turtle |
+| todos, tasks, what do I need to do | Todos | ~/projects/todos/ | turtle |
+| ai presentations, workshops, ai events | AI Presentations | ~/projects/ai-presentations/ | turtle |
+| ai consulting, ai services, ai clients | AI Consulting | ~/projects/ai-consulting/ | turtle |
 
 ## People Routing
 
@@ -105,26 +105,29 @@ wellness-librarian ──▶ Supabase pgvector, Railway
 
 ## Two-Machine Architecture
 
-**air** = interactive work. Google Workspace MCP. All ~/projects/ projects.
-**turtle** = background. OpenClaw, cron jobs, QA. SSH: `ssh tmac@100.124.70.31`
+**turtle** = primary. All projects, Claude sessions, agents, cron, OpenClaw, Google Workspace MCP, browser automation.
+**air** = thin client. iTerm auto-moshes to turtle. No Claude sessions run on air.
 
 | Task needs... | Run on... |
 |---------------|-----------|
-| My input or approval | air |
+| All development work | turtle |
 | Schedule / background / cron | turtle |
-| Heavy compute or long-running | turtle |
-| Google Workspace MCP | air |
+| Google Workspace MCP | turtle |
 | Browser automation / scraping | turtle |
 | Telegram approval flow | turtle |
+| Patrick's input or approval | turtle (via mosh from air) |
 
 ```bash
-ssh tmac@100.124.70.31 'openclaw status'        # check status
-ssh tmac@100.124.70.31 'openclaw cron list'      # check cron jobs
-ssh tmac@100.124.70.31 'openclaw agent --to telegram --message "..." --deliver'  # delegate
+# From air: just mosh in
+mosh-turtle
+
+# On turtle: everything is local
+openclaw status
+openclaw cron list
+openclaw agent --to telegram --message "..." --deliver
 ```
 
-Concurrency limits: turtle max 5 agents, air max 2 agents.
-Sub-agents (workers, parallel exploration, Plan>Execute>Review) run on turtle ONLY. Air has 8GB RAM and cannot handle sub-agent workloads.
+Concurrency limits: turtle max 5 agents. Air is not used for Claude sessions.
 
 ---
 
