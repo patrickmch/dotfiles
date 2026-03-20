@@ -191,5 +191,8 @@ export GOOGLE_CLOUD_PROJECT="mcp-489517"
 export GOOGLE_CLOUD_LOCATION="us-central1"
 export GOOGLE_GENAI_USE_VERTEXAI=true
 
-# Auto-mosh to turtle on iTerm startup
+# Auto-mosh to turtle on iTerm startup (air)
 [[ "$TERM_PROGRAM" == "iTerm.app" && -z "$TMUX" && -z "$CLAUDECODE" ]] && mosh-turtle
+
+# Dev launcher on SSH/mosh login (turtle) — Esc falls into zellij for scrollback
+[[ -n "$SSH_CONNECTION" && -z "$TMUX" && -z "$CLAUDECODE" && -z "$ZELLIJ" ]] && { dev-launcher; exec zellij; }
