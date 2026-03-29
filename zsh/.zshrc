@@ -213,6 +213,27 @@ bindkey '^[f' forward-word        # Esc+f fallback
 # Zellij + Yazi workspace
 alias cc='zellij --layout cc'
 
+# Yazi directory picker — navigate, q to quit, shell cd's there
+y() {
+  local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+  command yazi "$@" --cwd-file="$tmp"
+  if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+    builtin cd -- "$cwd"
+  fi
+  rm -f -- "$tmp"
+}
+
+# Floating Yazi sidebar (on-demand, toggle with Alt+f after)
+yy() {
+  zellij run --floating --name "files" -- yazi "${1:-.}"
+}
+
+# Auto-launch directory picker in new Zellij tabs
+if [[ -n "$ZELLIJ" && -z "$YAZI_PICKED" && $- == *i* ]]; then
+  export YAZI_PICKED=1
+  y ~/projects
+fi
+
 e() {
   if [ -n "$ZELLIJ" ]; then
     zellij run --floating --close-on-exit --name "edit: ${1##*/}" -- nvim "$@"
