@@ -2,11 +2,12 @@
 
 ## Environment
 
-- Primary dev on **turtle** (turtle-1, tmac, 100.124.70.31). All projects, Claude sessions, agents, cron, OpenClaw.
-- Thin client on **air** (macbook-air-7, mchey, 100.96.223.99). iTerm + browser only. Auto-moshes to turtle.
+- Interactive dev on **eagle** (MacBook Pro M1 Pro, 32GB, mchey). Claude sessions, browser, local dev, audio transcription.
+- Always-on server on **turtle** (turtle-1, tmac, 100.124.70.31). Cron, OpenClaw, agents, background tasks.
+- **Incoming (Tue 2026-03-24)**: **groundcontrol / gc** (Mac Mini M4 Pro, 64GB). Replaces turtle as always-on server.
 - Uses **Happy Coder** (`happy` CLI) as wrapper around `claude`. Shell context may differ from direct `claude` invocation.
 - NEVER commit hardcoded secrets. ALWAYS use .env or secrets files.
-- ALWAYS run browser automation on turtle (OCP supports multiple browser profiles for parallel sessions).
+- Secrets go in `~/.env` (sourced by .zshrc, globally gitignored). Never in settings.json or committed files.
 
 ## DEPRECATION: ~/code/ → ~/projects/
 
@@ -69,7 +70,7 @@ When I mention a person, load the relevant project context.
 ## MTRO PRO Duplication Warning
 
 Two copies exist and are NOT synced:
-- **air**: `~/projects/mtropro/` (partial clone, interactive dev)
+- **eagle**: `~/projects/mtropro/` (partial clone, interactive dev)
 - **turtle**: `~/projects/mtropro/` (full monorepo, push disabled, QA pipeline)
 
 Different branches and commits. ALWAYS verify which copy and git state before working on MTRO.
@@ -105,20 +106,22 @@ wellness-librarian ──▶ Supabase pgvector, Railway
 
 ## Two-Machine Architecture
 
-**turtle** = primary. All projects, Claude sessions, agents, cron, OpenClaw, Google Workspace MCP, browser automation.
-**air** = thin client. iTerm auto-moshes to turtle. No Claude sessions run on air.
+**pro** (MacBook Pro M1 Pro, 32GB) = interactive dev. Claude sessions, browser, local dev. Not always-on.
+**turtle** (Mac Mini, 16GB) = always-on server. Cron, OpenClaw, agents, background tasks, browser automation.
 
 | Task needs... | Run on... |
 |---------------|-----------|
-| All development work | turtle |
+| Interactive development | pro |
+| Claude sessions | pro |
+| Google Workspace MCP | pro |
+| Browser automation (claude-in-chrome) | pro |
 | Schedule / background / cron | turtle |
-| Google Workspace MCP | turtle |
-| Browser automation / scraping | turtle |
+| OpenClaw agents | turtle |
+| Browser automation (headless/scraping) | turtle |
 | Telegram approval flow | turtle |
-| Patrick's input or approval | turtle (via mosh from air) |
 
 ```bash
-# From air: just mosh in
+# From pro: mosh into turtle for server tasks
 mosh-turtle
 
 # On turtle: everything is local
@@ -127,7 +130,7 @@ openclaw cron list
 openclaw agent --to telegram --message "..." --deliver
 ```
 
-Concurrency limits: turtle max 5 agents. Air is not used for Claude sessions.
+Concurrency limits: pro max 5 agents (32GB). turtle max 5 agents (16GB).
 
 ---
 
@@ -269,5 +272,5 @@ ANY text that will be read by someone other than Patrick MUST go through the hum
 
 ---
 
-*Last Updated: 2026-03-13*
+*Last Updated: 2026-03-22*
 *Workspace principles and detailed patterns: `~/projects/.orchestrator/PRINCIPLES.md`*

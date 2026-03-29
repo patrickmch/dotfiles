@@ -1,5 +1,15 @@
 # Read more about SSH config files: https://linux.die.net/man/5/ssh_config
 
+Host gc
+    HostName 100.118.247.22
+    User mchey
+    IdentityFile ~/.ssh/id_rsa
+
+Host gc-local
+    HostName 192.168.0.28
+    User mchey
+    IdentityFile ~/.ssh/id_rsa
+
 Host turtle
     HostName 100.124.70.31
     User tmac

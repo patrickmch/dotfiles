@@ -61,8 +61,10 @@ vmap <silent> B <Plug>CamelCaseMotion_b
 let g:python3_host_prog = '/usr/local/bin/python3'
 let g:python_host_prog = '/usr/local/opt/python@2/bin/python2'
 
-" toggle nvim-tree on ctrl+\
-map <C-\> :NvimTreeToggle<CR>
+" toggle nvim-tree on shift+\ (pipe)
+map <Bar> :NvimTreeToggle<CR>
+" focus nvim-tree on alt+,
+map <A-,> :NvimTreeFocus<CR>
 
 " nvim-tree setup with file system watching
 lua << EOF
@@ -77,6 +79,7 @@ require("nvim-tree").setup({
   },
   filters = {
     dotfiles = false,
+    git_ignored = false,
   },
   git = {
     enable = true,
