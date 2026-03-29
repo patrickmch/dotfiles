@@ -1,0 +1,8 @@
+[mgr]
+ratio = [0, 1, 0]
+
+[opener]
+edit = [
+  { run = 'zellij run --floating --close-on-exit -- nvim "$@"', block = false, desc = "nvim (float)" },
+  { run = 'nvim "$@"', block = true, desc = "nvim" },
+]

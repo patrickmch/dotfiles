@@ -1,0 +1,36 @@
+// Claude Code workspace — floating Yazi sidebar
+// Launch: cc  (or: zellij --layout cc)
+//
+// Alt+f           toggle Yazi file browser overlay
+// Alt+h / Alt+l   move focus between panes
+// Alt+n           new terminal pane
+// Alt+y           fullscreen current pane
+//
+// In Yazi:
+//   Enter          open file in floating nvim (:wq to close)
+//   Navigate       j/k up/down, l enter dir, h parent dir
+//
+// From any terminal:
+//   e <path>       floating nvim
+//   peek <path>    floating bat (read-only)
+
+layout {
+    pane size=1 borderless=true {
+        plugin location="tab-bar"
+    }
+    pane focus=true name="terminal"
+    pane size=1 borderless=true {
+        plugin location="status-bar"
+    }
+
+    floating_panes {
+        pane command="yazi" {
+            args "/Users/mchey/projects"
+            name "files"
+            x 0
+            y 0
+            width "25%"
+            height "100%"
+        }
+    }
+}

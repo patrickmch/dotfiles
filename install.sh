@@ -161,8 +161,13 @@ create_symlinks() {
     done
 
     # Zellij
-    mkdir -p "$HOME/.config/zellij"
+    mkdir -p "$HOME/.config/zellij/layouts" "$HOME/.config/zellij/plugins"
     create_symlink "$DOTFILES_DIR/.config/zellij/config.kdl" "$HOME/.config/zellij/config.kdl"
+    create_symlink "$DOTFILES_DIR/.config/zellij/layouts/cc.kdl" "$HOME/.config/zellij/layouts/cc.kdl"
+
+    # Yazi
+    mkdir -p "$HOME/.config/yazi"
+    create_symlink "$DOTFILES_DIR/.config/yazi/yazi.toml" "$HOME/.config/yazi/yazi.toml"
 
     # Dev launcher
     mkdir -p "$HOME/bin"

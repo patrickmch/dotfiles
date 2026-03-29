@@ -151,7 +151,9 @@ vg() {
   fi
 }
 
-# Mosh to turtle (always-on Mac Mini via Tailscale)
+# Mosh to gc (always-on Mac Mini M4 Pro via Tailscale)
+alias mosh-gc='mosh --server=/opt/homebrew/bin/mosh-server gc'
+# Mosh to turtle (experimental OpenClaw sandbox via Tailscale)
 alias mosh-turtle='mosh --server=/usr/local/bin/mosh-server turtle'
 
 # React Native Vars
@@ -185,14 +187,44 @@ export PATH="$HOME/ittybitty:$PATH"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
+# Source secrets (.env is globally gitignored)
+[ -f ~/.env ] && source ~/.env
+
 alias claude-mem='/Users/mchey/.bun/bin/bun "/Users/mchey/.claude/plugins/cache/thedotmack/claude-mem/10.5.5/scripts/worker-service.cjs"'
 # Gemini CLI / Vertex AI defaults
 export GOOGLE_CLOUD_PROJECT="mcp-489517"
 export GOOGLE_CLOUD_LOCATION="us-central1"
 export GOOGLE_GENAI_USE_VERTEXAI=true
 
-# Auto-mosh to turtle on iTerm startup (air)
-[[ "$TERM_PROGRAM" == "iTerm.app" && -z "$TMUX" && -z "$CLAUDECODE" ]] && mosh-turtle
+# Auto-mosh to turtle on iTerm startup (disabled — this machine runs Claude locally)
+# To mosh manually: mosh-turtle
+# [[ "$TERM_PROGRAM" == "iTerm.app" && -z "$TMUX" && -z "$CLAUDECODE" ]] && mosh-turtle
 
 # Dev launcher on SSH/mosh login (turtle)
 [[ -n "$SSH_CONNECTION" && -z "$TMUX" && -z "$CLAUDECODE" && -z "$ZELLIJ" ]] && dev-launcher
+export EDITOR=nvim
+
+# Word-jump with Alt+arrow (works through Zellij + iTerm2)
+bindkey '^[[1;3D' backward-word   # Alt+Left
+bindkey '^[[1;3C' forward-word    # Alt+Right
+bindkey '^[b' backward-word       # Esc+b fallback
+bindkey '^[f' forward-word        # Esc+f fallback
+
+# Zellij + Yazi workspace
+alias cc='zellij --layout cc'
+
+e() {
+  if [ -n "$ZELLIJ" ]; then
+    zellij run --floating --close-on-exit --name "edit: ${1##*/}" -- nvim "$@"
+  else
+    nvim "$@"
+  fi
+}
+
+peek() {
+  if [ -n "$ZELLIJ" ]; then
+    zellij run --floating --close-on-exit --name "peek: ${1##*/}" -- bat --paging=always "$@"
+  else
+    bat "$@"
+  fi
+}
