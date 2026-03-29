@@ -228,6 +228,11 @@ yy() {
   zellij run --floating --name "files" -- yazi "${1:-.}"
 }
 
+# New floating shell pane (for SSH, scratch, etc.)
+fs() {
+  zellij run --floating -- zsh
+}
+
 # Auto-launch directory picker in new Zellij tabs
 if [[ -n "$ZELLIJ" && -z "$YAZI_PICKED" && $- == *i* ]]; then
   export YAZI_PICKED=1
