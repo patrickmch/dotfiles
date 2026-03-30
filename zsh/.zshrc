@@ -223,17 +223,6 @@ y() {
   rm -f -- "$tmp"
 }
 
-# Floating Yazi sidebar (on-demand, toggle with Alt+f after)
-yy() {
-  zellij run --floating --name "files" -- yazi "${1:-.}"
-}
-
-# New floating shell pane (for SSH, scratch, etc.)
-fs() {
-  zellij run --floating -- zsh
-}
-
-
 e() {
   if [ -n "$ZELLIJ" ]; then
     zellij run --floating --close-on-exit --name "edit: ${1##*/}" -- nvim "$@"
@@ -248,4 +237,19 @@ peek() {
   else
     bat "$@"
   fi
+}
+
+# Switch Catppuccin variant across all tools: theme [mocha|macchiato|frappe|latte]
+theme() {
+  local v="${1:-mocha}"
+  local variants=(mocha macchiato frappe latte)
+  if [[ ! " ${variants[*]} " =~ " ${v} " ]]; then
+    echo "Usage: theme [mocha|macchiato|frappe|latte]"; return 1
+  fi
+  local cap="$(tr '[:lower:]' '[:upper:]' <<< ${v:0:1})${v:1}"
+  sed -i '' "s/theme = Catppuccin .*/theme = Catppuccin $cap/" ~/dotfiles/.config/ghostty/config
+  sed -i '' "s/theme \"catppuccin-.*\"/theme \"catppuccin-$v\"/" ~/dotfiles/.config/zellij/config.kdl
+  sed -i '' "s/colorscheme catppuccin-.*/colorscheme catppuccin-$v/" ~/.vimrc
+  sed -i '' "s/use = \"catppuccin-.*\"/use = \"catppuccin-$v\"/" ~/dotfiles/.config/yazi/theme.toml
+  echo "Switched to catppuccin-$v. Restart Ghostty + Zellij to apply."
 }

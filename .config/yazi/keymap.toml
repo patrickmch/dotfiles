@@ -1,0 +1,4 @@
+[[mgr.prepend_keymap]]
+on = ["<Enter>"]
+run = "shell '~/bin/cc-open \"$@\"' --confirm"
+desc = "Dir -> CC tab / File -> nvim"

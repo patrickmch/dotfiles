@@ -1,0 +1,7 @@
+#!/bin/bash
+item="$1"
+if [ -d "$item" ]; then
+    zellij action new-tab --layout cc --cwd "$item"
+else
+    zellij run --floating --close-on-exit -- nvim "$item"
+fi
