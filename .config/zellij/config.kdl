@@ -143,7 +143,7 @@ keybinds clear-defaults=true {
         bind "Alt ]" { NextSwapLayout; }
         bind "Alt f" { ToggleFloatingPanes; }
         bind "Alt y" {
-            Run "zellij" "pipe" "--name" "sidebar-toggle" {
+            Run "bash" "-c" "S=/tmp/zj-sidebar-$ZELLIJ_SESSION_NAME; if [ -f $S ] && [ $(cat $S) = closed ]; then zellij action override-layout $HOME/.config/zellij/layouts/cc-sidebar.kdl --retain-existing-terminal-panes --retain-existing-plugin-panes --apply-only-to-active-tab; echo open > $S; else zellij action override-layout $HOME/.config/zellij/layouts/cc-focused.kdl --retain-existing-terminal-panes --retain-existing-plugin-panes --apply-only-to-active-tab; echo closed > $S; fi" {
                 close_on_exit true
                 floating true
             }
@@ -273,7 +273,6 @@ plugins {
 load_plugins {
     "zellij:link"
     "file:~/.config/zellij/plugins/zellij-attention.wasm"
-    "file:~/.config/zellij/plugins/sidebar-toggle.wasm"
 }
 web_client {
     font "monospace"
