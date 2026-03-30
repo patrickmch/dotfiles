@@ -17,6 +17,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'drewtempelmeyer/palenight.vim'
+Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
 Plug 'lvht/mru'
 Plug 'tpope/vim-commentary'  "comment-out by gc
 Plug 'NLKNguyen/papercolor-theme'
@@ -33,6 +34,8 @@ Plug 'unblevable/quick-scope' "highlights different chars on each line
 Plug 'Vimjas/vim-python-pep8-indent'  "better indenting for python
 Plug 'airblade/vim-gitgutter'  " show git changes to files in gutter
 Plug 'bkad/CamelCaseMotion'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'MeanderingProgrammer/render-markdown.nvim'
 call plug#end()
 if exists('g:vscode')
     nnoremap <space> :call VSCodeNotify('whichkey.show')<CR>
@@ -90,6 +93,15 @@ require("nvim-tree").setup({
     ignore_dirs = {},
   },
 })
+
+-- treesitter for markdown rendering
+require('nvim-treesitter.config').setup({
+  ensure_installed = { 'markdown', 'markdown_inline' },
+  highlight = { enable = true },
+})
+
+-- render-markdown: in-buffer markdown display
+require('render-markdown').setup({})
 EOF
 map <C-t> :set nosplitright<CR>:TagbarToggle<CR>:set splitright<CR>
 
@@ -101,8 +113,7 @@ nnoremap <leader>gb :Gblame<cr>
 
 " themeing
 set background=dark
-colorscheme palenight
-let g:palenight_terminal_italics=1
+colorscheme catppuccin-mocha
 
 let g:highlightedyank_highlight_duration = 150
 
@@ -122,7 +133,7 @@ nnoremap <leader>h :nohlsearch<Bar>:echo<CR>
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 let g:lightline = {
-      \ 'colorscheme': 'palenight',
+      \ 'colorscheme': 'wombat',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],

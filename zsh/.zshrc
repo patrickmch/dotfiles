@@ -211,7 +211,7 @@ bindkey '^[b' backward-word       # Esc+b fallback
 bindkey '^[f' forward-word        # Esc+f fallback
 
 # Zellij + Yazi workspace
-alias cc='zellij --layout cc'
+alias cc='cd ~/projects && zellij --layout cc'
 
 # Yazi directory picker — navigate, q to quit, shell cd's there
 y() {

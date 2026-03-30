@@ -1,7 +1,20 @@
 #!/bin/bash
+mode="tab"
+if [ "$1" = "--vertical" ]; then mode="vertical"; shift; fi
+if [ "$1" = "--horizontal" ]; then mode="horizontal"; shift; fi
+
 item="$1"
+
 if [ -d "$item" ]; then
-    zellij action new-tab --layout cc --cwd "$item"
+    case "$mode" in
+        tab)        zellij action new-tab --layout cc-workspace --cwd "$item" ;;
+        vertical)   zellij action move-focus right; zellij run --direction right --cwd "$item" -- "$SHELL" ;;
+        horizontal) zellij action move-focus right; zellij run --direction down --cwd "$item" -- "$SHELL" ;;
+    esac
 else
-    zellij run --floating --close-on-exit -- nvim "$item"
+    case "$mode" in
+        tab)        zellij run --floating --close-on-exit -- nvim "$item" ;;
+        vertical)   zellij action move-focus right; zellij run --direction right --close-on-exit -- nvim "$item" ;;
+        horizontal) zellij action move-focus right; zellij run --direction down --close-on-exit -- nvim "$item" ;;
+    esac
 fi

@@ -6,9 +6,10 @@ font-size = 14
 
 # Window
 macos-titlebar-style = transparent
+window-theme = ghostty
 window-padding-x = 4
 window-padding-y = 4
-background-opacity = 0.97
+background-opacity = 1
 
 # Keybindings
 keybind = cmd+alt+h=previous_tab

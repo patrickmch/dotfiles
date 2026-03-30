@@ -1,4 +1,14 @@
 [[mgr.prepend_keymap]]
 on = ["<Enter>"]
 run = "shell '~/bin/cc-open \"$@\"' --confirm"
-desc = "Dir -> CC tab / File -> nvim"
+desc = "Dir -> new tab / File -> nvim"
+
+[[mgr.prepend_keymap]]
+on = ["v"]
+run = "shell '~/bin/cc-open --vertical \"$@\"' --confirm"
+desc = "Dir -> vertical split / File -> nvim right"
+
+[[mgr.prepend_keymap]]
+on = ["s"]
+run = "shell '~/bin/cc-open --horizontal \"$@\"' --confirm"
+desc = "Dir -> horizontal split / File -> nvim below"
