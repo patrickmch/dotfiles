@@ -142,7 +142,12 @@ keybinds clear-defaults=true {
         bind "Alt [" { PreviousSwapLayout; }
         bind "Alt ]" { NextSwapLayout; }
         bind "Alt f" { ToggleFloatingPanes; }
-        bind "Alt y" { ToggleFocusFullscreen; }
+        bind "Alt y" {
+            Run "zellij" "pipe" "--name" "sidebar-toggle" {
+                close_on_exit true
+                floating true
+            }
+        }
         bind "Ctrl g" { SwitchToMode "locked"; }
         bind "Alt h" { MoveFocusOrTab "left"; }
         bind "Alt i" { MoveTab "left"; }
@@ -266,7 +271,9 @@ plugins {
 // eg. "file:/path/to/my-plugin.wasm"
 // eg. "https://example.com/my-plugin.wasm"
 load_plugins {
+    "zellij:link"
     "file:~/.config/zellij/plugins/zellij-attention.wasm"
+    "file:~/.config/zellij/plugins/sidebar-toggle.wasm"
 }
 web_client {
     font "monospace"
@@ -282,7 +289,7 @@ web_client {
 // Choose the theme that is specified in the themes section.
 // Default: default
 // 
-// theme "dracula"
+theme "catppuccin-mocha"
  
 // Choose the base input mode of zellij.
 // Default: normal
@@ -530,3 +537,20 @@ copy_command "pbcopy"
 // can be useful for removing wrappers around commands
 // Note: be sure to escape backslashes and similar characters properly
 // post_command_discovery_hook "echo $RESURRECT_COMMAND | sed <your_regex_here>"
+
+// Catppuccin Mocha
+themes {
+    catppuccin-mocha {
+        fg "#cdd6f4"
+        bg "#1e1e2e"
+        black "#45475a"
+        red "#f38ba8"
+        green "#a6e3a1"
+        yellow "#f9e2af"
+        blue "#89b4fa"
+        magenta "#cba6f7"
+        cyan "#94e2d5"
+        white "#bac2de"
+        orange "#fab387"
+    }
+}

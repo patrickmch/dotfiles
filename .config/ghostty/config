@@ -1,0 +1,15 @@
+# Theme
+theme = Catppuccin Mocha
+
+# Font
+font-size = 14
+
+# Window
+macos-titlebar-style = transparent
+window-padding-x = 4
+window-padding-y = 4
+background-opacity = 0.97
+
+# Keybindings
+keybind = cmd+alt+h=previous_tab
+keybind = cmd+alt+l=next_tab
