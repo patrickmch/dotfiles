@@ -143,9 +143,8 @@ keybinds clear-defaults=true {
         bind "Alt =" { Resize "Increase"; }
         bind "Alt [" { PreviousSwapLayout; }
         bind "Ctrl \\" {
-            MessagePlugin "file:~/.config/zellij/plugins/sidebar-toggle.wasm" {
+            MessagePlugin "file:/Users/mchey/.config/zellij/plugins/sidebar-toggle.wasm" {
                 name "sidebar-toggle"
-                floating false
             }
         }
         bind "Alt ]" { NextSwapLayout; }
