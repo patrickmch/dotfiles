@@ -7,7 +7,12 @@ item="$1"
 
 if [ -d "$item" ]; then
     case "$mode" in
-        tab)        zellij action new-tab --layout cc-workspace --cwd "$item" ;;
+        tab)
+            zellij action new-tab --layout cc-workspace --cwd "$item"
+            # Close the tab we came from (picker or current workspace)
+            zellij action go-to-previous-tab
+            zellij action close-tab
+            ;;
         vertical)   zellij action move-focus right; zellij run --direction right --cwd "$item" -- "$SHELL" ;;
         horizontal) zellij action move-focus right; zellij run --direction down --cwd "$item" -- "$SHELL" ;;
     esac
