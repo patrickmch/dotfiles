@@ -8,10 +8,15 @@ item="$1"
 if [ -d "$item" ]; then
     case "$mode" in
         tab)
-            zellij action new-tab --layout cc-workspace --cwd "$item"
-            # Close the tab we came from (picker or current workspace)
-            zellij action go-to-previous-tab
-            zellij action close-tab
+            # Extract dir name for tab title (truncate to 20 chars)
+            tabname="${item##*/}"
+            tabname="${tabname:0:20}"
+            zellij action new-tab --layout cc-workspace --cwd "$item" --name "$tabname"
+            # Close the picker tab if we came from it (CC_PICKER set by cc.kdl)
+            if [ -n "$CC_PICKER" ]; then
+                zellij action go-to-previous-tab
+                zellij action close-tab
+            fi
             ;;
         vertical)   zellij action move-focus right; zellij run --direction right --cwd "$item" -- "$SHELL" ;;
         horizontal) zellij action move-focus right; zellij run --direction down --cwd "$item" -- "$SHELL" ;;

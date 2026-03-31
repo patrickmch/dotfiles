@@ -2,14 +2,17 @@
 // Launch: cc   (opens Yazi fullscreen, Enter on a dir spawns workspace tab)
 
 layout {
-    pane size=1 borderless=true {
-        plugin location="tab-bar"
-    }
-    pane command="yazi" {
-        name "picker"
-        focus true
-    }
-    pane size=1 borderless=true {
-        plugin location="status-bar"
+    tab name="picker" {
+        pane size=1 borderless=true {
+            plugin location="tab-bar"
+        }
+        pane command="env" {
+            args "CC_PICKER=1" "yazi"
+            name "picker"
+            focus true
+        }
+        pane size=1 borderless=true {
+            plugin location="status-bar"
+        }
     }
 }
