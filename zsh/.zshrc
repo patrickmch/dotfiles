@@ -212,6 +212,7 @@ bindkey '^[f' forward-word        # Esc+f fallback
 
 # Zellij + Yazi workspace
 alias cc='cd ~/projects && zellij --layout cc'
+alias csp='claude --dangerously-skip-permissions'
 
 # Yazi directory picker — navigate, q to quit, shell cd's there
 y() {
