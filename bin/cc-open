@@ -3,7 +3,8 @@ mode="tab"
 if [ "$1" = "--vertical" ]; then mode="vertical"; shift; fi
 if [ "$1" = "--horizontal" ]; then mode="horizontal"; shift; fi
 
-item="$1"
+# Resolve to absolute path
+item="$(cd "$1" 2>/dev/null && pwd || echo "$1")"
 
 if [ -d "$item" ]; then
     case "$mode" in
@@ -11,7 +12,30 @@ if [ -d "$item" ]; then
             # Extract dir name for tab title (truncate to 20 chars)
             tabname="${item##*/}"
             tabname="${tabname:0:20}"
-            zellij action new-tab --layout cc-workspace --cwd "$item" --name "$tabname"
+            # Generate a temp layout with the dir baked into Yazi args
+            # (--cwd on new-tab doesn't propagate to command panes)
+            tmp="/tmp/cc-workspace-$$.kdl"
+            cat > "$tmp" << LAYOUT
+layout {
+    pane size=1 borderless=true {
+        plugin location="tab-bar"
+    }
+    pane split_direction="vertical" {
+        pane size="20%" command="yazi" {
+            args "$item"
+            name "files"
+        }
+        pane cwd="$item" name="terminal" {
+            focus true
+        }
+    }
+    pane size=1 borderless=true {
+        plugin location="status-bar"
+    }
+}
+LAYOUT
+            zellij action new-tab --layout "$tmp" --name "$tabname"
+            rm -f "$tmp"
             # Close the picker tab if we came from it (CC_PICKER set by cc.kdl)
             if [ -n "$CC_PICKER" ]; then
                 zellij action go-to-previous-tab
