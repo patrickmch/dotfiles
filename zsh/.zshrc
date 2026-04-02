@@ -220,6 +220,9 @@ cc() {
 }
 alias csp='claude --dangerously-skip-permissions'
 
+# Nvim CC IDE (Alt+t for picker, \cc for Claude, Ctrl+\ for sidebar)
+alias ccn='~/bin/cc-ide-nvim'
+
 # Doom Emacs (parked — run emacs -nw to try)
 alias cce='~/bin/cc-ide'
 
