@@ -158,6 +158,11 @@ keybinds clear-defaults=true {
         bind "Ctrl h" { GoToPreviousTab; }
         bind "Ctrl l" { GoToNextTab; }
         bind "Alt n" { NewPane; }
+        bind "Alt t" {
+            MessagePlugin "file:/Users/mchey/.config/zellij/plugins/sidebar-toggle.wasm" {
+                name "new-picker-tab"
+            }
+        }
         bind "Alt o" { MoveTab "right"; }
         bind "Alt p" { TogglePaneInGroup; }
         bind "Alt Shift p" { ToggleGroupMarking; }

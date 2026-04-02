@@ -211,8 +211,17 @@ bindkey '^[b' backward-word       # Esc+b fallback
 bindkey '^[f' forward-word        # Esc+f fallback
 
 # Zellij + Yazi workspace
-alias cc='cd ~/projects && zellij --layout cc'
+cc() {
+  cd ~/projects
+  if [ -f /tmp/cc-restore-tabs.sh ]; then
+    /tmp/cc-restore-tabs.sh &
+  fi
+  zellij -n cc
+}
 alias csp='claude --dangerously-skip-permissions'
+
+# Doom Emacs (parked — run emacs -nw to try)
+alias cce='~/bin/cc-ide'
 
 # Yazi directory picker — navigate, q to quit, shell cd's there
 y() {
