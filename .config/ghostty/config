@@ -1,16 +1,29 @@
 # Theme
 theme = Catppuccin Mocha
 
-# Font
+# Font — use a Nerd Font for icons in nvim-tree
+font-family = JetBrainsMono Nerd Font
 font-size = 14
 
 # Window
-macos-titlebar-style = transparent
+macos-titlebar-style = tabs
 window-theme = ghostty
-window-padding-x = 4
+window-padding-x = 8
 window-padding-y = 4
-background-opacity = 1
+background-opacity = 0.95
+background-blur-radius = 20
+unfocused-split-opacity = 0.9
+window-save-state = always
+
+# Tab styling
+tab-bar-position = bottom
+
+# Cursor
+cursor-style = bar
+cursor-style-blink = false
 
 # Keybindings
 keybind = cmd+alt+h=previous_tab
 keybind = cmd+alt+l=next_tab
+keybind = cmd+t=new_tab
+keybind = cmd+w=close_surface

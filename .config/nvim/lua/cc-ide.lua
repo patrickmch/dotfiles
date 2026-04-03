@@ -49,21 +49,36 @@ vim.opt.showtabline = 2         -- always show tab line
 vim.opt.termguicolors = true    -- 24-bit color
 vim.opt.title = true            -- set terminal title
 
--- Custom tab line showing project names (like Zellij tab bar)
+-- Custom tab line with icons (like a modern IDE tab bar)
 function _G.cc_tabline()
   local s = ""
-  for i = 1, vim.fn.tabpagenr("$") do
+  local total = vim.fn.tabpagenr("$")
+  for i = 1, total do
     local winnr = vim.fn.tabpagewinnr(i)
-    local bufnr = vim.fn.tabpagebuflist(i)[winnr]
     local name = vim.fn.fnamemodify(vim.fn.getcwd(winnr, i), ":t")
     if name == "" then name = "~" end
+    -- Count terminals in this tab
+    local bufs = vim.fn.tabpagebuflist(i)
+    local term_count = 0
+    for _, b in ipairs(bufs) do
+      if vim.fn.getbufvar(b, "&buftype") == "terminal" then
+        term_count = term_count + 1
+      end
+    end
+    local icon = " "  -- folder icon
+    if term_count > 0 then
+      icon = " "  -- terminal icon when active
+    end
     if i == vim.fn.tabpagenr() then
-      s = s .. "%#TabLineSel# " .. name .. " %#TabLineFill#"
+      s = s .. "%#TabLineSel# " .. icon .. name .. " %#TabLineFill#│"
     else
-      s = s .. "%#TabLine# " .. name .. " %#TabLineFill#"
+      s = s .. "%#TabLine# " .. icon .. name .. " %#TabLineFill#│"
     end
   end
-  return s .. "%#TabLineFill#%="
+  -- Right side: session info
+  s = s .. "%#TabLineFill#%="
+  s = s .. "%#TabLine#  " .. total .. " %#TabLineFill#"
+  return s
 end
 vim.opt.tabline = "%!v:lua.cc_tabline()"
 
