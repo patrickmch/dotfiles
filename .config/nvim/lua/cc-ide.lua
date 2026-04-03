@@ -5,16 +5,66 @@
 local M = {}
 
 -------------------------------------------------------------------------------
--- Theme
+-- Theme + Visual Polish
 -------------------------------------------------------------------------------
 local ok, catppuccin = pcall(require, "catppuccin")
 if ok then
-  catppuccin.setup({ flavour = "mocha", integrations = { nvimtree = true } })
+  catppuccin.setup({
+    flavour = "mocha",
+    integrations = {
+      nvimtree = true,
+    },
+    custom_highlights = function(colors)
+      return {
+        -- Softer window separators (like Zellij pane borders)
+        WinSeparator = { fg = colors.surface0, bg = colors.base },
+        -- Cleaner tab line
+        TabLine = { fg = colors.subtext0, bg = colors.mantle },
+        TabLineSel = { fg = colors.text, bg = colors.surface0, bold = true },
+        TabLineFill = { bg = colors.mantle },
+        -- Floating window border (for file preview)
+        FloatBorder = { fg = colors.surface1, bg = colors.base },
+        NormalFloat = { bg = colors.base },
+      }
+    end,
+  })
   vim.cmd.colorscheme("catppuccin")
   vim.g["lightline"] = vim.tbl_deep_extend("force", vim.g["lightline"] or {}, {
-    colorscheme = "rosepine_moon",
+    colorscheme = "catppuccin",
   })
 end
+
+-- Window chrome
+vim.opt.fillchars = {
+  vert = "│",      -- thin vertical separator
+  horiz = "─",     -- thin horizontal separator
+  horizup = "┴",
+  horizdown = "┬",
+  vertleft = "┤",
+  vertright = "├",
+  verthoriz = "┼",
+}
+vim.opt.laststatus = 2          -- always show status line
+vim.opt.showtabline = 2         -- always show tab line
+vim.opt.termguicolors = true    -- 24-bit color
+
+-- Custom tab line showing project names (like Zellij tab bar)
+function _G.cc_tabline()
+  local s = ""
+  for i = 1, vim.fn.tabpagenr("$") do
+    local winnr = vim.fn.tabpagewinnr(i)
+    local bufnr = vim.fn.tabpagebuflist(i)[winnr]
+    local name = vim.fn.fnamemodify(vim.fn.getcwd(winnr, i), ":t")
+    if name == "" then name = "~" end
+    if i == vim.fn.tabpagenr() then
+      s = s .. "%#TabLineSel# " .. name .. " %#TabLineFill#"
+    else
+      s = s .. "%#TabLine# " .. name .. " %#TabLineFill#"
+    end
+  end
+  return s .. "%#TabLineFill#%="
+end
+vim.opt.tabline = "%!v:lua.cc_tabline()"
 
 -------------------------------------------------------------------------------
 -- Helpers
@@ -41,7 +91,7 @@ local function cc_nvimtree_on_attach(bufnr)
   local api = require("nvim-tree.api")
   api.config.mappings.default_on_attach(bufnr)
 
-  -- Enter on file: floating preview (q/Esc to close)
+  -- Enter on file: floating preview with title (q/Esc to close)
   vim.keymap.set("n", "<CR>", function()
     local node = api.tree.get_node_under_cursor()
     if not node or node.type == "directory" then
@@ -52,13 +102,19 @@ local function cc_nvimtree_on_attach(bufnr)
     vim.fn.bufload(buf)
     local w = math.floor(vim.o.columns * 0.75)
     local h = math.floor(vim.o.lines * 0.8)
+    local filename = vim.fn.fnamemodify(node.absolute_path, ":t")
     vim.api.nvim_open_win(buf, true, {
       relative = "editor",
       width = w, height = h,
       col = math.floor((vim.o.columns - w) / 2),
       row = math.floor((vim.o.lines - h) / 2),
-      style = "minimal", border = "rounded",
+      style = "minimal",
+      border = "rounded",
+      title = " " .. filename .. " ",
+      title_pos = "center",
     })
+    -- Enable line numbers in preview
+    vim.opt_local.number = true
     vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = buf })
     vim.keymap.set("n", "<Esc>", "<cmd>close<CR>", { buffer = buf })
   end, { buffer = bufnr, desc = "Float preview" })
@@ -120,7 +176,33 @@ local function cc_nvimtree_on_attach(bufnr)
   end, { buffer = bufnr, desc = "Open dir as tab" })
 end
 
-require("nvim-tree").setup({ on_attach = cc_nvimtree_on_attach })
+require("nvim-tree").setup({
+  on_attach = cc_nvimtree_on_attach,
+  renderer = {
+    indent_markers = { enable = true },
+    icons = {
+      show = { file = true, folder = true, folder_arrow = true, git = true },
+      glyphs = {
+        folder = {
+          arrow_closed = "›",
+          arrow_open = "⌄",
+        },
+      },
+    },
+    highlight_git = true,
+  },
+  view = {
+    width = 30,
+    side = "left",
+  },
+  filters = {
+    dotfiles = false,  -- show hidden files
+  },
+  git = {
+    enable = true,
+    ignore = false,
+  },
+})
 
 -------------------------------------------------------------------------------
 -- Open project as new tab: tree + terminal
