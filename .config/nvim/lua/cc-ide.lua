@@ -47,6 +47,7 @@ vim.opt.fillchars = {
 vim.opt.laststatus = 2          -- always show status line
 vim.opt.showtabline = 2         -- always show tab line
 vim.opt.termguicolors = true    -- 24-bit color
+vim.opt.title = true            -- set terminal title
 
 -- Custom tab line showing project names (like Zellij tab bar)
 function _G.cc_tabline()
@@ -208,49 +209,51 @@ require("nvim-tree").setup({
 -- Open project as new tab: tree + terminal
 -------------------------------------------------------------------------------
 open_project = function(dir)
+  local name = vim.fn.fnamemodify(dir, ":t")
   vim.cmd("tabnew")
   vim.cmd("cd " .. vim.fn.fnameescape(dir))
   vim.cmd("terminal")
   require("nvim-tree.api").tree.open()
   vim.cmd("wincmd l") -- focus terminal
+  -- Set Ghostty tab title
+  vim.opt.titlestring = name
 end
 
 -------------------------------------------------------------------------------
--- Project picker
+-- Project picker (fzf-powered, fuzzy search)
 -------------------------------------------------------------------------------
 function M.project_picker()
-  local dirs = {}
-  local seen = {}
+  -- Collect dirs from all base locations
   local base_dirs = {
     vim.fn.expand("~/projects/clients"),
     vim.fn.expand("~/projects/code"),
     vim.fn.expand("~/projects/mcheyser"),
     vim.fn.expand("~/projects/workspace"),
     vim.fn.expand("~/projects"),
+    vim.fn.expand("~"),
   }
-  for _, base in ipairs(base_dirs) do
-    if vim.fn.isdirectory(base) == 1 then
-      for _, d in ipairs(vim.fn.globpath(base, "*", false, true)) do
-        if vim.fn.isdirectory(d) == 1 and not seen[d] then
-          local name = vim.fn.fnamemodify(d, ":t")
-          if name:sub(1, 1) ~= "." and name ~= "_archive" then
-            seen[d] = true
-            table.insert(dirs, d)
-          end
-        end
-      end
-    end
+  -- Use fd/find to get all directories, formatted nicely
+  local cmd = "("
+  for i, base in ipairs(base_dirs) do
+    if i > 1 then cmd = cmd .. "; " end
+    cmd = cmd .. "find " .. vim.fn.shellescape(base) .. " -maxdepth 1 -type d 2>/dev/null"
   end
-  table.sort(dirs, function(a, b)
-    return vim.fn.fnamemodify(a, ":t") < vim.fn.fnamemodify(b, ":t")
-  end)
-  local display = {}
-  for _, d in ipairs(dirs) do
-    table.insert(display, vim.fn.fnamemodify(d, ":t"))
-  end
-  vim.ui.select(display, { prompt = "Project: " }, function(choice, idx)
-    if choice and idx then open_project(dirs[idx]) end
-  end)
+  cmd = cmd .. ") | sort -u | grep -v '/\\.' | grep -v '_archive'"
+
+  vim.fn["fzf#run"](vim.fn["fzf#wrap"]({
+    source = cmd,
+    options = {
+      "--prompt", "Project> ",
+      "--preview", "ls -la {} | head -20",
+      "--preview-window", "right:40%",
+      "--expect", "esc",
+      "--bind", "esc:abort",
+    },
+    sinklist = function(lines)
+      if #lines < 2 or lines[2] == "" then return end
+      open_project(lines[2])
+    end,
+  }))
 end
 
 -------------------------------------------------------------------------------
