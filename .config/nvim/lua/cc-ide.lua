@@ -302,13 +302,26 @@ map("t", [[<C-\><C-\>]], function() vim.cmd("stopinsert"); toggle_sidebar() end,
 -------------------------------------------------------------------------------
 -- Terminal autocmds
 -------------------------------------------------------------------------------
+local term_group = vim.api.nvim_create_augroup("cc_ide_term", { clear = true })
+
+-- Auto insert mode when opening a terminal
 vim.api.nvim_create_autocmd("TermOpen", {
-  group = vim.api.nvim_create_augroup("cc_ide_term", { clear = true }),
+  group = term_group,
   callback = function()
     vim.cmd("startinsert")
     vim.opt_local.number = false
     vim.opt_local.relativenumber = false
     vim.opt_local.signcolumn = "no"
+  end,
+})
+
+-- Auto insert mode when entering a terminal buffer
+vim.api.nvim_create_autocmd("BufEnter", {
+  group = term_group,
+  callback = function()
+    if vim.bo.buftype == "terminal" then
+      vim.cmd("startinsert")
+    end
   end,
 })
 
