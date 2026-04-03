@@ -10,3 +10,4 @@ node_modules/
 .claude/plugins/
 .claude/projects/
 .claude/plans/
+.config/nvim/cc-ide-session.vim

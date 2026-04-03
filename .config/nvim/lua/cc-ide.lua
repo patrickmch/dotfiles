@@ -1,28 +1,16 @@
--- cc-ide.lua — CC IDE features for nvim
--- Adds: project picker, Claude terminal, sidebar toggle, window/tab nav
--- Loaded via: lua require("cc-ide") in init.vim
--- Does NOT replace .vimrc — only adds CC IDE keybindings and functions.
---
--- Keybinding overrides from .vimrc:
---   Ctrl+h was :Mru, now gT (prev tab)
---   Ctrl+l was :Buffers, now gt (next tab)
---   Use :Mru and :Buffers manually or remap if needed.
+-- cc-ide.lua — Nvim CC IDE
+-- nvim-tree sidebar + terminal buffer. You run Claude/Zellij/whatever in the terminal.
+-- Floating file preview from the tree. v/s for splits. t for new project tabs.
 
 local M = {}
 
 -------------------------------------------------------------------------------
--- Theme: Catppuccin Mocha
+-- Theme
 -------------------------------------------------------------------------------
 local ok, catppuccin = pcall(require, "catppuccin")
 if ok then
-  catppuccin.setup({
-    flavour = "mocha",
-    integrations = {
-      nvimtree = true,
-    },
-  })
+  catppuccin.setup({ flavour = "mocha", integrations = { nvimtree = true } })
   vim.cmd.colorscheme("catppuccin")
-  -- Update lightline to a compatible dark theme
   vim.g["lightline"] = vim.tbl_deep_extend("force", vim.g["lightline"] or {}, {
     colorscheme = "rosepine_moon",
   })
@@ -32,78 +20,117 @@ end
 -- Helpers
 -------------------------------------------------------------------------------
 local function toggle_sidebar()
+  local was_terminal = vim.bo.buftype == "terminal"
   require("nvim-tree.api").tree.toggle({ find_file = false, focus = false })
+  -- If we were in a terminal, go back to insert mode
+  if was_terminal then
+    vim.defer_fn(function()
+      if vim.bo.buftype == "terminal" then
+        vim.cmd("startinsert")
+      end
+    end, 50)
+  end
 end
 
--- Make nvim-tree open files in a split, never replacing a terminal buffer
-local function setup_nvimtree_open_behavior()
-  local api = require("nvim-tree.api")
-  api.events.subscribe(api.events.Event.FileOpened, function()
-    -- After opening a file, close nvim-tree if it was focused
-    -- (the file opens in the previous window by default)
-  end)
-end
+local open_project -- forward declaration
 
--- Override nvim-tree setup to open files in floating windows
--- This re-calls setup with on_attach — safe to call after .vimrc's setup
+-------------------------------------------------------------------------------
+-- nvim-tree on_attach
+-------------------------------------------------------------------------------
 local function cc_nvimtree_on_attach(bufnr)
   local api = require("nvim-tree.api")
-  -- Apply all default mappings first
   api.config.mappings.default_on_attach(bufnr)
 
-  -- Override Enter: files open in float, dirs expand/collapse
+  -- Enter on file: floating preview (q/Esc to close)
   vim.keymap.set("n", "<CR>", function()
     local node = api.tree.get_node_under_cursor()
     if not node or node.type == "directory" then
       api.node.open.edit()
       return
     end
-    -- Open file in a centered floating window
     local buf = vim.fn.bufadd(node.absolute_path)
     vim.fn.bufload(buf)
-    local width = math.floor(vim.o.columns * 0.75)
-    local height = math.floor(vim.o.lines * 0.8)
-    local col = math.floor((vim.o.columns - width) / 2)
-    local row = math.floor((vim.o.lines - height) / 2)
+    local w = math.floor(vim.o.columns * 0.75)
+    local h = math.floor(vim.o.lines * 0.8)
     vim.api.nvim_open_win(buf, true, {
       relative = "editor",
-      width = width,
-      height = height,
-      col = col,
-      row = row,
-      style = "minimal",
-      border = "rounded",
+      width = w, height = h,
+      col = math.floor((vim.o.columns - w) / 2),
+      row = math.floor((vim.o.lines - h) / 2),
+      style = "minimal", border = "rounded",
     })
-    -- q and Esc close the float
-    vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = buf, desc = "Close float" })
-    vim.keymap.set("n", "<Esc>", "<cmd>close<CR>", { buffer = buf, desc = "Close float" })
-  end, { buffer = bufnr, desc = "Open file in float" })
+    vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = buf })
+    vim.keymap.set("n", "<Esc>", "<cmd>close<CR>", { buffer = buf })
+  end, { buffer = bufnr, desc = "Float preview" })
+
+  -- Helper: open file in float
+  local function float_file(path)
+    local buf = vim.fn.bufadd(path)
+    vim.fn.bufload(buf)
+    local w = math.floor(vim.o.columns * 0.75)
+    local h = math.floor(vim.o.lines * 0.8)
+    vim.api.nvim_open_win(buf, true, {
+      relative = "editor", width = w, height = h,
+      col = math.floor((vim.o.columns - w) / 2),
+      row = math.floor((vim.o.lines - h) / 2),
+      style = "minimal", border = "rounded",
+    })
+    vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = buf })
+    vim.keymap.set("n", "<Esc>", "<cmd>close<CR>", { buffer = buf })
+  end
+
+  -- v on dir: vertical split with terminal in that dir
+  -- v on file: floating preview
+  vim.keymap.set("n", "v", function()
+    local node = api.tree.get_node_under_cursor()
+    if not node then return end
+    if node.type == "directory" then
+      vim.cmd("wincmd l | vsplit | terminal")
+      vim.defer_fn(function()
+        local chan = vim.b.terminal_job_id
+        if chan then vim.fn.chansend(chan, "cd " .. vim.fn.shellescape(node.absolute_path) .. " && clear\n") end
+      end, 100)
+    else
+      float_file(node.absolute_path)
+    end
+  end, { buffer = bufnr, desc = "Vertical split / float file" })
+
+  -- s on dir: horizontal split with terminal in that dir
+  -- s on file: floating preview
+  vim.keymap.set("n", "s", function()
+    local node = api.tree.get_node_under_cursor()
+    if not node then return end
+    if node.type == "directory" then
+      vim.cmd("wincmd l | split | terminal")
+      vim.defer_fn(function()
+        local chan = vim.b.terminal_job_id
+        if chan then vim.fn.chansend(chan, "cd " .. vim.fn.shellescape(node.absolute_path) .. " && clear\n") end
+      end, 100)
+    else
+      float_file(node.absolute_path)
+    end
+  end, { buffer = bufnr, desc = "Horizontal split / float file" })
+
+  -- t on dir: open as new tab (tree + terminal)
+  vim.keymap.set("n", "t", function()
+    local node = api.tree.get_node_under_cursor()
+    if node and node.type == "directory" then
+      open_project(node.absolute_path)
+    end
+  end, { buffer = bufnr, desc = "Open dir as tab" })
 end
 
--- Re-setup nvim-tree with our on_attach (preserves existing .vimrc settings)
-require("nvim-tree").setup({
-  on_attach = cc_nvimtree_on_attach,
-})
+require("nvim-tree").setup({ on_attach = cc_nvimtree_on_attach })
 
-local function open_claude()
-  vim.cmd("vsplit")
-  vim.cmd("terminal " .. vim.fn.expand("~/bin/claude"))
-end
-
-local function open_claude_skip()
-  vim.cmd("vsplit")
-  vim.cmd("terminal " .. vim.fn.expand("~/bin/claude") .. " --dangerously-skip-permissions")
-end
-
-local function open_project(dir)
+-------------------------------------------------------------------------------
+-- Open project as new tab: tree + terminal
+-------------------------------------------------------------------------------
+open_project = function(dir)
   vim.cmd("tabnew")
   vim.cmd("cd " .. vim.fn.fnameescape(dir))
-  -- open terminal on the right
   vim.cmd("terminal")
-  -- open nvim-tree sidebar on the left
   require("nvim-tree.api").tree.open()
-  -- focus the terminal (rightmost window)
-  vim.cmd("wincmd l")
+  vim.cmd("wincmd l") -- focus terminal
 end
 
 -------------------------------------------------------------------------------
@@ -113,6 +140,10 @@ function M.project_picker()
   local dirs = {}
   local seen = {}
   local base_dirs = {
+    vim.fn.expand("~/projects/clients"),
+    vim.fn.expand("~/projects/code"),
+    vim.fn.expand("~/projects/mcheyser"),
+    vim.fn.expand("~/projects/workspace"),
     vim.fn.expand("~/projects"),
   }
   for _, base in ipairs(base_dirs) do
@@ -131,16 +162,12 @@ function M.project_picker()
   table.sort(dirs, function(a, b)
     return vim.fn.fnamemodify(a, ":t") < vim.fn.fnamemodify(b, ":t")
   end)
-
   local display = {}
   for _, d in ipairs(dirs) do
     table.insert(display, vim.fn.fnamemodify(d, ":t"))
   end
-
   vim.ui.select(display, { prompt = "Project: " }, function(choice, idx)
-    if choice and idx then
-      open_project(dirs[idx])
-    end
+    if choice and idx then open_project(dirs[idx]) end
   end)
 end
 
@@ -150,10 +177,8 @@ end
 local map = vim.keymap.set
 local ESC = [[<C-\><C-n>]]
 
--- Sidebar toggle: Ctrl+backslash
 map("n", [[<C-\>]], toggle_sidebar, { desc = "Toggle sidebar" })
 
--- Window navigation: Alt+h/j/k/l (works from normal AND terminal mode)
 map("n", "<M-h>", "<C-w>h", { desc = "Window left" })
 map("n", "<M-l>", "<C-w>l", { desc = "Window right" })
 map("n", "<M-j>", "<C-w>j", { desc = "Window down" })
@@ -163,36 +188,16 @@ map("t", "<M-l>", ESC .. "<C-w>l", { desc = "Window right (term)" })
 map("t", "<M-j>", ESC .. "<C-w>j", { desc = "Window down (term)" })
 map("t", "<M-k>", ESC .. "<C-w>k", { desc = "Window up (term)" })
 
--- Tab switching: Ctrl+h / Ctrl+l
--- NOTE: overrides fzf Mru (<C-h>) and Buffers (<C-l>) from .vimrc
 map("n", "<C-h>", "gT", { desc = "Previous tab" })
 map("n", "<C-l>", "gt", { desc = "Next tab" })
 map("t", "<C-h>", ESC .. "gT", { desc = "Previous tab (term)" })
 map("t", "<C-l>", ESC .. "gt", { desc = "Next tab (term)" })
 
--- Project picker: Alt+t
 map("n", "<M-t>", M.project_picker, { desc = "Project picker" })
-map("t", "<M-t>", function()
-  vim.cmd("stopinsert")
-  M.project_picker()
-end, { desc = "Project picker (term)" })
+map("t", "<M-t>", function() vim.cmd("stopinsert"); M.project_picker() end, { desc = "Project picker (term)" })
 
--- Open Claude terminal: leader+cc / leader+cs
-map("n", "<leader>cc", function() open_claude() end, { desc = "Open Claude" })
-map("n", "<leader>cs", function() open_claude_skip() end, { desc = "Claude skip-perms" })
-
--- New terminal: Alt+n
-map("n", "<M-n>", ":terminal<CR>", { desc = "New terminal" })
-map("t", "<M-n>", ESC .. ":terminal<CR>", { desc = "New terminal (term)" })
-
--- Escape terminal mode: double-Esc
 map("t", "<Esc><Esc>", ESC, { desc = "Exit terminal mode" })
-
--- Sidebar toggle from terminal mode: Ctrl+\ Ctrl+\
-map("t", [[<C-\><C-\>]], function()
-  vim.cmd("stopinsert")
-  toggle_sidebar()
-end, { desc = "Toggle sidebar (term)" })
+map("t", [[<C-\><C-\>]], function() vim.cmd("stopinsert"); toggle_sidebar() end, { desc = "Toggle sidebar (term)" })
 
 -------------------------------------------------------------------------------
 -- Terminal autocmds
@@ -204,18 +209,6 @@ vim.api.nvim_create_autocmd("TermOpen", {
     vim.opt_local.number = false
     vim.opt_local.relativenumber = false
     vim.opt_local.signcolumn = "no"
-  end,
-})
-
--------------------------------------------------------------------------------
--- Session persistence
--------------------------------------------------------------------------------
-vim.api.nvim_create_autocmd("VimLeavePre", {
-  group = vim.api.nvim_create_augroup("cc_ide_session", { clear = true }),
-  callback = function()
-    if vim.fn.tabpagenr("$") > 1 then
-      vim.cmd("mksession! ~/.config/nvim/cc-ide-session.vim")
-    end
   end,
 })
 
