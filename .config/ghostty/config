@@ -15,9 +15,6 @@ background-blur-radius = 20
 unfocused-split-opacity = 0.9
 window-save-state = always
 
-# Tab styling
-tab-bar-position = bottom
-
 # Cursor
 cursor-style = bar
 cursor-style-blink = false
