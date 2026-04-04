@@ -315,12 +315,16 @@ vim.api.nvim_create_autocmd("TermOpen", {
   end,
 })
 
--- Auto insert mode when entering a terminal buffer
-vim.api.nvim_create_autocmd("BufEnter", {
+-- Auto insert mode when entering a terminal window
+vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter" }, {
   group = term_group,
   callback = function()
-    if vim.bo.buftype == "terminal" then
-      vim.cmd("startinsert")
+    if vim.bo.buftype == "terminal" and vim.fn.mode() ~= "t" then
+      vim.defer_fn(function()
+        if vim.bo.buftype == "terminal" then
+          vim.cmd("startinsert")
+        end
+      end, 10)
     end
   end,
 })
