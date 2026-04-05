@@ -36,6 +36,9 @@ Plug 'airblade/vim-gitgutter'  " show git changes to files in gutter
 Plug 'bkad/CamelCaseMotion'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'MeanderingProgrammer/render-markdown.nvim'
+Plug 'coder/claudecode.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'obsidian-nvim/obsidian.nvim'
 call plug#end()
 if exists('g:vscode')
     nnoremap <space> :call VSCodeNotify('whichkey.show')<CR>

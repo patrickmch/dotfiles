@@ -1,8 +1,27 @@
 -- cc-ide.lua — Nvim CC IDE
--- nvim-tree sidebar + terminal buffer. You run Claude/Zellij/whatever in the terminal.
+-- nvim-tree sidebar + Claude Code integration (claudecode.nvim)
 -- Floating file preview from the tree. v/s for splits. t for new project tabs.
 
 local M = {}
+
+-------------------------------------------------------------------------------
+-- Claude Code integration (coder/claudecode.nvim)
+-------------------------------------------------------------------------------
+local claude_ok, claudecode = pcall(require, "claudecode")
+if claude_ok then
+  claudecode.setup({
+    terminal = {
+      split_side = "right",
+      split_width_percentage = 0.5,
+    },
+  })
+
+  -- Keybindings for Claude Code
+  vim.keymap.set("n", "<leader>ac", "<cmd>ClaudeCode<CR>", { desc = "Toggle Claude" })
+  vim.keymap.set("v", "<leader>as", "<cmd>ClaudeCodeSend<CR>", { desc = "Send to Claude" })
+  vim.keymap.set("n", "<leader>as", "<cmd>ClaudeCodeTreeAdd<CR>", { desc = "Add file to Claude" })
+  vim.keymap.set("n", "<leader>ao", "<cmd>ClaudeCodeOpen<CR>", { desc = "Open Claude panel" })
+end
 
 -------------------------------------------------------------------------------
 -- Theme + Visual Polish
