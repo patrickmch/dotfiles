@@ -210,20 +210,12 @@ bindkey '^[[1;3C' forward-word    # Alt+Right
 bindkey '^[b' backward-word       # Esc+b fallback
 bindkey '^[f' forward-word        # Esc+f fallback
 
-# Zellij + Yazi workspace
-cc() {
-  cd ~/projects
-  if [ -f /tmp/cc-restore-tabs.sh ]; then
-    /tmp/cc-restore-tabs.sh &
-  fi
-  zellij -n cc
-}
+# CC IDE — nvim with tree + terminal
+alias cc='~/bin/cc-ide-nvim'
 alias csp='claude --dangerously-skip-permissions'
 
-# Nvim CC IDE (Alt+t for picker, \cc for Claude, Ctrl+\ for sidebar)
-alias ccn='~/bin/cc-ide-nvim'
-
-# Doom Emacs (parked — run emacs -nw to try)
+# Legacy (Zellij: ccz, Emacs: cce)
+alias ccz='cd ~/projects && zellij -n cc'
 alias cce='~/bin/cc-ide'
 
 # Yazi directory picker — navigate, q to quit, shell cd's there
