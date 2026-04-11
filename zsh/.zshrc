@@ -223,6 +223,10 @@ bindkey '^[f' forward-word        # Esc+f fallback
 
 # CC IDE — nvim with tree + terminal
 alias cc='~/bin/cc-ide-nvim'
+# Wrap claude invocations with env -u TELEGRAM_BOT_TOKEN so that even
+# shells started before the .zshrc unset (e.g. long-lived zellij panes)
+# can't leak the token to the telegram plugin. Layer 4 of the fix.
+claude() { env -u TELEGRAM_BOT_TOKEN command claude "$@"; }
 alias csp='claude --dangerously-skip-permissions'
 
 # Legacy (Zellij: ccz, Emacs: cce)
