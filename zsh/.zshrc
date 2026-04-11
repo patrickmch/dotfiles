@@ -190,6 +190,17 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # Source secrets (.env is globally gitignored)
 [ -f ~/.env ] && source ~/.env
 
+# Explicitly unset TELEGRAM_BOT_TOKEN after sourcing ~/.env. Claude Code's
+# telegram plugin falls back to process env when its state-dir .env is
+# missing a token, spawning competing Bot API long-pollers in every shell-
+# launched claude session — which silently eat messages routed to the
+# --channels session on gc. The infrastructure channel's token lives only
+# in ~/.claude/channels/telegram-infra/.env (via TELEGRAM_STATE_DIR). This
+# unset catches the leak at shell entry regardless of where the token was
+# inherited from (long-running parents like zellij server, accidental
+# re-introduction to ~/.env, etc). See infrastructure/wiki/services/claude-sessions.md.
+unset TELEGRAM_BOT_TOKEN
+
 alias claude-mem='/Users/mchey/.bun/bin/bun "/Users/mchey/.claude/plugins/cache/thedotmack/claude-mem/10.5.5/scripts/worker-service.cjs"'
 # Gemini CLI / Vertex AI defaults
 export GOOGLE_CLOUD_PROJECT="mcp-489517"
