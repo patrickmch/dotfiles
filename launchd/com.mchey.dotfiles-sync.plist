@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>com.mchey.dotfiles-sync</string>
+
+    <key>Comment</key>
+    <string>Daily ~/dotfiles sync with patrickmch/dotfiles on GitHub. Runs dotfiles-sync.sh which does a git fetch + ff-only pull and files a McHeyser/infrastructure issue on any non-trivial failure so it doesn't silently fail. See fleet sync + backup tracker.</string>
+
+    <key>ProgramArguments</key>
+    <array>
+      <string>/bin/bash</string>
+      <string>/Users/mchey/dotfiles/bin/dotfiles-sync.sh</string>
+    </array>
+
+    <key>StartCalendarInterval</key>
+    <dict>
+      <key>Hour</key>
+      <integer>4</integer>
+      <key>Minute</key>
+      <integer>0</integer>
+    </dict>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>ThrottleInterval</key>
+    <integer>60</integer>
+
+    <key>StandardOutPath</key>
+    <string>/Users/mchey/logs/dotfiles-sync.stdout.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/mchey/logs/dotfiles-sync.stderr.log</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+      <key>HOME</key>
+      <string>/Users/mchey</string>
+      <key>PATH</key>
+      <string>/Users/mchey/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin</string>
+      <key>LANG</key>
+      <string>en_US.UTF-8</string>
+    </dict>
+  </dict>
+</plist>
