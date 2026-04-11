@@ -4,9 +4,11 @@ Workspace schema (project routing, people, directory structure): `~/projects/CLA
 
 ## Environment
 
-- Interactive dev on **eagle** (MacBook Pro M1 Pro, 32GB, mchey). Claude sessions, browser, local dev, audio transcription.
-- Always-on server on **gc / groundcontrol** (Mac Mini M4 Pro, 64GB, mchey, 100.118.247.22). Cron, OpenClaw, agents, background tasks.
-- Experimental on **turtle** (turtle-1, tmac, 100.124.70.31). OpenClaw sandbox, experimental agent work. No production services.
+Claude sessions can run on any machine in the fleet. A SessionStart hook (`~/.claude/hooks/detect-machine.sh`) emits a `CURRENT_MACHINE:` line into the session-reminder block at startup — **trust that over any assumption in this file**. The fleet:
+
+- **eagle** — MacBook Pro M1 Pro, 32GB, mchey @ 100.116.125.97. Interactive dev, browser, local dev, audio recording, mbsync. Not always-on.
+- **gc / groundcontrol** — Mac Mini M4 Pro, 64GB, mchey @ 100.118.247.22. Always-on server. Cron, OpenClaw, agents, background tasks, persistent `claude-infra` Telegram session.
+- **turtle** — turtle-1, tmac @ 100.124.70.31. Experimental OpenClaw sandbox. No production services.
 - Uses **Happy Coder** (`happy` CLI) as wrapper around `claude`. Shell context may differ from direct `claude` invocation.
 - NEVER commit hardcoded secrets. ALWAYS use .env or secrets files.
 - Secrets go in `~/.env` (sourced by .zshrc, globally gitignored). Never in settings.json or committed files.
@@ -23,41 +25,43 @@ When you encounter a ~/code/ reference in any file, update it to ~/projects/.
 
 When creating project skills, read `~/projects/docs/creating-project-skills.md` first.
 
-## Two-Machine Architecture
+## Three-Machine Architecture
 
-**eagle** (MacBook Pro M1 Pro, 32GB) = interactive dev. Claude sessions, browser, local dev. Not always-on.
-**gc** (Mac Mini M4 Pro, 64GB) = always-on server. Cron, OpenClaw, agents, background tasks, browser automation.
+**eagle** (MacBook Pro M1 Pro, 32GB) = interactive dev workstation. Browser, local dev. Not always-on.
+**gc** (Mac Mini M4 Pro, 64GB) = always-on server. Cron, OpenClaw, agents, background tasks, browser automation, persistent Claude sessions.
 **turtle** (2014 MBP, 16GB) = experimental sandbox. OpenClaw experimentation, throwaway agent work. No production services.
+
+The session you're reading this in could be running on any of them — `CURRENT_MACHINE` (from the SessionStart hook) is ground truth. Use the routing table below to decide where *new* work should happen, and use `ssh <host>` only when you're not already there.
 
 | Task needs... | Run on... |
 |---------------|-----------|
 | Interactive development | eagle |
-| Claude sessions | eagle |
+| Claude sessions | any (gc hosts the persistent `claude-infra` Telegram session; eagle for ad-hoc; turtle for experiments) |
 | Google Workspace MCP | eagle |
 | Browser automation (claude-in-chrome) | eagle |
 | Schedule / background / cron | gc |
 | OpenClaw agents (production) | gc |
-| Browser automation (headless/scraping) | gc (via `ssh gc "~/bin/ocp browser ..."`) |
+| Browser automation (headless/scraping) | gc (via `ssh gc "~/bin/ocp browser ..."` if not already on gc) |
 | Telegram approval flow | gc |
 | OpenClaw experiments / sandbox | turtle |
 
 ```bash
-# From eagle: SSH into gc for server tasks
+# Reach server tasks (run from eagle or turtle; skip the ssh if already on gc)
 ssh gc
 
-# On gc: use ~/bin/ocp (full path required — ~/bin is not in SSH PATH)
+# ocp lives in ~/bin on gc — full path required because ~/bin is not in SSH PATH
 ~/bin/ocp status
 ~/bin/ocp cron list
 ~/bin/ocp agent --to telegram --message "..." --deliver
 
-# OCP browser automation on gc (from eagle via SSH):
+# OCP browser automation on gc (wrap in `ssh gc "..."` only if not already on gc):
 ssh gc "~/bin/ocp browser navigate 'https://example.com'"
 ssh gc "~/bin/ocp browser snapshot"                        # get element refs
 ssh gc "~/bin/ocp browser click e13"                       # click by ref ID
 ssh gc "~/bin/ocp browser type e11 'hello@example.com'"    # type into field
 ssh gc "~/bin/ocp browser screenshot"                      # capture image
 
-# From eagle: SSH into turtle for experiments
+# Reach experimental sandbox
 ssh turtle
 ```
 
