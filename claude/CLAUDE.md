@@ -67,7 +67,7 @@ ssh turtle
 
 **OpenClaw vs Playwright**: OpenClaw (`ocp`) is the browser automation tool on gc — use it via SSH commands above. The `mcp__plugin_playwright_playwright__*` tools in your session are a DIFFERENT tool (local Playwright). For headless browser work (scraping, form fills, QA), use OCP on gc.
 
-**CAPTCHAs**: When OCP hits a CAPTCHA on gc, there is currently no way to solve it remotely. The OCP dashboard (port 18789) is a config UI, not a live browser view. Instead, use eagle's local Chrome (claude-in-chrome) for tasks that require authenticated browser sessions.
+**CAPTCHAs / Login walls**: OCP on gc runs Chrome in headed mode (`headless: false`). When an agent hits a CAPTCHA or login, Screen Share into gc (`open vnc://100.118.247.22`) to interact with the Chrome window directly. If you change the `headless` setting in `~/.openclaw/openclaw.json`, you must restart the gateway (`launchctl kickstart -k gui/$(id -u)/ai.openclaw.gateway`) AND trigger a browser action — Chrome only launches when first used.
 
 Concurrency limits: eagle max 5 agents (32GB). gc max 10-15 agents (64GB). turtle max 5 agents (16GB).
 
