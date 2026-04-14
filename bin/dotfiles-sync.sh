@@ -19,6 +19,12 @@
 
 set -u
 
+# Source secrets (GH_TOKEN for gh CLI auth under launchd, which has no env vars)
+if [ -f "${HOME}/.env" ]; then
+  # shellcheck disable=SC1091
+  source "${HOME}/.env"
+fi
+
 LOG="${HOME}/logs/dotfiles-sync.log"
 DOTFILES="${HOME}/dotfiles"
 HOSTNAME_SHORT=$(hostname -s 2>/dev/null || hostname)
