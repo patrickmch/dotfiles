@@ -13,6 +13,7 @@ Claude sessions can run on any machine in the fleet. A SessionStart hook (`~/.cl
 - NEVER commit hardcoded secrets. ALWAYS use .env or secrets files.
 - Secrets go in `~/.env` (sourced by .zshrc, globally gitignored). Never in settings.json or committed files.
 - Always output URLs as plain text (e.g. `https://example.com`), never as markdown links (`[text](url)`). Markdown links are not visible in the CLI console.
+- When adding or fixing a launchd job (any project, any machine), read `~/projects/infrastructure/wiki/operations/launchd-pattern.md` first and mirror the pattern. Deploy via `~/projects/infrastructure/services/launchd/deploy.sh --apply`, never hand-rolled `scp` + `launchctl load`.
 
 ## DEPRECATION: ~/code/ → ~/projects/
 
