@@ -113,7 +113,7 @@ For waves marked "Spot-Check" in the roadmap:
 ## Rules
 
 - DO NOT execute any tests. You only write the eval/checklist.
-- DO NOT SSH into turtle or run OpenClaw commands.
+- DO NOT SSH into other machines or run OpenClaw commands.
 - DO NOT modify QA_ROADMAP.md.
 - DO read GitHub issues and source code to understand what to test.
 - DO tag every scenario as [BROWSER] or [API].

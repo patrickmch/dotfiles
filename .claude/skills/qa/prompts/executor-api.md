@@ -138,7 +138,7 @@ Same as browser executor:
 ## Rules
 
 - Do NOT open a browser or use OpenClaw
-- Do NOT SSH into turtle for browser commands
+- Do NOT SSH into other machines for browser commands
 - Do NOT write the report (reviewer's job)
 - Do NOT update QA_ROADMAP.md (orchestrator's job)
 - Do NOT run `git push`, `gh` write commands, or deploy actions

@@ -52,9 +52,6 @@ Validate report (has Verdict line)
 Update QA_ROADMAP.md (dashboard + item rows + changelog)
       │
       ▼
-Mirror report to turtle via scp
-      │
-      ▼
 Surface consolidated summary to user
       │
       ▼
@@ -107,7 +104,7 @@ Read the eval. Split scenarios by their Type tag:
 
 If ALL scenarios are `[BROWSER]`, only dispatch one executor (no parallelism).
 
-**Conflict Detection:** Parallel requires browser + API split AND different entities AND different pages AND no data dependency. Two browser tests NEVER run in parallel (single OpenClaw browser on turtle). When in doubt, run sequentially.
+**Conflict Detection:** Parallel requires browser + API split AND different entities AND different pages AND no data dependency. Two browser tests NEVER run in parallel (single OpenClaw browser instance). When in doubt, run sequentially.
 
 **Per-wave parallelism hints:**
 
@@ -180,6 +177,12 @@ After executors complete, check:
 1. Expected output files exist
 2. Files contain at least one result row (not empty/malformed)
 3. No executor reported Phase 0 failure
+4. **Screenshot gate (browser executors only):** Count `[BROWSER]` scenarios vs screenshots in the raw results file. If any browser scenario has zero screenshots, the executor violated Hard Rule #2. Do NOT pass to the reviewer — instead, **PAUSE** and surface the gap:
+   ```
+   Screenshot gap: {N} browser scenarios missing screenshots: {list scenario IDs}
+   Options: (1) re-dispatch executor for those scenarios only, (2) proceed with PASS(unverified) verdicts
+   ```
+   Only proceed to Step 8 after user chooses.
 
 If an executor agent returned an error or produced no output file (possible timeout/crash), **PAUSE** and report which scenarios were not executed. Offer to retry those specific scenarios.
 
@@ -209,14 +212,7 @@ Edit the roadmap:
 3. **Changelog** — append: `| {date} | Wave {N} ({theme}): {verdict}. {passed}/{total} scenarios passed. |`
 4. **Eval/Report index** — add new eval and report filenames if they're new
 
-### Step 10: Mirror Report to Turtle
-
-```bash
-ssh tmac@100.124.70.31 "mkdir -p ~/openclaw-projects/test-reports/mtrotests/$(date +%Y-%m-%d)"
-scp /Users/mchey/projects/clients/mtropro/services/qa/QA_WAVE{N}_*_REPORT.md tmac@100.124.70.31:~/openclaw-projects/test-reports/mtrotests/$(date +%Y-%m-%d)/
-```
-
-### Step 11: Surface Summary
+### Step 10: Surface Summary
 
 Output to user:
 ```
@@ -235,7 +231,7 @@ Report: services/qa/QA_WAVE{N}_{THEME}_REPORT.md
 What next? ("next" for next wave, "retest {issue}", "skip to wave {N}", "stop")
 ```
 
-### Step 12: PAUSE
+### Step 11: PAUSE
 
 Wait for user input:
 - **"next"** → loop back to Step 1
@@ -243,20 +239,20 @@ Wait for user input:
 - **"skip to wave N"** → jump to that wave, loop from Step 1
 - **"stop"** → end the QA session
 
-### Step 14: Meta-Review (Background)
+### Step 12: Meta-Review (Background)
 
-**Timing:** This step fires immediately after Step 11 (Surface Summary), before the PAUSE at Step 12. It is numbered 14 to avoid renumbering existing steps.
+**Timing:** This step fires immediately after Step 10 (Surface Summary), before the PAUSE at Step 11.
 
 Dispatch the independent meta-reviewer as a background subagent:
 
 1. Invoke the `/qa-review` skill with the wave number
-2. Run in background -- do NOT wait for completion before pausing at Step 12
+2. Run in background -- do NOT wait for completion before pausing at Step 11
 3. When the meta-reviewer completes, surface the result to the user:
    "Independent QA review complete: {google doc link or file path} -- Score: {X}/10"
 
 This step is non-blocking. The user can proceed with "next", "retest", or "stop" without waiting for the review. The notification is informational and does not interrupt the current wave.
 
-**Resource note:** This uses 2/2 agent slots while both are running. If the user says "next" and a new wave needs a browser executor (turtle subagent), wait for the meta-reviewer to complete before dispatching the browser executor.
+**Resource note:** This uses 2/2 agent slots while both are running. If the user says "next" and a new wave needs a browser executor, wait for the meta-reviewer to complete before dispatching the browser executor.
 
 ## Failure Pause Points
 
@@ -264,7 +260,7 @@ This step is non-blocking. The user can proceed with "next", "retest", or "stop"
 - Entry criteria unmet (Step 2)
 - Executor output validation fails (Step 7)
 - Reviewer output validation fails (Step 8)
-- Any scenario has status FAIL in the report (Step 11)
+- Any scenario has status FAIL in the report (Step 10)
 - Production-touching item encountered (e.g., admin-panel #252)
 - 3+ consecutive executor failures (systemic issue)
 

@@ -67,12 +67,12 @@ Were the QA skill docs followed end-to-end?
 | Score | Criteria |
 |---|---|
 | 0 | Hard rules violated (no screenshots, code review substitution for [BROWSER] scenarios). Roadmap not updated. |
-| 1 | Most process steps followed. Minor gaps: report not mirrored to turtle, changelog entry incomplete, evidence quality section missing from report. |
-| 2 | Full compliance with SKILL.md orchestration flow: Phase 0 checked, entry criteria verified, validation gates applied (Gates A-D), roadmap dashboard updated, changelog appended, report mirrored to turtle, evidence standards met. |
+| 1 | Most process steps followed. Minor gaps: changelog entry incomplete, evidence quality section missing from report, screenshot gate not enforced at Step 7. |
+| 2 | Full compliance with SKILL.md orchestration flow: Phase 0 checked, entry criteria verified, screenshot gate enforced (Step 7), validation gates applied (Gates A-D), roadmap dashboard updated, changelog appended, evidence standards met. |
 
 **Check against:** `~/.claude/skills/qa/SKILL.md` (Steps 1-13, Evidence Requirements)
 
-**Evidence to cite:** Roadmap changelog entry accuracy, dashboard counts match report, report file exists, turtle mirror attempted.
+**Evidence to cite:** Roadmap changelog entry accuracy, dashboard counts match report, report file exists, screenshot gate enforced before reviewer dispatch.
 
 ## Score Interpretation
 

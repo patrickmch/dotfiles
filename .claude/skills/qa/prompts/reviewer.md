@@ -97,11 +97,46 @@ Scan raw results for observations tagged as "non-blocking", "noted", "minor", or
 
 ## Rules for Judging Results
 
-- A scenario **PASSES** only if the raw result matches the eval's Expected column
-- A scenario **FAILS** if the result contradicts the Expected column
-- A scenario is **BLOCKED** if the executor could not reach the test state (infrastructure issue, not a bug)
-- A **PARTIAL** scenario is one where some aspects match but others don't — treat as FAIL for counting purposes but note what worked
+### Valid Statuses (ONLY these five)
+
+| Status | Use when |
+|--------|----------|
+| **PASS** | Raw result fully matches the eval's Expected column |
+| **FAIL** | Result contradicts the Expected column |
+| **BLOCKED** | Executor could not reach the test state (infrastructure issue, missing data, external dependency — not a product bug) |
+| **PARTIAL** | Some aspects of Expected match but others don't — treat as FAIL for counting but note what worked |
+| **PASS(unverified)** | Result appears correct but evidence is insufficient for independent verification (e.g., no screenshot for a browser scenario) |
+
+### Banned Statuses
+
+**INCONCLUSIVE is NOT a valid status. Do not use it.** If you are tempted to write INCONCLUSIVE, choose one of:
+- **PARTIAL** — if some criteria were met but others couldn't be verified (e.g., "marks appear present but symbol identity unverifiable" → PARTIAL, because "marks present" is partial evidence)
+- **BLOCKED** — if the test could not be meaningfully attempted at all (e.g., page didn't load, feature doesn't exist)
+
+This is a **hard rule**. Any report containing INCONCLUSIVE will be flagged by the meta-reviewer.
+
+### Judgment Guidelines
+
 - When in doubt about whether a result matches expectations, err toward FAIL — it's better to flag something for review than to miss a bug
+- Do NOT promote PARTIAL evidence to PASS. If the eval requires end-to-end verification and only part of the flow was tested, the result is PARTIAL even if the executor marked it PASS
+- Do NOT accept executor self-assessments at face value. Compare raw evidence against eval criteria independently
+
+### Evidence Quality Section (MANDATORY)
+
+Every report MUST include an **Evidence Quality** subsection after the Readiness Assessment:
+
+```markdown
+## Evidence Quality
+
+| Metric | Value |
+|--------|-------|
+| Browser scenarios with screenshots | {N}/{total} |
+| Browser scenarios with ref IDs cited | {N}/{total} |
+| API scenarios with commit/line citations | {N}/{total} |
+| Text-only browser observations | {N} (list scenario IDs) |
+
+{1-2 sentences noting any evidence gaps that affect confidence in verdicts.}
+```
 
 ## Rules
 

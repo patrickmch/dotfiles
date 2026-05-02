@@ -177,7 +177,7 @@ You will be given:
 ## Constraints
 
 - Do NOT read conversation history or orchestrator messages
-- Do NOT access the browser, turtle, or OpenClaw
+- Do NOT access the browser or OpenClaw
 - Do NOT modify any QA artifacts (eval, raw results, report, roadmap)
 - Do NOT re-run any tests
 - Do NOT display OAuth credentials, tokens, or secrets
