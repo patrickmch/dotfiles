@@ -6,7 +6,7 @@ Workspace schema (project routing, people, directory structure): `~/projects/CLA
 
 Claude sessions can run on any machine in the fleet. A SessionStart hook (`~/.claude/hooks/detect-machine.sh`) emits a `CURRENT_MACHINE:` line into the session-reminder block at startup — **trust that over any assumption in this file**. The fleet:
 
-- **eagle** — MacBook Pro M1 Pro, 32GB, mchey @ 100.116.125.97. Interactive dev, browser, local dev, audio recording, mbsync. Not always-on.
+- **eagle** — MacBook Pro M1 Pro, 32GB, mchey @ 100.116.125.97. Interactive dev, browser, local dev, audio recording, mbsync. Not always-on. Screenshots at `~/Screenshots` (not ~/Desktop).
 - **gc / groundcontrol** — Mac Mini M4 Pro, 64GB, mchey @ 100.118.247.22. Always-on server. Cron, OpenClaw, agents, background tasks, persistent `claude-infra` Telegram session.
 - **turtle** — turtle-1, tmac @ 100.124.70.31. Experimental OpenClaw sandbox. No production services.
 - Uses **Happy Coder** (`happy` CLI) as wrapper around `claude`. Shell context may differ from direct `claude` invocation.
@@ -14,6 +14,9 @@ Claude sessions can run on any machine in the fleet. A SessionStart hook (`~/.cl
 - Secrets go in `~/.env` (sourced by .zshrc, globally gitignored). Never in settings.json or committed files.
 - Always output URLs as plain text (e.g. `https://example.com`), never as markdown links (`[text](url)`). Markdown links are not visible in the CLI console.
 - When adding or fixing a launchd job (any project, any machine), read `~/projects/infrastructure/wiki/operations/launchd-pattern.md` first and mirror the pattern. Deploy via `~/projects/infrastructure/services/launchd/deploy.sh --apply`, never hand-rolled `scp` + `launchctl load`.
+- The Google Workspace MCP on gc is a **shared HTTP daemon** at `http://127.0.0.1:8765/mcp` (launchd `ai.workspace-mcp`). Never add `uvx workspace-mcp` as a stdio command in any `mcpServers` config — that's the zombie-port anti-pattern. See `~/projects/infrastructure/wiki/services/google-workspace-mcp-daemon.md`.
+- Read-only **iMessage MCP** (chat.db) for non-OpenClaw agents: on gc point at the standalone binary `/Users/mchey/.openclaw/bin/imessage-mcp/imessage-mcp` (no args; never run `uv`/`python`/the source dir). Already registered at Claude user scope on gc. On eagle it's the uv-run fork. Setup, tools, and Codex TOML: `~/projects/infrastructure/wiki/services/imessage-mcp.md`.
+- **iMessage ↔ Matrix bridge (bidirectional, gc only)**: iMessage is bridged into the Matrix stack (`messaging.gc.local`) via `mautrix-imessage` (bare-metal under launchd + a wsproxy container). To **send** an iMessage programmatically, use the guarded send CLI on gc: `cd ~/projects/infrastructure/services/unified-messages && python3 scripts/matrix_send.py --agent <you> draft --room '<portal-room-id>' --body '<text>'`, then — only after Patrick approves the printed draft — `python3 scripts/matrix_send.py confirm <draft-id>`. Recipients must be in `data/send-allowlist.json`. ⚠️ These guardrails are mistake-prevention + audit, **NOT** a hard boundary — still follow the Hard Rules (draft, show Patrick, get explicit approval, then confirm). Usable from Claude, OpenClaw, cron. Full runbook, portal-room lookup, permissions, and gotchas: `~/projects/infrastructure/wiki/services/mautrix-imessage.md`. (Reading iMessage is also available via the read-only iMessage MCP above — the two are complementary.)
 
 ## DEPRECATION: ~/code/ → ~/projects/
 
@@ -224,6 +227,20 @@ ANY text that will be read by someone other than Patrick MUST go through the hum
 
 ---
 
-*Last Updated: 2026-04-05*
+## Global Drafts Doc (clipboard for issues, messages, drafts)
+
+Patrick maintains a single rolling Google Doc as a global clipboard for anything he'll copy/paste — issue drafts, messages, post drafts, snippets, formatted blocks. Copy-paste from the terminal mangles formatting; this doc preserves it. All sessions on every machine should treat it as the default drop location for drafts.
+
+- Doc URL: https://docs.google.com/document/d/12B52k65FXKelG56sSTuF6Rg5CcCUT-oZE6mpr2W_vDI/edit
+- **Append, don't replace.** Use the Google Workspace MCP (`mcp__google_workspace_mcp__batch_update_doc` with an `insertText` request at end-of-body, or `insert_doc_elements`). Never overwrite existing content.
+- **Header each entry** with a timestamp + short label so Patrick can scan and grab the right block. Example: `## 2026-05-07 8:07am MDT — MTRO issue: Skool scraper retries`.
+- One entry = one draft. Separate distinct drafts with `---` so they're easy to select.
+- This is a dump bucket for the next little while. If it gets unwieldy, surface that and we'll redesign.
+
+This does not replace the External Content Rules approval flow. Drafts still need humanizer + [PAUSE] + explicit approval before being sent/posted/filed anywhere external.
+
+---
+
+*Last Updated: 2026-05-07*
 *Workspace schema: `~/projects/CLAUDE.md`*
 *Workspace principles and detailed patterns: `~/projects/docs/client-project-template.md`*
