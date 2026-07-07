@@ -6,14 +6,16 @@ Workspace schema (project routing, people, directory structure): `~/projects/CLA
 
 Claude sessions can run on any machine in the fleet. A SessionStart hook (`~/.claude/hooks/detect-machine.sh`) emits a `CURRENT_MACHINE:` line into the session-reminder block at startup — **trust that over any assumption in this file**. The fleet:
 
-- **eagle** — MacBook Pro M1 Pro, 32GB, mchey @ 100.116.125.97. Interactive dev, browser, local dev, audio recording, mbsync. Not always-on.
-- **gc / groundcontrol** — Mac Mini M4 Pro, 64GB, mchey @ 100.118.247.22. Always-on server. Cron, OpenClaw, agents, background tasks, persistent `claude-infra` Telegram session.
+- **eagle** — MacBook Pro M1 Pro, 32GB, mchey @ 100.116.125.97. Interactive dev, browser, local dev, audio recording, mbsync. Not always-on. Screenshots at `~/Screenshots` (not ~/Desktop).
+- **gc / groundcontrol** — Mac Mini M4 Pro, 64GB, mchey @ 100.118.247.22. Always-on server. Cron, OpenClaw, agents, background tasks, mbsync, persistent `claude-infra` Telegram session.
+- **mbsync runs on BOTH eagle and gc** (verified 2026-07-03): identical 4-account configs (crowdsolve, anagram, personal, mcheyser), maildirs at `~/mail/`, launchd `com.mchey.mbsync-*` every 5 min, per-account logs at `~/mail/<account>/.sync.log`. Search local mail on whichever machine you're on — no ssh needed. Only delta: gc has an extra temporary `personal-allmail` channel (full Gmail archive sync, for tax doc search).
 - **turtle** — turtle-1, tmac @ 100.124.70.31. Experimental OpenClaw sandbox. No production services.
-- Uses **Happy Coder** (`happy` CLI) as wrapper around `claude`. Shell context may differ from direct `claude` invocation.
 - NEVER commit hardcoded secrets. ALWAYS use .env or secrets files.
 - Secrets go in `~/.env` (sourced by .zshrc, globally gitignored). Never in settings.json or committed files.
+- **API tokens: store with `secret-add <key_name> [read|write]`** (in `~/bin`; source `~/projects/infrastructure/services/secrets/bin/secret-add`). Hidden paste → SOPS/age store on gc: `write` (default) → `secrets-write.enc.yaml` (gc-only decrypt, for write-capable tokens), `read` → `secrets-read.enc.yaml` (fleet-wide). Use at runtime BY NAME via `sops exec-env` on gc — agents must never read/paste token values (they persist in transcripts). Full flow: `~/projects/infrastructure/services/secrets/README.md`.
 - Always output URLs as plain text (e.g. `https://example.com`), never as markdown links (`[text](url)`). Markdown links are not visible in the CLI console.
 - When adding or fixing a launchd job (any project, any machine), read `~/projects/infrastructure/wiki/operations/launchd-pattern.md` first and mirror the pattern. Deploy via `~/projects/infrastructure/services/launchd/deploy.sh --apply`, never hand-rolled `scp` + `launchctl load`.
+- The Google Workspace MCP on gc is a **shared HTTP daemon** at `http://127.0.0.1:8765/mcp` (launchd `ai.workspace-mcp`). Never add `uvx workspace-mcp` as a stdio command in any `mcpServers` config — that's the zombie-port anti-pattern. See `~/projects/infrastructure/wiki/services/google-workspace-mcp-daemon.md`.
 
 ## DEPRECATION: ~/code/ → ~/projects/
 
@@ -23,8 +25,6 @@ When you encounter a ~/code/ reference in any file, update it to ~/projects/.
 ## ~/projects/ is for Patrick's work only
 
 ~/projects/ contains organized project work that follows the client-project-template pattern. External programs (cloned upstream repos, SDKs, tools you use but didn't build) go in ~/, not ~/projects/. If you need to clone someone else's repo to build or run it, put it in the home directory.
-
-When creating project skills, read `~/projects/docs/creating-project-skills.md` first.
 
 ## Three-Machine Architecture
 
@@ -183,7 +183,7 @@ When you discover something that would be useful in future sessions:
 
 1. Classify: Is this project-specific or cross-cutting?
 2. If project-specific → update that project's wiki or CLAUDE.md.
-3. If cross-cutting → add to ~/projects/docs/client-project-template.md in the correct section.
+3. If cross-cutting → add to ~/projects/infrastructure/docs/client-project-template.md in the correct section.
 4. Write in imperative voice. 1-3 lines. Do NOT append to the bottom. Place it in the right section.
 5. Read the file first. Propose the edit as a diff. Wait for approval on significant additions.
 
@@ -191,7 +191,7 @@ NEVER let a hard-won lesson exist only in conversation history. Capture it immed
 
 ### Context Loading
 
-Load project context on demand. NEVER load all projects at once. Pull only what the current task requires. For full orchestration patterns, security model, or trust ladder: load `~/projects/docs/client-project-template.md`.
+Load project context on demand. NEVER load all projects at once. Pull only what the current task requires. For full orchestration patterns, security model, or trust ladder: load `~/projects/infrastructure/docs/client-project-template.md`.
 
 ---
 
@@ -224,6 +224,20 @@ ANY text that will be read by someone other than Patrick MUST go through the hum
 
 ---
 
-*Last Updated: 2026-04-05*
+## Global Drafts Doc (clipboard for issues, messages, drafts)
+
+Patrick maintains a single rolling Google Doc as a global clipboard for anything he'll copy/paste — issue drafts, messages, post drafts, snippets, formatted blocks. Copy-paste from the terminal mangles formatting; this doc preserves it. All sessions on every machine should treat it as the default drop location for drafts.
+
+- Doc URL: https://docs.google.com/document/d/12B52k65FXKelG56sSTuF6Rg5CcCUT-oZE6mpr2W_vDI/edit
+- **Append, don't replace.** Use the Google Workspace MCP (`mcp__google_workspace_mcp__batch_update_doc` with an `insertText` request at end-of-body, or `insert_doc_elements`). Never overwrite existing content.
+- **Header each entry** with a timestamp + short label so Patrick can scan and grab the right block. Example: `## 2026-05-07 8:07am MDT — MTRO issue: Skool scraper retries`.
+- One entry = one draft. Separate distinct drafts with `---` so they're easy to select.
+- This is a dump bucket for the next little while. If it gets unwieldy, surface that and we'll redesign.
+
+This does not replace the External Content Rules approval flow. Drafts still need humanizer + [PAUSE] + explicit approval before being sent/posted/filed anywhere external.
+
+---
+
+*Last Updated: 2026-06-11*
 *Workspace schema: `~/projects/CLAUDE.md`*
-*Workspace principles and detailed patterns: `~/projects/docs/client-project-template.md`*
+*Workspace principles and detailed patterns: `~/projects/infrastructure/docs/client-project-template.md`*
