@@ -205,7 +205,7 @@ alias claude-mem='/Users/mchey/.bun/bin/bun "/Users/mchey/.claude/plugins/cache/
 # Gemini CLI / Vertex AI defaults
 export GOOGLE_CLOUD_PROJECT="mcp-489517"
 export GOOGLE_CLOUD_LOCATION="us-central1"
-export GOOGLE_GENAI_USE_VERTEXAI=true
+export GOOGLE_GENAI_USE_VERTEXAI=false  # AI Studio API key path (paid tier, set 2026-04-29)
 
 # Auto-mosh to turtle on iTerm startup (disabled — this machine runs Claude locally)
 # To mosh manually: mosh-turtle
