@@ -8,7 +8,7 @@ Claude sessions can run on any machine in the fleet. A SessionStart hook (`~/.cl
 
 - **eagle** — MacBook Pro M1 Pro, 32GB, mchey @ 100.116.125.97. Interactive dev, browser, local dev, audio recording, mbsync. Not always-on. Screenshots at `~/Screenshots` (not ~/Desktop).
 - **gc / groundcontrol** — Mac Mini M4 Pro, 64GB, mchey @ 100.118.247.22. Always-on server. Cron, OpenClaw, agents, background tasks, mbsync, persistent `claude-infra` Telegram session.
-- **mbsync runs on BOTH eagle and gc** (verified 2026-07-03): identical 4-account configs (crowdsolve, anagram, personal, mcheyser), maildirs at `~/mail/`, launchd `com.mchey.mbsync-*` every 5 min, per-account logs at `~/mail/<account>/.sync.log`. Search local mail on whichever machine you're on — no ssh needed. Only delta: gc has an extra temporary `personal-allmail` channel (full Gmail archive sync, for tax doc search).
+- **mbsync runs on BOTH eagle and gc** (verified 2026-07-11): shared 4-account base (crowdsolve, anagram, personal, mcheyser); gc additionally syncs a 5th mtropro account (added Jul 2026), maildirs at `~/mail/`, launchd `com.mchey.mbsync-*` every 5 min, per-account logs at `~/mail/<account>/.sync.log`. Search local mail on whichever machine you're on — no ssh needed. Only delta: gc has an extra temporary `personal-allmail` channel (full Gmail archive sync, for tax doc search).
 - **turtle** — turtle-1, tmac @ 100.124.70.31. Experimental OpenClaw sandbox. No production services.
 - NEVER commit hardcoded secrets. ALWAYS use .env or secrets files.
 - Secrets go in `~/.env` (sourced by .zshrc, globally gitignored). Never in settings.json or committed files.
